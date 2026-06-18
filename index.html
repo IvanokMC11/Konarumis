@@ -1,0 +1,893 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konarumis - CatÃ¡logo Exclusivo de Amigurumis</title>
+  <meta name="description" content="Explora el catÃ¡logo exclusivo de Konarumis. DiseÃ±os de amigurumis Ãºnicos tejidos a mano con amor y calidad en Cusco, PerÃº.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header / Navigation Bar -->
+  <header class="header" id="main-header">
+    <div class="container nav-container">
+      <a href="#" class="logo" id="header-logo" aria-label="Konarumis Home">
+        <img src="images/logo.png" alt="Konarumis Logo" class="logo-img">
+        <!-- Brand Name Image that changes based on theme -->
+        <img src="images/nombre.png" alt="Konarumis" class="logo-text-img" id="logo-brand-name">
+      </a>
+      
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link" id="nav-link-home">Inicio</a></li>
+          <li><a href="#productos" class="nav-link" id="nav-link-catalog">CatÃ¡logo</a></li>
+          <li><a href="#medidas" class="nav-link" id="nav-link-sizes">Medidas</a></li>
+          <li><a href="#nosotros" class="nav-link" id="nav-link-about">Nosotros</a></li>
+          <li><a href="#contacto" class="nav-link" id="nav-link-contact">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-cta" style="display: flex; align-items: center;">
+        <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20una%20consulta%20sobre%20tus%20amigurumis." target="_blank" class="btn btn--secondary" id="nav-action-btn" style="padding: 8px 18px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+          <!-- Small WhatsApp icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/>
+          </svg>
+          Escribir
+        </a>
+
+        <!-- Dark Mode Toggle Button -->
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Cambiar tema">
+          <!-- Sun/Moon icon -->
+          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <!-- Moon path by default -->
+            <path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10 0-4.8 3.5-8.9 8.2-9.8.5-.1 1 .3.9.8-.1.5-.6.9-1.1.9-3.9.5-6.8 4-6.3 8 .4 3.4 3.1 6.2 6.6 6.6 4 .5 7.5-2.4 8-6.3.1-.5.5-1 1.1-.9.5.1.9.6.8.9-.9 4.7-5 8.2-9.8 8.2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content" style="position: relative;">
+          <!-- Floating Brand Watermark/Sticker in corner -->
+          <div class="brand-corner-badge">
+            <!-- Source dynamically updated by theme -->
+            <img src="images/nombre.png" alt="Konarumis Text Logo" id="badge-brand-name">
+            <span>Original</span>
+          </div>
+
+          <span class="hero-tag label-md" id="hero-tagline" style="margin-top: 24px;">100% Hecho a Mano</span>
+          <h1 class="headline-xl hero-title" id="main-heading">Amigurumis Ãºnicos tejidos con amor</h1>
+          <p class="body-lg hero-desc" id="hero-description">
+            En <strong>Konarumis</strong>, transformamos hilos en tus personajes favoritos y adorables compaÃ±eros. DiseÃ±ados y tejidos a mano desde la mÃ¡gica ciudad del <strong>Cusco, PerÃº</strong>, con el mayor detalle y dedicaciÃ³n.
+          </p>
+          <div class="hero-actions">
+            <a href="#productos" class="btn btn--primary" id="hero-cta-catalog">Explorar CatÃ¡logo</a>
+            <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20estoy%20interesado(a)%20en%20ver%20las%20opciones%20de%20amigurumis%20personalizados." target="_blank" class="btn btn--secondary" id="hero-cta-contact">Hacer un Pedido</a>
+          </div>
+        </div>
+        <div class="hero-image-container">
+          <div class="hero-img-wrapper">
+            <img src="images/jake.png" alt="Amigurumi Jake el Perro, el primer diseÃ±o de Konarumis" class="hero-img" id="hero-main-image" loading="eager">
+          </div>
+          <div class="hero-shape-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section class="catalog-section" id="productos">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle label-md" id="catalog-subtitle">Nuestra GalerÃ­a</span>
+          <h2 class="headline-lg" id="catalog-title">CatÃ¡logo de DiseÃ±os</h2>
+          <p class="body-md" id="catalog-description">
+            Filtra por tus temÃ¡ticas favoritas. Selecciona el modelo que te guste y ordÃ©nalo directamente por WhatsApp con un solo clic.
+          </p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filters-container" id="category-filters" role="group" aria-label="Filtros del catÃ¡logo">
+          <button class="filter-chip active" id="filter-all" data-category="all">Ver Todos</button>
+          <button class="filter-chip" id="filter-series" data-category="series">Anime & Series</button>
+          <button class="filter-chip" id="filter-animals" data-category="animales">Animales & Llaveros</button>
+          <button class="filter-chip" id="filter-dolls" data-category="muÃ±ecas">MuÃ±ecas</button>
+        </div>
+
+        <!-- Product Collections Container -->
+        <div id="collections-container">
+          
+          <!-- 1. Anime & Series Collection -->
+          <div class="collection-group" data-category="series" id="group-series">
+            <h3 class="collection-title">
+              <!-- Cute series popcorn/tv icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/>
+              </svg>
+              ColecciÃ³n Pop (Anime & Series)
+            </h3>
+            
+            <div class="products-grid">
+              <!-- Jake -->
+              <article class="product-card" id="prod-jake">
+                <span class="product-tag">Primer Modelo</span>
+                <div class="product-img-wrapper">
+                  <img src="images/jake.png" alt="Amigurumi Jake el Perro tejido a crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Jake el Perro</h4>
+                    <span class="product-price">S/. 25</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El fiel e ingenioso compaÃ±ero de aventuras. Tejido con un color amarillo brillante, ojos expresivos y finas texturas de lana.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana AcrÃ­lica</span>
+                    <span class="meta-chip">15 cm</span>
+                  </div>
+                  <!-- WhatsApp Link button -->
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Jake%20el%20Perro*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Luffy -->
+              <article class="product-card" id="prod-luffy">
+                <span class="product-tag">One Piece</span>
+                <div class="product-img-wrapper">
+                  <img src="images/luffy.png" alt="Amigurumi Monkey D. Luffy de crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Luffy</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El capitÃ¡n pirata Luffy luciendo su icÃ³nico sombrero de paja de crochet, sandalias tradicionales y su tÃ­pica cicatriz bordada.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">AlgodÃ³n Mercenizado</span>
+                    <span class="meta-chip">18 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Luffy*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Zoro -->
+              <article class="product-card" id="prod-zoro">
+                <span class="product-tag">One Piece</span>
+                <div class="product-img-wrapper">
+                  <img src="images/zoro.png" alt="Amigurumi Roronoa Zoro de crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Zoro</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El hÃ¡bil espadachÃ­n Roronoa Zoro con su atuendo verde caracterÃ­stico, aretes tradicionales y su inconfundible cabello verde.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">AlgodÃ³n Premium</span>
+                    <span class="meta-chip">18 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Zoro*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Chopper -->
+              <article class="product-card" id="prod-chopper">
+                <span class="product-tag">One Piece</span>
+                <div class="product-img-wrapper">
+                  <img src="images/chopper.png" alt="Amigurumi Tony Tony Chopper de One Piece" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Chopper</h4>
+                    <span class="product-price">S/. 20</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El dulce mÃ©dico reno de los Sombreros de Paja en su versiÃ³n mini. Completo con su clÃ¡sico sombrero rosa y detalles de costura.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">AlgodÃ³n Premium</span>
+                    <span class="meta-chip">12 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Chopper*%20(S/.%2020)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Finn -->
+              <article class="product-card" id="prod-finn">
+                <span class="product-tag">Hora de Aventura</span>
+                <div class="product-img-wrapper">
+                  <img src="images/Finn.png" alt="Amigurumi Finn el Humano de crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Finn el Humano</h4>
+                    <span class="product-price">S/. 25</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El gran hÃ©roe de Ooo con su inconfundible gorro blanco y mochila verde. Un tejido firme y resistente perfecto para cualquier colecciÃ³n.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">AcrÃ­lico Premium</span>
+                    <span class="meta-chip">16 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Finn%20el%20Humano*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Freddy -->
+              <article class="product-card" id="prod-freddy">
+                <span class="product-tag">Terror</span>
+                <div class="product-img-wrapper">
+                  <img src="images/Freddy.png" alt="Amigurumi de Freddy Krueger tejido a crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Freddy</h4>
+                    <span class="product-price">S/. 15</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    Una simpÃ¡tica y no tan terrorÃ­fica versiÃ³n de Freddy Krueger. Incluye su clÃ¡sica camiseta a rayas rojas y verdes, sombrero marrÃ³n y garras tejidas.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana Peinada</span>
+                    <span class="meta-chip">10 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Freddy*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Chuky -->
+              <article class="product-card" id="prod-chuky">
+                <span class="product-tag">Terror</span>
+                <div class="product-img-wrapper">
+                  <img src="images/Chuky.png" alt="Amigurumi Chuky el muÃ±eco diabÃ³lico" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Chuky</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El famoso muÃ±eco diabÃ³lico en una versiÃ³n artesanal Ãºnica. Cuenta con su clÃ¡sico suÃ©ter a rayas, overol azul de mezclilla y cabello naranja.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana Peinada</span>
+                    <span class="meta-chip">15 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Chuky*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Jason -->
+              <article class="product-card" id="prod-jason">
+                <span class="product-tag">Terror</span>
+                <div class="product-img-wrapper">
+                  <img src="images/Jason.png" alt="Amigurumi Jason Voorhees de Viernes 13" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Jason</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El icÃ³nico Jason Voorhees de Viernes 13 con su mÃ¡scara de hockey tejida detalladamente y su clÃ¡sica casaca azul marino.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana Peinada</span>
+                    <span class="meta-chip">15 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Jason*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- South Park - Stan -->
+              <article class="product-card" id="prod-sp-stan">
+                <span class="product-tag">South Park</span>
+                <div class="product-img-wrapper">
+                  <img src="images/SP1.png" alt="Amigurumi Stan Marsh de South Park" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">South Park: Stan</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El reflexivo Stan Marsh tejido en crochet con su caracterÃ­stica chaqueta marrÃ³n, guantes rojos y gorro azul con pompÃ³n.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana AcrÃ­lica</span>
+                    <span class="meta-chip">14 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Stan*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- South Park - Kyle -->
+              <article class="product-card" id="prod-sp-kyle">
+                <span class="product-tag">South Park</span>
+                <div class="product-img-wrapper">
+                  <img src="images/SP2.png" alt="Amigurumi Kyle Broflovski de South Park" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">South Park: Kyle</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    Kyle Broflovski tejido a crochet luciendo su caracterÃ­stica chaqueta naranja brillante y su icÃ³nica ushanka (gorro) verde.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana AcrÃ­lica</span>
+                    <span class="meta-chip">14 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Kyle*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- South Park - Cartman -->
+              <article class="product-card" id="prod-sp-cartman">
+                <span class="product-tag">South Park</span>
+                <div class="product-img-wrapper">
+                  <img src="images/SP3.png" alt="Amigurumi Eric Cartman de South Park" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">South Park: Cartman</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El regordete y travieso Eric Cartman en versiÃ³n tejida. Detallado con su abrigo rojo, guantes amarillos y gorro celeste.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana AcrÃ­lica</span>
+                    <span class="meta-chip">14 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Cartman*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- South Park - Kenny -->
+              <article class="product-card" id="prod-sp-kenny">
+                <span class="product-tag">South Park</span>
+                <div class="product-img-wrapper">
+                  <img src="images/SP4.png" alt="Amigurumi Kenny McCormick de South Park" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">South Park: Kenny</h4>
+                    <span class="product-price">S/. 30</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El silencioso Kenny McCormick completamente envuelto en su clÃ¡sica parka naranja con su capucha ajustada de crochet.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana AcrÃ­lica</span>
+                    <span class="meta-chip">14 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Kenny*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- 2. Animals & Keychains Collection -->
+          <div class="collection-group" data-category="animales" id="group-animals">
+            <h3 class="collection-title">
+              <!-- Cute paw/animal icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+              </svg>
+              ColecciÃ³n Tiernos CompaÃ±eros (Animales & Llaveros)
+            </h3>
+            
+            <div class="products-grid">
+              <!-- Llama -->
+              <article class="product-card" id="prod-llama">
+                <span class="product-tag">Artesanal</span>
+                <div class="product-img-wrapper">
+                  <img src="images/llama.png" alt="Amigurumi llama de crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Llama Andina</h4>
+                    <span class="product-price">S/. 35</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    Colorida llamita tejida con lana rizada esponjosa. Lleva decoraciones tÃ­picas y coloridas en su lomo, ideales para regalar o decorar.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Lana BouclÃ©</span>
+                    <span class="meta-chip">20 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Llama%20Andina*%20(S/.%2035)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Snoopy -->
+              <article class="product-card" id="prod-snoopy">
+                <span class="product-tag">Peanuts</span>
+                <div class="product-img-wrapper">
+                  <img src="images/Snoopy.png" alt="Amigurumi Snoopy de crochet" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Snoopy</h4>
+                    <span class="product-price">S/. 35</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    El clÃ¡sico perrito de la tira cÃ³mica Peanuts tejido a mano en hilo de algodÃ³n suave de colores blanco y negro. Perfecto para coleccionistas.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">100% AlgodÃ³n</span>
+                    <span class="meta-chip">16 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Snoopy*%20(S/.%2035)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- Conejo Llavero -->
+              <article class="product-card" id="prod-conejo-llavero">
+                <span class="product-tag">Llavero</span>
+                <div class="product-img-wrapper">
+                  <img src="images/conejo llavero.png" alt="Amigurumi llavero de conejito suave" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">Conejo Llavero</h4>
+                    <span class="product-price">S/. 20</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    Un tierno y compacto conejito ideal para llevar en tus llaves o colgar en tu mochila. Muy suave y resistente.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Hilo de BambÃº</span>
+                    <span class="meta-chip">8 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Conejo%20Llavero*%20(S/.%2020)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- 3. Dolls Collection -->
+          <div class="collection-group" data-category="muÃ±ecas" id="group-dolls">
+            <h3 class="collection-title">
+              <!-- Cute face/doll icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+              </svg>
+              ColecciÃ³n MuÃ±ecas ClÃ¡sicas
+            </h3>
+            
+            <div class="products-grid">
+              <!-- Anne -->
+              <article class="product-card" id="prod-anne">
+                <span class="product-tag">ColecciÃ³n</span>
+                <div class="product-img-wrapper">
+                  <img src="images/ANNE.png" alt="MuÃ±eca de crochet inspirada en Anne" class="product-img" loading="lazy">
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">MuÃ±eca Anne</h4>
+                    <span class="product-price">S/. 80</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    Inspirada en Anne Shirley de Green Gables. Un diseÃ±o de alta costura artesanal con su clÃ¡sico vestido, delantal blanco y trenzas color zanahoria.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">Hilos OrgÃ¡nicos</span>
+                    <span class="meta-chip">28 cm</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Mu%C3%B1eca%20Anne*%20(S/.%2080)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+
+              <!-- MuÃ±eca Reversible -->
+              <article class="product-card" id="prod-reversible">
+                <span class="product-tag">2 en 1</span>
+                <!-- Hovering shifts to reversible 2 image -->
+                <div class="product-img-wrapper reversible-doll">
+                  <img src="images/muÃ±eca reversible 1.png" alt="MuÃ±eca reversible versiÃ³n 1" class="product-img" loading="lazy">
+                  <img src="images/muÃ±eca reversible 2.png" alt="MuÃ±eca reversible versiÃ³n 2" class="product-img product-img-back" loading="lazy">
+                  <span class="reversible-doll-toggle-indicator">Pasa el mouse para ver reverso</span>
+                </div>
+                <div class="product-info">
+                  <div class="product-header">
+                    <h4 class="product-title">MuÃ±eca Reversible</h4>
+                    <span class="product-price" style="font-size: 1.05rem;">S/. 90 / S/. 160</span>
+                  </div>
+                  <p class="body-md product-desc">
+                    Â¡Sorprendente diseÃ±o reversible! Al voltear el vestido se descubre otra hermosa muÃ±eca. Puedes encargarla en dos tamaÃ±os diferentes.
+                  </p>
+                  <div class="product-meta">`n                    <span class="meta-chip">Hilo de Algodón</span>
+                    <span class="meta-chip">35 cm (S/. 90)</span>
+                    <span class="meta-chip">55 cm (S/. 160)</span>
+                  </div>
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20la%20*Mu%C3%B1eca%20Reversible*%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+                    Pedir por WhatsApp
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Size Guide & Custom Orders Section -->
+    <section class="craft-section" id="medidas">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle label-md" id="medidas-subtitle">GuÃ­a de TamaÃ±os</span>
+          <h2 class="headline-lg" id="medidas-title">Pedidos Personalizados por TamaÃ±o</h2>
+          <p class="body-md" id="medidas-description">
+            Â¿Quieres un tamaÃ±o personalizado? AquÃ­ tienes la escala exacta basada en nuestra imagen guÃ­a de medidas y proporciones.
+          </p>
+        </div>
+
+        <div class="size-guide-wrapper">
+          <div>
+            <img src="images/por tamaÃ±o.png" alt="Diagrama ilustrativo de escalas y proporciones de amigurumis por tamaÃ±o" class="size-guide-img">
+          </div>
+          <div>
+            <h3 class="headline-lg" style="font-size: 1.5rem; margin-bottom: 12px; color: var(--primary);">Tabla de Alturas & Costos de Konarumis</h3>
+            <p class="body-md" style="margin-bottom: 16px;">
+              Los precios de nuestros amigurumis personalizados coinciden con las tres medidas estÃ¡ndar del grÃ¡fico de proporciones:
+            </p>
+            
+            <table class="size-table">
+              <thead>
+                <tr>
+                  <th>Medidas (Altura)</th>
+                  <th>Precio Fijo</th>
+                  <th>Perfecto Para</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>12 cm</strong></td>
+                  <td>S/. 37</td>
+                  <td>Escritorios, llaveros grandes y pequeÃ±os detalles de regalo.</td>
+                </tr>
+                <tr>
+                  <td><strong>18 cm</strong></td>
+                  <td>S/. 55</td>
+                  <td>El tamaÃ±o ideal y versÃ¡til para coleccionables y estantes.</td>
+                </tr>
+                <tr>
+                  <td><strong>27 cm</strong></td>
+                  <td>S/. 85</td>
+                  <td>Un modelo grande con alto nivel de detalle y gran volumen.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="craft-section" id="nosotros" style="border-top: 1px solid rgba(195, 200, 189, 0.2);">
+      <div class="container craft-grid">
+        <div class="craft-images">
+          <div class="craft-img-card" id="craft-img-1">
+            <img src="images/jake.png" alt="Detalle del tejido de crochet a mano">
+          </div>
+          <div class="craft-img-card" id="craft-img-2">
+            <img src="images/logo.png" alt="Logotipo circular de Konarumis">
+          </div>
+        </div>
+        
+        <div class="craft-content">
+          <span class="section-subtitle label-md" id="nosotros-subtitle">El Arte del Crochet</span>
+          <h2 class="headline-lg" id="nosotros-title">Tejido punto a punto, con paciencia y cariÃ±o</h2>
+          <p class="body-lg" id="nosotros-description-main">
+            En <strong>Konarumis</strong> nos apasiona el arte de tejer a mano. El crochet es una tÃ©cnica Ãºnica que ninguna mÃ¡quina industrial puede replicar, garantizando que cada amigurumi posea un alma y una esencia propias.
+          </p>
+          <p class="body-md" id="nosotros-description-secondary">
+            Utilizamos materiales hipoalergÃ©nicos, rellenos suaves y ojos de seguridad. Nuestro taller en la hermosa ciudad de **Cusco** se enfoca en entregarte un amigurumi que dure toda la vida y sea seguro para regalar a cualquier edad.
+          </p>
+          
+          <div class="craft-features">
+            <div class="feature-item">
+              <h4 class="feature-title">Originalidad</h4>
+              <p class="body-md">Cada pieza tiene sutiles matices y expresiones que la hacen Ãºnica.</p>
+            </div>
+            <div class="feature-item">
+              <h4 class="feature-title">Seguridad Primero</h4>
+              <p class="body-md">Ojitos encajados con broches de presiÃ³n y costuras dobles reforzadas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom Orders CTA Section -->
+    <section class="container" id="pedido-seccion">
+      <div class="custom-order">
+        <div class="custom-order-content">
+          <h2 class="headline-lg custom-order-title" id="custom-title">Â¿Tienes una idea en mente?</h2>
+          <p class="body-md custom-order-desc" id="custom-description">
+            Podemos tejer casi cualquier personaje o idea que desees. ContÃ¡ctanos por cualquiera de nuestras redes sociales para enviarnos tu referencia y darte una cotizaciÃ³n a medida.
+          </p>
+          <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20la%20cotizacion%20de%20un%20amigurumi%20personalizado." target="_blank" class="btn btn--primary custom-order-btn" id="custom-cta">Â¡Quiero un Amigurumi Especial!</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Virtual Business Card Section -->
+    <section class="business-card-section" id="tarjeta-digital">
+      <div class="container" style="display: flex; flex-direction: column; align-items: center;">
+        <div class="section-header" style="margin-bottom: 24px;">
+          <span class="section-subtitle label-md" id="card-section-subtitle">Contacto Digital</span>
+          <h2 class="headline-lg" id="card-section-title">Nuestra Tarjeta Online</h2>
+        </div>
+        
+        <div class="card-container" id="business-card" aria-label="Tarjeta de presentaciÃ³n interactiva de Konarumis. Haz clic para voltearla.">
+          <div class="card-inner">
+            <div class="card-front">
+              <img src="images/tarjeta de presentacion 0.png" alt="Tarjeta Konarumis - Frente" class="card-img">
+            </div>
+            <div class="card-back">
+              <img src="images/tarjeta de presentacion 1.png" alt="Tarjeta Konarumis - Reverso" class="card-img">
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-instructions">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+            <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
+          </svg>
+          <span>Toca la tarjeta para voltearla y ver los datos</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact & Footer Section -->
+  <footer class="footer" id="contacto">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo" id="footer-logo-link">Konarumis</a>
+          <p class="footer-desc">
+            Boutique de amigurumis de alta calidad hechos a mano. Llevando color, suavidad y tus personajes favoritos a la vida real.
+          </p>
+          
+          <!-- Social Icons List -->
+          <div style="display: flex; gap: 16px; margin-top: 8px;">
+            <!-- Instagram Link -->
+            <a href="https://www.instagram.com/konarumis/" target="_blank" style="color: inherit;" aria-label="Siguenos en Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+              </svg>
+            </a>
+            <!-- TikTok Link -->
+            <a href="https://www.tiktok.com/@konarumis" target="_blank" style="color: inherit;" aria-label="Siguenos en TikTok">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.525.02c1.31-.03 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.99-1.72-.08-.07-.16-.14-.24-.21v6.23c0 2.14-.66 4.34-2.18 5.85-1.52 1.51-3.78 2.24-5.94 1.95-2.15-.29-4.22-1.62-5.18-3.6-1.02-2.11-.79-4.78.65-6.66 1.44-1.87 3.93-2.73 6.22-2.2v4.07c-1.4-.41-2.99-.08-4.04.9-.99.92-1.33 2.41-.88 3.69.45 1.28 1.74 2.18 3.1 2.19 1.56.01 2.97-1.12 3.16-2.67.07-.58.05-1.18.05-1.77V.02h-.01z"/>
+              </svg>
+            </a>
+            <!-- WhatsApp Link -->
+            <a href="https://wa.me/51922330331" target="_blank" style="color: inherit;" aria-label="Escribenos al WhatsApp">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-nav">
+          <h3 class="footer-title">Explorar</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Inicio</a></li>
+            <li><a href="#productos" class="footer-link">CatÃ¡logo</a></li>
+            <li><a href="#medidas" class="footer-link">GuÃ­a de TamaÃ±os</a></li>
+            <li><a href="#nosotros" class="footer-link">Sobre Nosotros</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-info">
+          <h3 class="footer-title">Contacto</h3>
+          
+          <div class="footer-info-item">
+            <!-- Mail Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <span>contacto@konarumis.com</span>
+          </div>
+
+          <div class="footer-info-item">
+            <!-- Phone Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </svg>
+            <span>922 330 331</span>
+          </div>
+
+          <div class="footer-info-item">
+            <!-- Map Pin Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span>Cusco, PerÃº (EnvÃ­os a todo el PerÃº)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Konarumis. Todos los derechos reservados.</p>
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-link">TÃ©rminos de Servicio</a>
+          <a href="#" class="footer-link">PolÃ­tica de Privacidad</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Page Interactivity JavaScript -->
+  <script>
+    // 1. Shrink header on scroll
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('header--scrolled');
+      } else {
+        header.classList.remove('header--scrolled');
+      }
+    });
+
+    // 2. Collection Filters Logic
+    const filterButtons = document.querySelectorAll('.filter-chip');
+    const collectionGroups = document.querySelectorAll('.collection-group');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Toggle active class on buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const filterCategory = button.getAttribute('data-category');
+
+        // Filter whole collection groups
+        collectionGroups.forEach(group => {
+          const groupCategory = group.getAttribute('data-category');
+          if (filterCategory === 'all' || groupCategory === filterCategory) {
+            group.style.display = 'block';
+          } else {
+            group.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 3. Smooth scroll handling for iOS and older browsers
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // 4. Virtual Business Card Click-to-Flip handler
+    const businessCard = document.getElementById('business-card');
+    if (businessCard) {
+      businessCard.addEventListener('click', () => {
+        businessCard.classList.toggle('flipped');
+      });
+    }
+
+    // 5. Dark Mode Toggle implementation
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const logoBrandName = document.getElementById('logo-brand-name');
+    const badgeBrandName = document.getElementById('badge-brand-name');
+
+    // Sun icon SVG path
+    const sunIconPath = `<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm-1.06-12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm-11.31 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06z"/>`;
+    // Moon icon SVG path
+    const moonIconPath = `<path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10 0-4.8 3.5-8.9 8.2-9.8.5-.1 1 .3.9.8-.1.5-.6.9-1.1.9-3.9.5-6.8 4-6.3 8 .4 3.4 3.1 6.2 6.6 6.6 4 .5 7.5-2.4 8-6.3.1-.5.5-1 1.1-.9.5.1.9.6.8.9-.9 4.7-5 8.2-9.8 8.2z"/>`;
+
+    // Apply saved theme on load
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-theme');
+      themeIcon.innerHTML = sunIconPath;
+      if (logoBrandName) logoBrandName.src = 'images/modo noche.png';
+      if (badgeBrandName) badgeBrandName.src = 'images/modo noche.png';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark-theme');
+      if (isDark) {
+        localStorage.setItem('theme', 'dark');
+        themeIcon.innerHTML = sunIconPath;
+        if (logoBrandName) logoBrandName.src = 'images/modo noche.png';
+        if (badgeBrandName) badgeBrandName.src = 'images/modo noche.png';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeIcon.innerHTML = moonIconPath;
+        if (logoBrandName) logoBrandName.src = 'images/nombre.png';
+        if (badgeBrandName) badgeBrandName.src = 'images/nombre.png';
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
