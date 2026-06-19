@@ -327,11 +327,12 @@ section {
 .hero-logo-wrap {
   display: flex;
   align-self: flex-end;
+  margin-top: 16px;
   margin-bottom: 8px;
 }
 
 .hero-logo-img {
-  width: 120px;
+  width: 160px;
   height: auto;
   border-radius: 50%;
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
