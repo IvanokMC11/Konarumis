@@ -93,9 +93,18 @@
           </div>
         </div>
         <div class="hero-image-container">
-          <div class="hero-img-wrapper">
-            <img src="images/logo.png" alt="Konarumis Logo" class="hero-img" id="hero-main-image" loading="eager">
+          <div class="hero-slider-wrap">
+            <button class="slider-btn slider-btn--prev" id="slider-prev" aria-label="Anterior">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="hero-img-wrapper" id="hero-slider">
+              <img src="images/logo.png" alt="Konarumis Logo" class="hero-img slider-img" id="hero-main-image" loading="eager">
+            </div>
+            <button class="slider-btn slider-btn--next" id="slider-next" aria-label="Siguiente">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
           </div>
+          <div class="slider-dots" id="slider-dots"></div>
           <div class="hero-shape-1"></div>
         </div>
       </div>
@@ -942,6 +951,73 @@
         if (badgeBrandName) badgeBrandName.src = 'images/nombre.png';
       }
     });
+
+    // 6. Hero Image Slider
+    const sliderImages = [
+      'images/logo.png',
+      'images/jake.png',
+      'images/luffy.png',
+      'images/zoro.png',
+      'images/chopper.png',
+      'images/Finn.png',
+      'images/Freddy.png',
+      'images/Chuky.png',
+      'images/Jason.png',
+      'images/SP1.png',
+      'images/SP2.png',
+      'images/SP3.png',
+      'images/SP4.png',
+      'images/llama.png',
+      'images/Snoopy.png',
+      'images/conejo llavero.png',
+      'images/ANNE.png'
+    ];
+
+    const sliderImg = document.getElementById('hero-main-image');
+    const prevBtn = document.getElementById('slider-prev');
+    const nextBtn = document.getElementById('slider-next');
+    const dotsContainer = document.getElementById('slider-dots');
+    let currentIndex = 0;
+    let autoSlide;
+
+    function goToSlide(index) {
+      currentIndex = (index + sliderImages.length) % sliderImages.length;
+      sliderImg.src = sliderImages[currentIndex];
+      document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+      });
+    }
+
+    function nextSlide() { goToSlide(currentIndex + 1); }
+    function prevSlide() { goToSlide(currentIndex - 1); }
+
+    function startAutoSlide() {
+      stopAutoSlide();
+      autoSlide = setInterval(nextSlide, 3500);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(autoSlide);
+    }
+
+    // Create dots
+    sliderImages.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Ir a imagen ' + (i + 1));
+      dot.addEventListener('click', () => { goToSlide(i); startAutoSlide(); });
+      dotsContainer.appendChild(dot);
+    });
+
+    prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
+    nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
+
+    // Pause on hover/touch
+    const sliderWrap = document.querySelector('.hero-slider-wrap');
+    sliderWrap.addEventListener('mouseenter', stopAutoSlide);
+    sliderWrap.addEventListener('mouseleave', startAutoSlide);
+
+    startAutoSlide();
   </script>
 </body>
 </html>
