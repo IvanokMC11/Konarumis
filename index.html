@@ -92,18 +92,16 @@
             </div>
           </div>
         </div>
-        <div class="hero-image-container">
-          <div class="hero-slider-wrap">
-            <button class="slider-btn slider-btn--prev" id="slider-prev" aria-label="Anterior">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-            </button>
-            <div class="hero-img-wrapper" id="hero-slider">
-              <img src="images/logo.png" alt="Konarumis Logo" class="hero-img slider-img" id="hero-main-image" loading="eager">
-            </div>
-            <button class="slider-btn slider-btn--next" id="slider-next" aria-label="Siguiente">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-            </button>
+        <div class="hero-image-container hero-slider-container" id="hero-slider-container">
+          <div class="hero-img-wrapper hero-slider-track" id="hero-slider">
+            <img src="images/logo.png" alt="Konarumis Logo" class="hero-img slider-img" id="hero-main-image" loading="eager">
           </div>
+          <button class="slider-btn slider-btn--prev" id="slider-prev" aria-label="Anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button class="slider-btn slider-btn--next" id="slider-next" aria-label="Siguiente">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
           <div class="slider-dots" id="slider-dots"></div>
           <div class="hero-shape-1"></div>
         </div>
@@ -1019,9 +1017,9 @@
     nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
 
     // Pause on hover/touch
-    const sliderWrap = document.querySelector('.hero-slider-wrap');
-    sliderWrap.addEventListener('mouseenter', stopAutoSlide);
-    sliderWrap.addEventListener('mouseleave', startAutoSlide);
+    const sliderContainer = document.getElementById('hero-slider-container');
+    sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+    sliderContainer.addEventListener('mouseleave', startAutoSlide);
 
     startAutoSlide();
   </script>
