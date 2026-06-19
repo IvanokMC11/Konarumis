@@ -1085,8 +1085,9 @@ section {
 /* Corner Name Stamp styling */
 .brand-corner-badge {
   position: absolute;
-  top: 8px;
+  top: 50%;
   right: 16px;
+  transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(4px);
   padding: 6px 12px;
