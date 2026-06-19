@@ -326,6 +326,7 @@ section {
 
 .hero-logo-wrap {
   display: flex;
+  align-self: flex-end;
   margin-bottom: 8px;
 }
 
