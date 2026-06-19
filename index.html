@@ -29,6 +29,11 @@
       </nav>
 
       <div class="nav-cta" style="display: flex; align-items: center;">
+        <button class="hamburger" id="hamburger-btn" aria-label="Menú">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20una%20consulta%20sobre%20tus%20amigurumis." target="_blank" class="btn btn--secondary" id="nav-action-btn" style="padding: 8px 18px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
           <!-- Small WhatsApp icon -->
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -46,6 +51,14 @@
       </div>
     </div>
   </header>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- WhatsApp Float Button -->
+  <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20una%20consulta%20sobre%20tus%20amigurumis." target="_blank" class="wa-float" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+  </a>
 
   <main>
     <!-- Hero Section -->
@@ -135,14 +148,15 @@
             
             <div class="products-grid">
               <!-- Luffy -->
-              <article class="product-card" id="prod-luffy">
+              <article class="product-card" id="prod-luffy" data-name="Luffy" data-price="S/. 30" data-img="images/luffy.png" data-desc="El capitán pirata Luffy luciendo su icónico sombrero de paja de crochet, sandalias tradicionales y su típica cicatriz bordada." data-wa="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Luffy*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." data-meta="Hilo de Algodón|Relleno de Primera|15 cm|⏱ 3-5 días">
+                <span class="badge badge--popular">Más vendido</span>
                 <span class="product-tag">One Piece</span>
                 <div class="product-img-wrapper">
                   <img src="images/luffy.png" alt="Amigurumi Monkey D. Luffy de crochet" class="product-img" loading="lazy">
                 </div>
                 <div class="product-info">
                   <div class="product-header">
-                    <h4 class="product-title">Luffy</h4>
+<h4 class="product-title">Luffy</h4>
                     <span class="product-price">S/. 30</span>
                   </div>
                   <p class="body-md product-desc">
@@ -152,8 +166,9 @@
                     <span class="meta-chip">Hilo de Algodón</span>
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">15 cm</span>
+                    <span class="meta-chip">⏱ 3-5 días</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Luffy*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Luffy*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;" data-qv-trigger>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -179,7 +194,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">15 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Zoro*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Zoro*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -205,7 +220,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">15 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Chopper*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Chopper*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -231,7 +246,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">15 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Finn%20el%20Humano*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Finn%20el%20Humano*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -257,7 +272,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">15 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Jake%20el%20Perro*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Jake%20el%20Perro*%20(S/.%2025)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -283,7 +298,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">10 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Freddy*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Freddy*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -309,7 +324,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">10 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Chuky*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Chuky*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -335,7 +350,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">10 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Jason*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Jason*%20(S/.%2015)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -362,7 +377,7 @@
                     <span class="meta-chip">Fieltro</span>
                     <span class="meta-chip">17 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Stan*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Stan*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -389,7 +404,7 @@
                     <span class="meta-chip">Fieltro</span>
                     <span class="meta-chip">17 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Kyle*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Kyle*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -416,7 +431,7 @@
                     <span class="meta-chip">Fieltro</span>
                     <span class="meta-chip">17 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Cartman*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Cartman*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -443,7 +458,7 @@
                     <span class="meta-chip">Fieltro</span>
                     <span class="meta-chip">17 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Kenny*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*South%20Park:%20Kenny*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -465,6 +480,7 @@
             <div class="products-grid">
               <!-- Llama -->
               <article class="product-card" id="prod-llama">
+                <span class="badge badge--new">Nuevo</span>
                 <span class="product-tag">Artesanal</span>
                 <div class="product-img-wrapper">
                   <img src="images/llama.png" alt="Amigurumi llama de crochet" class="product-img" loading="lazy">
@@ -481,8 +497,9 @@
                     <span class="meta-chip">Hilo de Algodón</span>
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">20 cm</span>
+                    <span class="meta-chip">⏱ 3-5 días</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Llama%20Andina*%20(S/.%2035)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Llama%20Andina*%20(S/.%2035)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -508,7 +525,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">17 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Snoopy*%20(S/.%2035)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Snoopy*%20(S/.%2035)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -534,7 +551,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">10 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Conejo%20Llavero*%20(S/.%2020)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Conejo%20Llavero*%20(S/.%2020)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -573,7 +590,7 @@
                     <span class="meta-chip">Relleno de Primera</span>
                     <span class="meta-chip">28 cm</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Mu%C3%B1eca%20Anne*%20(S/.%2080)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Mu%C3%B1eca%20Anne*%20(S/.%2080)%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -606,7 +623,7 @@
                     <span class="meta-chip chip-small">35 cm · S/. 90</span>
                     <span class="meta-chip chip-large">55 cm · S/. 160</span>
                   </div>
-                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20la%20*Mu%C3%B1eca%20Reversible*%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20la%20*Mu%C3%B1eca%20Reversible*%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary qv-btn" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                     Pedir por WhatsApp
                   </a>
@@ -738,6 +755,31 @@
       </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonios">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle label-md">Clientes Felices</span>
+          <h2 class="headline-lg">Lo que dicen de nosotros</h2>
+          <p class="body-md">La satisfacción de nuestros clientes es nuestra mejor carta de presentación.</p>
+        </div>
+        <div class="testimonials-grid">
+          <blockquote class="testimonial-card">
+            <p>Pedí un Luffy personalizado y el resultado fue increíble. Los detalles bordados son exactamente como en el anime. Llegó súper bien empaquetado a Lima.</p>
+            <footer>— @anime_fan_peru</footer>
+          </blockquote>
+          <blockquote class="testimonial-card">
+            <p>La muñeca reversible que me hicieron para mi hija es preciosa. La calidad del tejido y los materiales se nota al tacto. Muy recomendados.</p>
+            <footer>— @mama_tejedora</footer>
+          </blockquote>
+          <blockquote class="testimonial-card">
+            <p>Compré la llama andina como regalo para mi mamá y le encantó. El acabado es precioso y el tamaño es perfecto para decorar. Volveré a pedir!</p>
+            <footer>— @regalos_artesanales</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
     <!-- Virtual Business Card Section -->
     <section class="business-card-section" id="tarjeta-digital">
       <div class="container" style="display: flex; flex-direction: column; align-items: center;">
@@ -840,6 +882,28 @@
       </div>
     </div>
   </footer>
+
+  <!-- Quick View Modal -->
+  <div class="quick-view-overlay" id="qv-overlay">
+    <div class="quick-view-modal">
+      <button class="qv-close" id="qv-close">&times;</button>
+      <div class="qv-img-wrap">
+        <img src="" alt="" id="qv-img">
+      </div>
+      <div class="qv-info">
+        <div class="qv-header">
+          <h3 class="qv-title" id="qv-title"></h3>
+          <span class="qv-price" id="qv-price"></span>
+        </div>
+        <p class="qv-desc" id="qv-desc"></p>
+        <div class="qv-meta" id="qv-meta"></div>
+        <a href="#" target="_blank" class="btn btn--primary qv-wa" id="qv-wa" style="padding: 12px 20px; font-size: 0.9rem; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
+          Pedir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- Page Interactivity JavaScript -->
   <script>
@@ -1013,6 +1077,118 @@
     sliderContainer.addEventListener('mouseleave', startAutoSlide);
 
     startAutoSlide();
+
+    // 7. Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navOverlay = document.getElementById('nav-overlay');
+
+    function closeMenu() {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('open');
+      navOverlay.classList.remove('open');
+    }
+
+    function openMenu() {
+      hamburger.classList.add('active');
+      navLinks.classList.add('open');
+      navOverlay.classList.add('open');
+    }
+
+    hamburger.addEventListener('click', () => {
+      if (navLinks.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    navOverlay.addEventListener('click', closeMenu);
+
+    // Close menu on nav link click
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // 8. Scroll Reveal Animations (Intersection Observer)
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.product-card, .testimonial-card, .craft-img-card, .feature-item').forEach(el => {
+      el.classList.add('reveal');
+      revealObserver.observe(el);
+    });
+
+    // 9. Skeleton Loading - remove shimmer on image load
+    document.querySelectorAll('.product-img').forEach(img => {
+      img.addEventListener('load', () => {
+        img.classList.add('loaded');
+      });
+      if (img.complete) {
+        img.classList.add('loaded');
+      }
+    });
+
+    // 10. Quick View Modal
+    const qvOverlay = document.getElementById('qv-overlay');
+    const qvClose = document.getElementById('qv-close');
+    const qvImg = document.getElementById('qv-img');
+    const qvTitle = document.getElementById('qv-title');
+    const qvPrice = document.getElementById('qv-price');
+    const qvDesc = document.getElementById('qv-desc');
+    const qvMeta = document.getElementById('qv-meta');
+    const qvWa = document.getElementById('qv-wa');
+
+    document.querySelectorAll('.qv-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const card = btn.closest('.product-card');
+        if (!card) return;
+
+        const img = card.querySelector('.product-img');
+        const title = card.querySelector('.product-title');
+        const price = card.querySelector('.product-price');
+        const desc = card.querySelector('.product-desc');
+        const chips = card.querySelectorAll('.meta-chip');
+
+        qvImg.src = img.src;
+        qvImg.alt = img.alt;
+        qvTitle.textContent = title.textContent;
+        qvPrice.textContent = price.textContent;
+        qvDesc.textContent = desc.textContent;
+        qvMeta.innerHTML = '';
+        chips.forEach(chip => {
+          const span = document.createElement('span');
+          span.className = 'meta-chip';
+          span.textContent = chip.textContent;
+          qvMeta.appendChild(span);
+        });
+        qvWa.href = btn.href;
+
+        qvOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeQv() {
+      qvOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    qvClose.addEventListener('click', closeQv);
+    qvOverlay.addEventListener('click', (e) => {
+      if (e.target === qvOverlay) closeQv();
+    });
+
+    // Close QV with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeQv();
+    });
   </script>
 </body>
 </html>
