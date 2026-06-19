@@ -120,11 +120,6 @@ body.dark-theme .brand-corner-badge {
   border-color: var(--outline-variant);
 }
 
-/* Footer SVG icons: --on-primary-container (#1b2e18) is too dark on dark footer */
-body.dark-theme .footer-info-item svg {
-  fill: var(--on-tertiary-container);
-}
-
 .theme-toggle-btn {
   background: none;
   border: 1px solid var(--outline-variant);
@@ -736,11 +731,11 @@ section {
 
 /* --- Footer --- */
 .footer {
-  background-color: var(--tertiary);
-  color: var(--on-tertiary-container);
+  background-color: var(--primary);
+  color: var(--on-primary);
   padding: 80px 0 40px 0;
   font-family: var(--font-headline);
-  border-top: 1px solid rgba(195, 200, 189, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .footer-grid {
@@ -759,7 +754,7 @@ section {
 .footer-logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--on-tertiary-container);
+  color: var(--on-primary);
   text-decoration: none;
 }
 
@@ -779,7 +774,7 @@ section {
 .footer-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--on-tertiary-container);
+  color: var(--on-primary);
   margin-bottom: 8px;
   position: relative;
 }
@@ -792,8 +787,8 @@ section {
 }
 
 .footer-link {
-  color: var(--on-tertiary-container);
-  opacity: 0.75;
+  color: var(--on-primary);
+  opacity: 0.8;
   text-decoration: none;
   font-size: 0.95rem;
   transition: all 0.2s ease;
@@ -801,7 +796,7 @@ section {
 
 .footer-link:hover {
   opacity: 1;
-  color: var(--on-tertiary-container);
+  color: var(--on-primary);
   padding-left: 4px;
 }
 
@@ -821,7 +816,7 @@ section {
 }
 
 .footer-info-item svg {
-  fill: var(--on-primary-container);
+  fill: var(--on-primary);
   flex-shrink: 0;
 }
 
@@ -974,15 +969,18 @@ section {
 }
 
 .brand-corner-badge img {
-  height: 18px;
+  height: 36px;
   width: auto;
+  display: block;
 }
 
-.brand-corner-badge span {
+.brand-corner-badge .badge-label {
   font-family: var(--font-headline);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Custom orders sizing layout */
@@ -1173,4 +1171,129 @@ section {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Social Bar */
+.social-bar {
+  background-color: var(--surface-container-lowest);
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 16px 0;
+}
+
+.social-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.social-bar-text {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--on-surface);
+}
+
+.social-bar-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.social-bar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-headline);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--outline-variant);
+  transition: all 0.2s ease;
+}
+
+.social-bar-link:hover {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+
+.social-bar-link svg {
+  flex-shrink: 0;
+}
+
+.social-bar-link:hover svg {
+  fill: var(--on-primary);
+}
+
+/* Reversible Prices */
+.reversible-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.reversible-prices {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reversible-price {
+  font-size: 1.05rem;
+  padding: 2px 10px;
+  border-radius: var(--radius-default);
+}
+
+.reversible-price--small {
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.reversible-price--large {
+  background-color: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+}
+
+.reversible-price-sep {
+  color: var(--outline-variant);
+  font-weight: 300;
+}
+
+.reversible-meta {
+  margin-top: 6px;
+}
+
+.reversible-meta .chip-small {
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.reversible-meta .chip-large {
+  background-color: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+}
+
+/* Size Table CTA */
+.size-table-cta {
+  text-align: center;
+  margin-top: 28px;
+}
+
+.size-table-cta .btn {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+/* Dark theme overrides for social bar SVGs */
+body.dark-theme .social-bar-link svg {
+  fill: var(--on-surface);
+}
+
+body.dark-theme .social-bar-link:hover svg {
+  fill: var(--on-primary);
 }
