@@ -1447,6 +1447,10 @@ body.dark-theme .social-bar-link:hover svg {
     display: none;
   }
 
+  .hamburger {
+    display: flex;
+  }
+
   .nav-cta {
     gap: 4px;
   }
@@ -1585,6 +1589,7 @@ body.dark-theme .social-bar-link:hover svg {
 
   .hamburger {
     padding: 6px;
+    margin-left: 0;
   }
 
   .hamburger span {
@@ -1697,10 +1702,6 @@ body.dark-theme .social-bar-link:hover svg {
 }
 
 @media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-
   .nav-links {
     position: fixed;
     top: 0;
