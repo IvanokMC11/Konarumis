@@ -50,15 +50,27 @@
   <main>
     <!-- Hero Section -->
     <section class="hero" id="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-content" style="position: relative;">
-          <!-- Floating Brand Watermark/Sticker in corner -->
+
+      <!-- Full-screen background slider -->
+      <div class="hero-slider-bg" id="hero-slider-container">
+        <img src="images/jake.png" alt="" class="slider-bg-img" id="hero-main-image">
+        <button class="slider-btn slider-btn--prev" id="slider-prev" aria-label="Anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button class="slider-btn slider-btn--next" id="slider-next" aria-label="Siguiente">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+        <div class="slider-dots" id="slider-dots"></div>
+      </div>
+
+      <!-- Static content on top -->
+      <div class="container hero-overlay">
+        <div class="hero-content">
           <div class="brand-corner-badge">
             <img src="images/nombre.png" alt="Konarumis" id="badge-brand-name">
             <span class="badge-label">Hecho a mano</span>
           </div>
-
-          <span class="hero-tag label-md" id="hero-tagline" style="margin-top: 24px;">100% Hecho a Mano</span>
+          <span class="hero-tag label-md" id="hero-tagline">100% Hecho a Mano</span>
           <h1 class="headline-xl hero-title" id="main-heading">Amigurumis únicos tejidos con amor</h1>
           <p class="body-lg hero-desc" id="hero-description">
             En <strong>Konarumis</strong>, transformamos hilos en tus personajes favoritos y adorables compañeros. Diseñados y tejidos a mano desde la mágica ciudad del <strong>Cusco, Perú</strong>, con el mayor detalle y dedicación.
@@ -67,43 +79,23 @@
             <a href="#productos" class="btn btn--primary" id="hero-cta-catalog">Explorar Catálogo</a>
             <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20estoy%20interesado(a)%20en%20ver%20las%20opciones%20de%20amigurumis%20personalizados." target="_blank" class="btn btn--secondary" id="hero-cta-contact">Hacer un Pedido</a>
           </div>
-
           <div class="hero-social">
             <span class="hero-social-text">Sígueme en mis redes</span>
             <div class="hero-social-links">
               <a href="https://www.instagram.com/konarumis/" target="_blank" class="hero-social-link" aria-label="Instagram">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
                 Instagram
               </a>
               <a href="https://www.tiktok.com/@konarumis" target="_blank" class="hero-social-link" aria-label="TikTok">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.525.02c1.31-.03 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.99-1.72-.08-.07-.16-.14-.24-.21v6.23c0 2.14-.66 4.34-2.18 5.85-1.52 1.51-3.78 2.24-5.94 1.95-2.15-.29-4.22-1.62-5.18-3.6-1.02-2.11-.79-4.78.65-6.66 1.44-1.87 3.93-2.73 6.22-2.2v4.07c-1.4-.41-2.99-.08-4.04.9-.99.92-1.33 2.41-.88 3.69.45 1.28 1.74 2.18 3.1 2.19 1.56.01 2.97-1.12 3.16-2.67.07-.58.05-1.18.05-1.77V.02h-.01z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.03 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.99-1.72-.08-.07-.16-.14-.24-.21v6.23c0 2.14-.66 4.34-2.18 5.85-1.52 1.51-3.78 2.24-5.94 1.95-2.15-.29-4.22-1.62-5.18-3.6-1.02-2.11-.79-4.78.65-6.66 1.44-1.87 3.93-2.73 6.22-2.2v4.07c-1.4-.41-2.99-.08-4.04.9-.99.92-1.33 2.41-.88 3.69.45 1.28 1.74 2.18 3.1 2.19 1.56.01 2.97-1.12 3.16-2.67.07-.58.05-1.18.05-1.77V.02h-.01z"/></svg>
                 TikTok
               </a>
               <a href="https://wa.me/51922330331" target="_blank" class="hero-social-link" aria-label="WhatsApp">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
                 WhatsApp
               </a>
             </div>
           </div>
-        </div>
-        <div class="hero-image-container hero-slider-container" id="hero-slider-container">
-          <div class="hero-img-wrapper hero-slider-track" id="hero-slider">
-            <img src="images/logo.png" alt="Konarumis Logo" class="hero-img slider-img" id="hero-main-image" loading="eager">
-          </div>
-          <button class="slider-btn slider-btn--prev" id="slider-prev" aria-label="Anterior">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-          </button>
-          <button class="slider-btn slider-btn--next" id="slider-next" aria-label="Siguiente">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-          </button>
-          <div class="slider-dots" id="slider-dots"></div>
-          <div class="hero-shape-1"></div>
         </div>
       </div>
     </section>
@@ -952,7 +944,6 @@
 
     // 6. Hero Image Slider
     const sliderImages = [
-      'images/logo.png',
       'images/jake.png',
       'images/luffy.png',
       'images/zoro.png',
@@ -997,7 +988,7 @@
 
     function startAutoSlide() {
       stopAutoSlide();
-      autoSlide = setInterval(nextSlide, 3500);
+      autoSlide = setInterval(nextSlide, 7000);
     }
 
     function stopAutoSlide() {
