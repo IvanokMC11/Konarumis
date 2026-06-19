@@ -1297,3 +1297,161 @@ body.dark-theme .social-bar-link svg {
 body.dark-theme .social-bar-link:hover svg {
   fill: var(--on-primary);
 }
+
+/* --- Mobile Responsive Improvements --- */
+
+@media (max-width: 768px) {
+  .nav-container {
+    gap: 8px;
+  }
+
+  .logo-img {
+    height: 36px;
+  }
+
+  .logo-text-img {
+    height: 20px;
+  }
+
+  .nav-cta .btn {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+
+  .brand-corner-badge {
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+  }
+
+  .brand-corner-badge img {
+    height: 24px;
+  }
+
+  .brand-corner-badge .badge-label {
+    font-size: 0.55rem;
+  }
+
+  .filters-container {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-chip {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+  }
+
+  .social-bar-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .social-bar-links {
+    justify-content: center;
+  }
+
+  .social-bar-link {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+
+  .product-card {
+    border-radius: 12px;
+  }
+
+  .product-info {
+    padding: 12px;
+  }
+
+  .product-title {
+    font-size: 0.95rem;
+  }
+
+  .product-price {
+    font-size: 0.95rem;
+  }
+
+  .product-desc {
+    font-size: 0.8rem;
+  }
+
+  .size-table {
+    font-size: 0.85rem;
+  }
+
+  .size-table th,
+  .size-table td {
+    padding: 8px 6px;
+  }
+
+  .card-container {
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .card-back-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-cta {
+    gap: 6px;
+  }
+
+  .nav-cta .btn span {
+    display: none;
+  }
+
+  .theme-toggle-btn {
+    padding: 6px;
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+    line-height: 2.2rem;
+  }
+
+  .hero-desc {
+    font-size: 0.9rem;
+  }
+
+  .brand-corner-badge img {
+    height: 18px;
+  }
+
+  .brand-corner-badge .badge-label {
+    display: none;
+  }
+
+  .product-tag {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    top: 8px;
+    left: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .collection-title {
+    font-size: 1.3rem;
+  }
+
+  .size-table-cta .btn {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
