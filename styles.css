@@ -364,9 +364,9 @@ section {
 .hero-img-wrapper {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 400px;
   aspect-ratio: 1 / 1;
-  border-radius: var(--radius-xl);
+  border-radius: 50%;
   overflow: hidden;
   box-shadow: var(--shadow-ambient);
   background-color: var(--surface-container);
@@ -376,6 +376,60 @@ section {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Hero Social Links */
+.hero-social {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-social-text {
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-social-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--outline-variant);
+  transition: all 0.2s ease;
+}
+
+.hero-social-link:hover {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+
+.hero-social-link svg {
+  fill: var(--primary);
+  flex-shrink: 0;
+}
+
+.hero-social-link:hover svg {
+  fill: var(--on-primary);
 }
 
 /* Subtle decorative background shapes */
@@ -1298,6 +1352,14 @@ body.dark-theme .social-bar-link:hover svg {
   fill: var(--on-primary);
 }
 
+body.dark-theme .hero-social-link {
+  color: var(--on-surface-variant);
+}
+
+body.dark-theme .hero-social-link svg {
+  fill: var(--inverse-primary);
+}
+
 /* --- Mobile Responsive Improvements --- */
 
 @media (max-width: 768px) {
@@ -1345,6 +1407,12 @@ body.dark-theme .social-bar-link:hover svg {
     flex-shrink: 0;
     font-size: 0.8rem;
     padding: 6px 14px;
+  }
+
+  .hero-social {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .social-bar-container {
@@ -1409,6 +1477,10 @@ body.dark-theme .social-bar-link:hover svg {
     display: none;
   }
 
+  .nav-cta .btn {
+    padding: 6px 8px;
+  }
+
   .theme-toggle-btn {
     padding: 6px;
   }
@@ -1424,6 +1496,19 @@ body.dark-theme .social-bar-link:hover svg {
 
   .hero-desc {
     font-size: 0.9rem;
+  }
+
+  .hero-social {
+    margin-top: 24px;
+  }
+
+  .hero-social-text {
+    font-size: 0.75rem;
+  }
+
+  .hero-social-link {
+    font-size: 0.75rem;
+    padding: 4px 10px;
   }
 
   .brand-corner-badge img {
