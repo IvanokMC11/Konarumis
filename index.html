@@ -981,11 +981,17 @@
     let autoSlide;
 
     function goToSlide(index) {
-      currentIndex = (index + sliderImages.length) % sliderImages.length;
-      sliderImg.src = sliderImages[currentIndex];
-      document.querySelectorAll('.slider-dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
-      });
+      const nextIdx = (index + sliderImages.length) % sliderImages.length;
+      if (nextIdx === currentIndex) return;
+      sliderImg.classList.add('fade-out');
+      setTimeout(() => {
+        currentIndex = nextIdx;
+        sliderImg.src = sliderImages[currentIndex];
+        sliderImg.classList.remove('fade-out');
+        document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+      }, 250);
     }
 
     function nextSlide() { goToSlide(currentIndex + 1); }
