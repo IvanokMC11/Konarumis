@@ -1436,19 +1436,23 @@ body.dark-theme .social-bar-link:hover svg {
 
 @media (max-width: 768px) {
   .nav-container {
-    gap: 8px;
+    gap: 6px;
   }
 
   .logo-img {
-    height: 36px;
+    height: 32px;
   }
 
   .logo-text-img {
-    height: 20px;
+    display: none;
+  }
+
+  .nav-cta {
+    gap: 4px;
   }
 
   .nav-cta .btn {
-    padding: 6px 12px;
+    padding: 6px 10px;
     font-size: 0.7rem;
   }
 
@@ -1555,7 +1559,7 @@ body.dark-theme .social-bar-link:hover svg {
 
 @media (max-width: 480px) {
   .nav-cta {
-    gap: 6px;
+    gap: 4px;
   }
 
   .nav-cta .btn span {
@@ -1563,11 +1567,28 @@ body.dark-theme .social-bar-link:hover svg {
   }
 
   .nav-cta .btn {
-    padding: 6px 8px;
+    padding: 6px 6px;
+    font-size: 0.65rem;
+    min-width: 36px;
+    justify-content: center;
   }
 
   .theme-toggle-btn {
+    padding: 5px;
+    margin-left: 4px;
+  }
+
+  .theme-toggle-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .hamburger {
     padding: 6px;
+  }
+
+  .hamburger span {
+    width: 18px;
   }
 
   .hero-tag {
