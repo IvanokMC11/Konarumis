@@ -31,6 +31,9 @@
 </head>
 <body class="dark-theme">
 
+  <!-- Skip to content link for keyboard users -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
   <!-- Header / Navigation Bar -->
   <header class="header" id="main-header">
     <div class="container nav-container">
@@ -82,9 +85,23 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
   </a>
 
-  <main>
+  <main id="main-content">
     <!-- Hero Section -->
     <section class="hero" id="hero-section">
+
+      <!-- Decorative thread element -->
+      <div class="thread-line" aria-hidden="true" style="bottom: 10%; right: 5%; width: 180px; height: 80px; opacity: 0.08;">
+        <svg viewBox="0 0 180 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 40 Q45 -10 90 40 T180 40" stroke="url(#threadGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#76946b"/>
+              <stop offset="50%" stop-color="#c17a5d"/>
+              <stop offset="100%" stop-color="#76946b"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
 
       <!-- Full-screen background slider -->
       <div class="hero-slider-bg" id="hero-slider-container">
@@ -108,10 +125,10 @@
           <div class="hero-logo-wrap">
             <img src="images/logo.png" alt="Konarumis Logo" class="hero-logo-img">
           </div>
-          <span class="hero-tag label-md" id="hero-tagline">100% Hecho a Mano</span>
-          <h1 class="headline-xl hero-title" id="main-heading">Amigurumis únicos tejidos con amor</h1>
+          <span class="hero-tag label-md" id="hero-tagline">Cusco · Hecho a mano</span>
+          <h1 class="headline-xl hero-title" id="main-heading">Donde el hilo encuentra a tus personajes favoritos</h1>
           <p class="body-lg hero-desc" id="hero-description">
-            En <strong>Konarumis</strong>, transformamos hilos en tus personajes favoritos y adorables compañeros. Diseñados y tejidos a mano desde la mágica ciudad del <strong>Cusco, Perú</strong>, con el mayor detalle y dedicación.
+            Tejemos tus mundos favoritos — del anime al terror, de la ternura al detalle — <strong>punto a punto, desde Cusco</strong>. Cada amigurumi Konarumis es una pieza original que no encontrarás en ningún otro lado.
           </p>
           <div class="hero-actions">
             <a href="#productos" class="btn btn--primary" id="hero-cta-catalog">Explorar Catálogo</a>
@@ -143,10 +160,10 @@
       <div class="container">
         
         <div class="section-header">
-          <span class="section-subtitle label-md" id="catalog-subtitle">Nuestra Galería</span>
-          <h2 class="headline-lg" id="catalog-title">Catálogo de Diseños</h2>
+          <span class="section-subtitle label-md" id="catalog-subtitle">Galería</span>
+          <h2 class="headline-lg" id="catalog-title">Diseños disponibles</h2>
           <p class="body-md" id="catalog-description">
-            Filtra por tus temáticas favoritas. Selecciona el modelo que te guste y ordénalo directamente por WhatsApp con un solo clic.
+            Cada pieza está tejida a mano con hilo de algodón y relleno de primera. Elige tu favorito y encarga el tuyo directamente por WhatsApp — sin vueltas.
           </p>
         </div>
 
@@ -156,6 +173,17 @@
           <button class="filter-chip" id="filter-series" data-category="series">Anime & Series</button>
           <button class="filter-chip" id="filter-animals" data-category="animales">Animales & Llaveros</button>
           <button class="filter-chip" id="filter-dolls" data-category="muñecas">Muñecas</button>
+        </div>
+
+        <!-- Empty state when filter matches no products -->
+        <div id="filter-empty-state" class="filter-empty-state" style="display: none;">
+          <div class="filter-empty-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" opacity="0.4">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+            <h3 class="headline-sm">Sin resultados</h3>
+            <p class="body-md">No hay productos en esta categoría. Prueba con otro filtro.</p>
+          </div>
         </div>
 
         <!-- Product Collections Container -->
@@ -666,10 +694,10 @@
       <div class="container">
         
         <div class="section-header">
-          <span class="section-subtitle label-md" id="medidas-subtitle">Guía de Tamaños</span>
-          <h2 class="headline-lg" id="medidas-title">Pedidos Personalizados por Tamaño</h2>
+          <span class="section-subtitle label-md" id="medidas-subtitle">Tamaños y precios</span>
+          <h2 class="headline-lg" id="medidas-title">Personaliza tu amigurumi</h2>
           <p class="body-md" id="medidas-description">
-            ¿Quieres un tamaño personalizado? Aquí tienes la escala exacta basada en nuestra imagen guía de medidas y proporciones.
+            ¿Quieres un personaje que no está en la galería? Trabajo sobre pedido con tres tamaños estándar + versión llavero. Tú eliges el diseño, nosotros lo tejemos.
           </p>
         </div>
 
@@ -678,7 +706,7 @@
             <img src="images/por tamaño.png" alt="Diagrama ilustrativo de escalas y proporciones de amigurumis por tamaño" class="size-guide-img">
           </div>
           <div>
-            <h3 class="headline-lg" style="font-size: 1.5rem; margin-bottom: 12px; color: var(--primary);">Tabla de Alturas & Costos de Konarumis</h3>
+            <h3 class="headline-lg" style="font-size: 1.5rem; margin-bottom: 12px; color: var(--primary);">Tabla de alturas y costos</h3>
             <p class="body-md" style="margin-bottom: 16px;">
               Los precios de nuestros amigurumis personalizados coinciden con las tres medidas estándar del gráfico de proporciones:
             </p>
@@ -728,7 +756,8 @@
     </section>
 
     <!-- About Section -->
-    <section class="craft-section" id="nosotros" style="border-top: 1px solid rgba(195, 200, 189, 0.2);">
+    <section class="craft-section" id="nosotros" style="border-top: 1px solid rgba(195, 200, 189, 0.2); position: relative;">
+      <div class="knit-bg"></div>
       <div class="container craft-grid">
         <div class="craft-images">
           <div class="craft-img-card" id="craft-img-1">
@@ -740,23 +769,23 @@
         </div>
         
         <div class="craft-content">
-          <span class="section-subtitle label-md" id="nosotros-subtitle">El Arte del Crochet</span>
-          <h2 class="headline-lg" id="nosotros-title">Tejido punto a punto, con paciencia y cariño</h2>
+          <span class="section-subtitle label-md" id="nosotros-subtitle">Detrás del tejido</span>
+          <h2 class="headline-lg" id="nosotros-title">Crochet con identidad andina</h2>
           <p class="body-lg" id="nosotros-description-main">
-            En <strong>Konarumis</strong> nos apasiona el arte de tejer a mano. El crochet es una técnica única que ninguna máquina industrial puede replicar, garantizando que cada amigurumi posea un alma y una esencia propias.
+            Detrás de cada Konarumis hay una historia: horas de tejido, elección cuidadosa de colores, y la certeza de que <strong>ninguna máquina puede replicar lo que las manos hacen</strong>. Trabajamos desde Cusco, una ciudad con alma textil, y eso se nota en cada puntada.
           </p>
           <p class="body-md" id="nosotros-description-secondary">
-            Utilizamos materiales hipoalergénicos, rellenos suaves y ojos de seguridad. Nuestro taller en la hermosa ciudad de **Cusco** se enfoca en entregarte un amigurumi que dure toda la vida y sea seguro para regalar a cualquier edad.
+            Usamos hilo de algodón hipoalergénico, relleno suave de primera calidad y ojos de seguridad con broche de presión. Cada pieza pasa por control antes de salir — porque lo que enviamos es parte de nuestra marca.
           </p>
           
           <div class="craft-features">
             <div class="feature-item">
-              <h4 class="feature-title">Originalidad</h4>
-              <p class="body-md">Cada pieza tiene sutiles matices y expresiones que la hacen única.</p>
+              <h4 class="feature-title">Pieza Única</h4>
+              <p class="body-md">Cada amigurumi varía ligeramente — eso es lo que lo hace original, no un defecto.</p>
             </div>
             <div class="feature-item">
-              <h4 class="feature-title">Seguridad Primero</h4>
-              <p class="body-md">Ojitos encajados con broches de presión y costuras dobles reforzadas.</p>
+              <h4 class="feature-title">Seguro para regalar</h4>
+              <p class="body-md">Ojitos con broche de presión, costuras reforzadas. Sin piezas sueltas.</p>
             </div>
           </div>
         </div>
@@ -764,12 +793,13 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials-section" id="testimonios">
+    <section class="testimonials-section" id="testimonios" style="position: relative;">
+      <div class="knit-bg"></div>
       <div class="container">
         <div class="section-header">
           <span class="section-subtitle label-md">Clientes Felices</span>
-          <h2 class="headline-lg">Lo que dicen de nosotros</h2>
-          <p class="body-md">La satisfacción de nuestros clientes es nuestra mejor carta de presentación.</p>
+          <h2 class="headline-lg">Lo que llega a sus manos</h2>
+          <p class="body-md">Esto no es lo que decimos — es lo que ellos dicen después de recibir su pedido.</p>
         </div>
         <div class="testimonials-grid">
           <blockquote class="testimonial-card">
@@ -789,7 +819,8 @@
     </section>
 
     <!-- Virtual Business Card Section -->
-    <section class="business-card-section" id="tarjeta-digital">
+    <section class="business-card-section" id="tarjeta-digital" style="position: relative;">
+      <div class="knit-bg"></div>
       <div class="container" style="display: flex; flex-direction: column; align-items: center;">
         <div class="section-header" style="margin-bottom: 24px;">
           <span class="section-subtitle label-md" id="card-section-subtitle">Contacto Digital</span>
@@ -824,7 +855,7 @@
         <div class="footer-brand">
           <a href="#" class="footer-logo" id="footer-logo-link">Konarumis</a>
           <p class="footer-desc">
-            Boutique de amigurumis de alta calidad hechos a mano. Llevando color, suavidad y tus personajes favoritos a la vida real.
+            Amigurumis tejidos a mano en Cusco, Perú. Personajes que cobran vida punto a punto.
           </p>
           
           <!-- Social Icons List -->
@@ -883,10 +914,6 @@
 
       <div class="footer-bottom">
         <p>&copy; 2026 Konarumis. Todos los derechos reservados.</p>
-        <div class="footer-bottom-links">
-          <a href="#" class="footer-link">Términos de Servicio</a>
-          <a href="#" class="footer-link">Política de Privacidad</a>
-        </div>
       </div>
     </div>
   </footer>
@@ -906,6 +933,7 @@
     // 2. Collection Filters Logic
     const filterButtons = document.querySelectorAll('.filter-chip');
     const collectionGroups = document.querySelectorAll('.collection-group');
+    const emptyState = document.getElementById('filter-empty-state');
 
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -914,16 +942,23 @@
         button.classList.add('active');
 
         const filterCategory = button.getAttribute('data-category');
+        let visibleCount = 0;
 
         // Filter whole collection groups
         collectionGroups.forEach(group => {
           const groupCategory = group.getAttribute('data-category');
           if (filterCategory === 'all' || groupCategory === filterCategory) {
             group.style.display = 'block';
+            visibleCount++;
           } else {
             group.style.display = 'none';
           }
         });
+
+        // Show empty state if no groups visible
+        if (emptyState) {
+          emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
       });
     });
 
@@ -943,6 +978,28 @@
         }
       });
     });
+
+    // 3b. Update active nav link on scroll
+    const pageSections = document.querySelectorAll('section[id]');
+    const pageNavLinks = document.querySelectorAll('.nav-link');
+    function updateActiveNav() {
+      let current = '';
+      pageSections.forEach(section => {
+        const top = section.getBoundingClientRect().top;
+        if (top <= 200) current = section.getAttribute('id');
+      });
+      pageNavLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        link.classList.remove('active');
+        link.removeAttribute('aria-current');
+        if (href === '#' + current) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    }
+    window.addEventListener('scroll', updateActiveNav);
+    window.addEventListener('load', updateActiveNav);
 
     // 4. Virtual Business Card Click-to-Flip handler
     const businessCard = document.getElementById('business-card');
