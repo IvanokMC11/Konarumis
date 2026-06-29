@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "skills": {
+    "emil-design-eng": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "computedHash": "ac3fc5b4e206488ffc408a2806f829bb2e5eaf518fded09be34790685c2b3a0d"
+    },
+    "ui-ux-pro-max": {
+      "source": "skills.volces.com",
+      "sourceType": "well-known",
+      "computedHash": "3086febf11d75770819f96f720bfe03b0042860a5ede29895a41f606305cdfa0"
+    }
+  }
+}
