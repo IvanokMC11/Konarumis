@@ -872,6 +872,19 @@ section {
   border-color: var(--tertiary);
 }
 
+.av-info {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+  max-width: 600px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+  padding: 16px 20px;
+  background: var(--surface-container-low);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--tertiary);
+}
+
 /* Stock badge on product cards */
 .product-card[data-av="stock"] .product-tag::after {
   content: 'En Stock';
@@ -2539,30 +2552,6 @@ body.dark-theme .social-bar-link:hover svg {
   flex-direction: column;
   gap: 10px;
 }
-.cart-payment-mode {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: var(--surface-container-low);
-  border-radius: var(--radius-md);
-}
-.payment-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-family: var(--font-headline);
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
-  transition: background 0.15s;
-}
-.payment-option:hover { background: var(--surface-container-high); }
-.payment-option input { accent-color: var(--primary); }
-.payment-option small { font-weight: 400; color: var(--on-surface-variant); font-size: 0.75rem; }
 .cart-total-row {
   display: flex;
   justify-content: space-between;

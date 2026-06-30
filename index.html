@@ -106,16 +106,6 @@
       <p class="cart-empty">Tu carrito está vacío</p>
     </div>
     <div class="cart-drawer-footer" id="cart-footer" style="display:none;">
-      <div class="cart-payment-mode">
-        <label class="payment-option">
-          <input type="radio" name="payment-mode" value="full" checked>
-          <span>Pago completo <small>(100%)</small></span>
-        </label>
-        <label class="payment-option">
-          <input type="radio" name="payment-mode" value="half">
-          <span>Seña <small>(50%, el resto al recibir)</small></span>
-        </label>
-      </div>
       <div class="cart-total-row">
         <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
@@ -215,6 +205,7 @@
           <button class="av-tab" data-av="stock">En Stock</button>
           <button class="av-tab" data-av="pedido">A Pedido</button>
         </div>
+        <p class="av-info" id="av-info" style="display:none;text-align:center;font-size:0.85rem;color:var(--on-surface-variant);max-width:600px;margin:0 auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega. Verifica los dias de trabajo del amigurumi para que le pueda llegar a tiempo cuando lo necesites.</p>
 
         <!-- Category Filters -->
         <div class="filters-container" id="category-filters" role="group" aria-label="Filtros del catálogo">
@@ -1010,6 +1001,10 @@
       });
 
       if (emptyState) emptyState.style.display = anyCardVisible ? 'none' : 'block';
+
+      // Show info message when "A Pedido" tab is active
+      const info = document.getElementById('av-info');
+      if (info) info.style.display = activeAv === 'pedido' ? 'block' : 'none';
     }
 
     filterButtons.forEach(button => {
@@ -1350,7 +1345,8 @@
       const price = parseFloat(priceText.replace(/[^0-9]/g, ''));
       const img = card.querySelector('.product-img')?.src || '';
       const wa = btn.getAttribute('href');
-      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa });
+      const av = card.dataset.av || 'pedido';
+      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa, av });
       openCart();
     });
 
@@ -1385,16 +1381,35 @@
     let mpInstance = null;
     let currentPreferenceId = null;
 
-    // Payment mode toggle
-    document.querySelectorAll('input[name="payment-mode"]').forEach(r => {
-      r.addEventListener('change', () => {
-        const isHalf = document.querySelector('input[name="payment-mode"]:checked').value === 'half';
-        document.getElementById('cart-total-label').textContent = isHalf ? 'Seña (50%)' : 'Total';
-        document.getElementById('cart-pay-note').style.display = isHalf ? 'block' : 'none';
-        const total = cart.getTotal();
-        document.getElementById('cart-total').textContent = 'S/. ' + (isHalf ? total / 2 : total).toFixed(2);
-      });
+    // Update button texts based on availability
+    document.querySelectorAll('.product-card').forEach(card => {
+      const btn = card.querySelector('.btn--primary');
+      if (!btn) return;
+      const isStock = (card.dataset.av || 'pedido') === 'stock';
+      btn.innerHTML = isStock ? 'Pedir amigurumi' : 'Encargar (50% adelanto)';
+      if (!isStock) {
+        const svg = btn.querySelector('svg');
+        if (svg) svg.remove();
+      }
     });
+
+    // Determine payment mode based on cart items
+    function getPaymentMode() {
+      const hasPedido = cart.items.some(i => i.av === 'pedido');
+      return hasPedido ? 'half' : 'full';
+    }
+
+    function updateCartDisplay() {
+      const isHalf = getPaymentMode() === 'half';
+      document.getElementById('cart-total-label').textContent = isHalf ? 'Seña (50%)' : 'Total';
+      document.getElementById('cart-pay-note').style.display = isHalf ? 'block' : 'none';
+      const total = cart.getTotal();
+      document.getElementById('cart-total').textContent = 'S/. ' + (isHalf ? total / 2 : total).toFixed(2);
+    }
+
+    // Override cart.render to also call updateCartDisplay
+    const origRender = cart.render.bind(cart);
+    cart.render = function() { origRender(); updateCartDisplay(); };
 
     async function handleCheckout() {
       const trigger = document.getElementById('checkout-trigger');
@@ -1404,7 +1419,7 @@
       trigger.textContent = 'Preparando...';
       brickContainer.innerHTML = '';
 
-      const isHalf = document.querySelector('input[name="payment-mode"]:checked').value === 'half';
+      const isHalf = getPaymentMode() === 'half';
       const factor = isHalf ? 0.5 : 1;
 
       try {
