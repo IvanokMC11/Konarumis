@@ -2634,14 +2634,14 @@ body.dark-theme .social-bar-link:hover svg {
   color: var(--primary);
   font-size: 1.15rem;
 }
-.cart-wa-alt {
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--on-surface-variant);
+.cart-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
-.cart-wa-alt a {
-  color: var(--primary);
-  text-decoration: underline;
+.cart-btns .btn {
+  width: 100%;
+  min-width: 0;
 }
 
 .cart-loading {

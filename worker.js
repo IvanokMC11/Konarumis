@@ -139,6 +139,16 @@ function trackingHtml(id, order) {
 
   const itemsList = order.items.map(i => `<div class="track-item"><span>${i.title} x${i.qty}</span><span>S/. ${(i.unit_price * i.qty).toFixed(2)}</span></div>`).join('');
 
+  const waNum = '51922330331';
+  let actionBtn = '';
+  if (s === 'halfway' || s === 'finished') {
+    const waMsg = `Hola! Me gustaria ver fotos de mi pedido %23${id}`;
+    actionBtn = `<a href="https://wa.me/${waNum}?text=${encodeURIComponent(waMsg)}" target="_blank" class="btn-action">Pedir fotos por WhatsApp</a>`;
+  } else if (s === 'ready') {
+    const waMsg = `Hola! Mi pedido %23${id} esta listo para entrega, cuando puedo coordinarla?`;
+    actionBtn = `<a href="https://wa.me/${waNum}?text=${encodeURIComponent(waMsg)}" target="_blank" class="btn-action">Coordinar entrega</a>`;
+  }
+
   return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seguimiento - Konarumis</title><style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#f5f2ef;color:#2c2c2c;padding:24px;max-width:600px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .card{background:#fff;border-radius:16px;padding:32px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,0.08);text-align:center}
@@ -157,13 +167,15 @@ h1{font-size:1.3rem;color:#6b4f3c;margin-bottom:4px}.id{font-size:0.8rem;color:#
 .track-item{display:flex;justify-content:space-between;padding:6px 0;font-size:0.85rem;color:#555}
 .total{display:flex;justify-content:space-between;font-weight:700;font-size:1rem;border-top:2px solid #eee;padding-top:12px;margin-top:8px}
 .status-msg{margin-top:24px;padding:12px;border-radius:8px;font-size:0.85rem;background:#f0f7ee;color:#4a7c59}
-.btn-volver{display:inline-block;margin-top:20px;padding:10px 24px;background:#76946b;color:#fff;text-decoration:none;border-radius:8px;font-size:0.85rem}
+.btn-action{display:block;margin-top:12px;padding:12px 20px;background:#25d366;color:#fff;text-decoration:none;border-radius:8px;font-size:0.85rem;font-weight:600;transition:background .2s}.btn-action:hover{background:#1da851}
+.btn-volver{display:inline-block;margin-top:16px;padding:10px 24px;background:#76946b;color:#fff;text-decoration:none;border-radius:8px;font-size:0.85rem}
 </style></head><body>
 <div class="card">
   <h1>Seguimiento de pedido</h1>
   <p class="id">#${id}</p>
   <div class="progress">${steps}</div>
   <div class="status-msg">Estado actual: <strong>${STATUS_LABELS[s]}</strong></div>
+  ${actionBtn}
   <div class="items">${itemsList}</div>
   <div class="total"><span>Total</span><span>S/. ${order.total.toFixed(2)}</span></div>
   <a href="/" class="btn-volver">Volver al catálogo</a>

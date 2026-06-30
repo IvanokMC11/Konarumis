@@ -132,10 +132,12 @@
         </div>
         <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco) — sin costo</p>
       </div>
-      <button class="btn btn--primary" id="checkout-trigger" style="width:100%;">Pagar con Mercado Pago</button>
+      <div class="cart-btns">
+        <button class="btn btn--primary" id="checkout-trigger">Pagar con MP</button>
+        <a href="#" class="btn btn--secondary" id="cart-wa-link">Pedir por WhatsApp</a>
+      </div>
       <div id="checkout-brick" style="margin-top:8px;"></div>
       <div id="post-payment-info" style="display:none;margin-top:8px;"></div>
-      <p class="cart-wa-alt">O <a href="#" id="cart-wa-link">pedir por WhatsApp</a></p>
     </div>
   </aside>
 
@@ -1602,7 +1604,7 @@
       const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0ACodigo de pedido: ${orderId || '---'}%0A(completar datos)`;
       const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
 
-      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" class="btn" style="display:inline-block;padding:10px 24px;border-radius:var(--radius-full);background:var(--tertiary);color:#fff;text-decoration:none;margin-top:8px;">Ver seguimiento</a>` : '';
+      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" class="btn btn--secondary" style="text-decoration:none;">Ver seguimiento</a>` : '';
       const codeTag = orderId ? `<p style="font-size:1.5rem;font-weight:700;color:var(--primary);margin:8px 0;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>` : '';
 
       const msgs = {
@@ -1610,7 +1612,7 @@
           title: 'Pago exitoso',
           text: 'Gracias por tu compra. Guarda tu codigo de pedido para hacer seguimiento.',
           type: 'ok',
-          html: codeTag + `<a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-block;padding:10px 24px;border-radius:var(--radius-full);">Enviar pedido por WhatsApp</a>` + trackLink,
+          html: codeTag + `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;"><a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;">Enviar por WhatsApp</a>${trackLink}</div>`,
         },
         failure: {
           title: 'Pago no completado',
