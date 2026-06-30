@@ -110,7 +110,7 @@
         <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
-      <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--on-surface-variant);text-align:center;">Pagás la seña ahora. El resto al recibir el pedido.</p>
+      <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--on-surface-variant);text-align:center;">Los productos a pedido pagan 50% de adelanto. El resto al recibir el pedido.</p>
       <button class="btn btn--primary" id="checkout-trigger" style="width:100%;">Pagar con Mercado Pago</button>
       <div id="checkout-brick" style="margin-top:8px;"></div>
       <p class="cart-wa-alt">O <a href="#" id="cart-wa-link">pedir por WhatsApp</a></p>
@@ -1393,18 +1393,24 @@
       }
     });
 
-    // Determine payment mode based on cart items
-    function getPaymentMode() {
-      const hasPedido = cart.items.some(i => i.av === 'pedido');
-      return hasPedido ? 'half' : 'full';
+    // Calculate what to pay per item
+    function getCheckoutItems() {
+      return cart.items.map(i => {
+        if (i.av === 'pedido') {
+          return { ...i, payPrice: +(i.price * 0.5).toFixed(2), label: 'Adelanto: ' + i.name };
+        }
+        return { ...i, payPrice: i.price, label: i.name };
+      });
     }
 
     function updateCartDisplay() {
-      const isHalf = getPaymentMode() === 'half';
-      document.getElementById('cart-total-label').textContent = isHalf ? 'Seña (50%)' : 'Total';
-      document.getElementById('cart-pay-note').style.display = isHalf ? 'block' : 'none';
-      const total = cart.getTotal();
-      document.getElementById('cart-total').textContent = 'S/. ' + (isHalf ? total / 2 : total).toFixed(2);
+      const items = getCheckoutItems();
+      const hasPedido = items.some(i => i.av === 'pedido');
+      const fullTotal = cart.getTotal();
+      const payTotal = items.reduce((s, i) => s + i.payPrice * i.qty, 0);
+      document.getElementById('cart-total-label').textContent = hasPedido ? 'A pagar ahora' : 'Total';
+      document.getElementById('cart-pay-note').style.display = hasPedido ? 'block' : 'none';
+      document.getElementById('cart-total').textContent = 'S/. ' + payTotal.toFixed(2);
     }
 
     // Override cart.render to also call updateCartDisplay
@@ -1419,17 +1425,16 @@
       trigger.textContent = 'Preparando...';
       brickContainer.innerHTML = '';
 
-      const isHalf = getPaymentMode() === 'half';
-      const factor = isHalf ? 0.5 : 1;
+      const items = getCheckoutItems();
 
       try {
         const res = await fetch('/api/create-preference', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            items: cart.items.map(i => ({
-              title: (isHalf ? '✧ Seña: ' : '') + i.name,
-              unit_price: +(i.price * factor).toFixed(2),
+            items: items.map(i => ({
+              title: i.label,
+              unit_price: i.payPrice,
               quantity: i.qty,
             })),
           }),
