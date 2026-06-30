@@ -101,6 +101,7 @@ async function createPreference(req, env) {
 
   const items = body?.items;
   if (!items?.length) return json({ error: 'Carrito vacío' }, 400);
+  const customer = body?.customer || {};
 
   const token = (env.MERCADO_PAGO_ACCESS_TOKEN || '').trim();
   if (!token) return json({ error: 'Token MP no configurado' }, 500);
@@ -137,8 +138,10 @@ async function createPreference(req, env) {
     id: orderId,
     items: items.map(i => ({ title: i.title, qty: i.quantity || 1, unit_price: i.unit_price || 0 })),
     total,
-    status: 'pending',
+    status: 'created',
+    paid: false,
     preferenceId: data.id,
+    customer: { name: customer.name || '', phone: customer.phone || '', address: customer.address || '', location: customer.location || '' },
     createdAt: new Date().toISOString(),
   };
 
@@ -157,6 +160,17 @@ async function getOrder(req, env, orderId) {
   return json(JSON.parse(raw));
 }
 
+async function confirmOrder(env, orderId) {
+  const raw = await env.ORDERS.get(orderId);
+  if (!raw) return json({ error: 'Pedido no encontrado' }, 404);
+  const order = JSON.parse(raw);
+  if (order.paid) return json({ ok: true }); // already confirmed
+  order.paid = true;
+  if (order.status === 'created') order.status = 'pending';
+  await env.ORDERS.put(orderId, JSON.stringify(order));
+  return json({ ok: true, orderId });
+}
+
 async function updateOrderStatus(req, env, orderId) {
   let body;
   try { body = await req.json(); } catch (_) { return json({ error: 'JSON inválido' }, 400); }
@@ -173,12 +187,14 @@ async function updateOrderStatus(req, env, orderId) {
   return json({ ok: true, status: newStatus });
 }
 
-async function listOrders(env) {
+async function listOrders(env, all = false) {
   const list = await env.ORDERS.list();
   const orders = [];
   for (const key of list.keys) {
     const raw = await env.ORDERS.get(key.name);
-    if (raw) orders.push(JSON.parse(raw));
+    if (!raw) continue;
+    const o = JSON.parse(raw);
+    if (all || o.paid) orders.push(o);
   }
   orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   return json(orders);
@@ -209,7 +225,7 @@ export default {
       // ── Admin: list orders ──
       if (path === '/api/orders' && request.method === 'GET') {
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
-        return listOrders(env);
+        return listOrders(env, url.searchParams.get('all') === '1');
       }
 
       // ── Admin: update status ──
@@ -217,6 +233,12 @@ export default {
       if (statusMatch && request.method === 'POST') {
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return updateOrderStatus(request, env, statusMatch[1]);
+      }
+
+      // ── Confirm order (after successful payment) ──
+      const confirmMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)\/confirm$/);
+      if (confirmMatch && request.method === 'POST') {
+        return confirmOrder(env, confirmMatch[1]);
       }
 
       // ── Get order (public) ──

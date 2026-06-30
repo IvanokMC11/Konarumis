@@ -2545,6 +2545,62 @@ body.dark-theme .social-bar-link:hover svg {
   color: var(--warm-accent);
 }
 
+/* --- Checkout Form --- */
+.checkout-form {
+  display: block;
+  padding: 12px;
+  background: var(--surface-container-low);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+}
+.checkout-form-title {
+  font-family: var(--font-headline);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--on-surface);
+}
+.cf-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  background: var(--surface);
+  color: var(--on-surface);
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+}
+.cf-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+.cf-location {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.cf-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: var(--font-headline);
+}
+.cf-radio input { accent-color: var(--primary); }
+.cf-cusco-info {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 600;
+  font-family: var(--font-headline);
+}
+#post-payment-info a {
+  color: var(--tertiary);
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+/* --- Cart Drawer Footer --- */
 .cart-drawer-footer {
   border-top: 1px solid var(--outline-variant);
   padding: 20px;
@@ -2671,4 +2727,14 @@ body.dark-theme .social-bar-link:hover svg {
 @keyframes slideUp {
   from { transform: translateY(32px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- Tracking Search Section --- */
+.tracking-section {
+  background: var(--surface-container-low);
+  border-top: 1px solid var(--outline-variant);
+}
+.tracking-section input:focus {
+  outline: none;
+  border-color: var(--primary) !important;
 }

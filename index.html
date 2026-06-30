@@ -111,8 +111,22 @@
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
       <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--on-surface-variant);text-align:center;">Los productos a pedido pagan 50% de adelanto. El resto al recibir el pedido.</p>
+      <div id="checkout-form" class="checkout-form">
+        <p class="checkout-form-title">Tus datos</p>
+        <input type="text" id="cf-name" placeholder="Nombre completo" required class="cf-input">
+        <input type="tel" id="cf-phone" placeholder="WhatsApp (ej: 987654321)" required class="cf-input">
+        <div class="cf-location">
+          <label class="cf-radio"><input type="radio" name="cf-location" value="cusco" checked> Soy de Cusco</label>
+          <label class="cf-radio"><input type="radio" name="cf-location" value="otro"> Soy de otro lugar</label>
+        </div>
+        <div id="cf-address-group" style="display:none;">
+          <input type="text" id="cf-address" placeholder="Dirección de envío" class="cf-input">
+        </div>
+        <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco)</p>
+      </div>
       <button class="btn btn--primary" id="checkout-trigger" style="width:100%;">Pagar con Mercado Pago</button>
       <div id="checkout-brick" style="margin-top:8px;"></div>
+      <div id="post-payment-info" style="display:none;margin-top:8px;"></div>
       <p class="cart-wa-alt">O <a href="#" id="cart-wa-link">pedir por WhatsApp</a></p>
     </div>
   </aside>
@@ -886,6 +900,18 @@
         </div>
       </div>
     </section>
+
+    <!-- Tracking Search Section -->
+    <section class="tracking-section">
+      <div class="container" style="text-align:center;padding:48px 24px;">
+        <h3 style="font-family:var(--font-headline);font-size:1.1rem;margin-bottom:8px;">Rastrear pedido</h3>
+        <p style="font-size:0.85rem;color:var(--on-surface-variant);margin-bottom:16px;">Ingresa tu codigo de pedido para ver el estado actual.</p>
+        <div style="display:flex;gap:8px;max-width:380px;margin:0 auto;">
+          <input type="text" id="tracking-input" placeholder="Ej: KAB12C" style="flex:1;padding:10px 14px;border:1px solid var(--outline-variant);border-radius:var(--radius-sm);font-size:0.85rem;background:var(--surface);color:var(--on-surface);">
+          <button onclick="var id=document.getElementById('tracking-input').value.trim();if(id)window.location.href='/pedido?id='+id" class="btn btn--primary" style="padding:10px 20px;border-radius:var(--radius-sm);white-space:nowrap;">Buscar</button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Contact & Footer Section -->
@@ -1376,6 +1402,15 @@
       }
     });
 
+    // Location toggle
+    document.querySelectorAll('input[name="cf-location"]').forEach(r => {
+      r.addEventListener('change', () => {
+        const isOtro = document.querySelector('input[name="cf-location"]:checked').value === 'otro';
+        document.getElementById('cf-address-group').style.display = isOtro ? 'block' : 'none';
+        document.getElementById('cf-cusco-info').style.display = isOtro ? 'none' : 'block';
+      });
+    });
+
     // Mercado Pago Bricks
     const MERCADO_PAGO_PUBLIC_KEY = 'TEST-77a7d14b-edd8-4d4e-901a-ffe99401c4fc';
     let mpInstance = null;
@@ -1417,9 +1452,30 @@
     const origRender = cart.render.bind(cart);
     cart.render = function() { origRender(); updateCartDisplay(); };
 
+    function getCustomerData() {
+      const name = document.getElementById('cf-name').value.trim();
+      const phone = document.getElementById('cf-phone').value.trim();
+      const location = document.querySelector('input[name="cf-location"]:checked').value;
+      const address = location === 'cusco' ? 'Entrega en Plaza Tupac Amaru (Cusco)' : document.getElementById('cf-address').value.trim();
+      const errors = [];
+      if (!name) errors.push('Nombre completo');
+      if (!phone) errors.push('WhatsApp');
+      if (location === 'otro' && !address) errors.push('Dirección');
+      if (errors.length) return { error: 'Completa: ' + errors.join(', ') };
+      return { name, phone, address, location };
+    }
+
     async function handleCheckout() {
       const trigger = document.getElementById('checkout-trigger');
       const brickContainer = document.getElementById('checkout-brick');
+
+      const customer = getCustomerData();
+      if (customer.error) {
+        trigger.disabled = false;
+        trigger.textContent = 'Pagar con Mercado Pago';
+        brickContainer.innerHTML = '<p class="cart-error">' + customer.error + '</p>';
+        return;
+      }
 
       trigger.disabled = true;
       trigger.textContent = 'Preparando...';
@@ -1437,6 +1493,7 @@
               unit_price: i.payPrice,
               quantity: i.qty,
             })),
+            customer: { name: customer.name, phone: customer.phone, address: customer.address, location: customer.location },
           }),
         });
 
@@ -1483,35 +1540,62 @@
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
     const orderId = params.get('order');
-    if (status) {
-      const savedItems = cart.items;
-      const total = cart.getTotal();
+
+    async function showPaymentResult() {
+      if (!status) return;
+
+      // Confirm order if success
+      if (status === 'success' && orderId) {
+        try { await fetch('/api/order/' + orderId + '/confirm', { method: 'POST' }); } catch (_) {}
+      }
+
+      // Fetch order data from API (works across tabs)
+      let savedItems = [];
+      let total = 0;
+      if (orderId) {
+        try {
+          const r = await fetch('/api/order/' + orderId);
+          if (r.ok) {
+            const o = await r.json();
+            savedItems = o.items || [];
+            total = o.total || 0;
+          }
+        } catch (_) {}
+      }
+
+      // Fallback to localStorage if API failed
+      if (!savedItems.length) {
+        savedItems = cart.items;
+        total = cart.getTotal();
+      }
+
       if (status === 'success') cart.clear();
 
-      const itemLines = savedItems.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A');
-      const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0APedido: ... %0AEntrega: ... %0ADireccion: ... %0A(completar datos)`;
+      const itemLines = savedItems.map(i => `- ${i.title || i.name} x${i.qty} — S/. ${((i.unit_price || i.price || 0) * i.qty).toFixed(2)}`).join('%0A');
+      const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0ACodigo de pedido: ${orderId || '---'}%0A(completar datos)`;
       const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
 
-      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" target="_blank" class="btn" style="display:inline-block;padding:10px 24px;border-radius:var(--radius-full);background:var(--tertiary);color:#fff;text-decoration:none;margin-top:8px;">Ver seguimiento del pedido</a>` : '';
+      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" class="btn" style="display:inline-block;padding:10px 24px;border-radius:var(--radius-full);background:var(--tertiary);color:#fff;text-decoration:none;margin-top:8px;">Ver seguimiento</a>` : '';
+      const codeTag = orderId ? `<p style="font-size:1.5rem;font-weight:700;color:var(--primary);margin:8px 0;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>` : '';
 
       const msgs = {
         success: {
           title: 'Pago exitoso',
-          text: 'Gracias por tu compra. Enviame los detalles del pedido por WhatsApp para coordinar la entrega.',
+          text: 'Gracias por tu compra. Guarda tu codigo de pedido para hacer seguimiento.',
           type: 'ok',
-          btn: `<a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-block;padding:10px 24px;border-radius:var(--radius-full);">Enviar pedido por WhatsApp</a>${trackLink}`,
+          html: codeTag + `<a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-block;padding:10px 24px;border-radius:var(--radius-full);">Enviar pedido por WhatsApp</a>` + trackLink,
         },
         failure: {
           title: 'Pago no completado',
-          text: 'El pago no se procesó. Podés intentar de nuevo o escribirme por WhatsApp.',
+          text: 'El pago no se proceso. Podés intentar de nuevo o escribirme por WhatsApp.',
           type: 'error',
-          btn: '',
+          html: '',
         },
         pending: {
           title: 'Pago pendiente',
-          text: 'El pago está en revisión. Te avisaré cuando se confirme.',
+          text: 'El pago esta en revision. Te avisare cuando se confirme.',
           type: 'info',
-          btn: '',
+          html: '',
         },
       };
       const msg = msgs[status] || msgs.failure;
@@ -1522,12 +1606,13 @@
           <div class="payment-icon ${msg.type}">${status === 'success' ? '✓' : status === 'failure' ? '✗' : '…'}</div>
           <h2>${msg.title}</h2>
           <p>${msg.text}</p>
-          ${msg.btn}
+          ${msg.html}
           <button class="btn-ghost" onclick="document.getElementById('payment-overlay').remove();history.replaceState({},'','/');">Cerrar</button>
         </div>`;
       document.body.appendChild(overlay);
       history.replaceState({}, '', '/');
     }
+    showPaymentResult();
 
   </script>
   <script src="https://sdk.mercadopago.com/js/v2" async defer></script>
