@@ -20,6 +20,29 @@ async function createPreference(request, env) {
     return json({ error: 'Token de Mercado Pago no configurado' }, 500);
   }
 
+  const mapped = items.map(i => ({
+    title: String(i.title || 'Producto'),
+    unit_price: Number(i.unit_price) || 0,
+    quantity: Number(i.quantity) || 1,
+    currency_id: 'PEN',
+  }));
+
+  const zeroPrice = mapped.find(i => i.unit_price === 0);
+  if (zeroPrice) return json({ error: 'El producto "' + zeroPrice.title + '" tiene precio 0' }, 400);
+
+  const payload = {
+    items: mapped,
+    back_urls: {
+      success: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=success',
+      failure: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=failure',
+      pending: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=pending',
+    },
+    auto_return: 'approved',
+    notification_url: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/api/webhook',
+  };
+
+  console.log('MP payload:', JSON.stringify(payload));
+
   try {
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
@@ -27,21 +50,7 @@ async function createPreference(request, env) {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + env.MERCADO_PAGO_ACCESS_TOKEN,
       },
-      body: JSON.stringify({
-        items: items.map(i => ({
-          title: String(i.title || 'Producto'),
-          unit_price: Number(i.unit_price) || 0,
-          quantity: Number(i.quantity) || 1,
-          currency_id: 'PEN',
-        })),
-        back_urls: {
-          success: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=success',
-          failure: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=failure',
-          pending: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=pending',
-        },
-        auto_return: 'approved',
-        notification_url: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/api/webhook',
-      }),
+      body: JSON.stringify(payload),
     });
 
     let data;
