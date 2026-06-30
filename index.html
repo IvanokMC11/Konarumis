@@ -1311,7 +1311,7 @@
       if (!card) return;
       const name = card.querySelector('.product-title').textContent.trim();
       const priceText = card.querySelector('.product-price')?.textContent.trim() || '0';
-      const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+      const price = parseFloat(priceText.replace(/[^0-9]/g, ''));
       const img = card.querySelector('.product-img')?.src || '';
       const wa = btn.getAttribute('href');
       cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa });
