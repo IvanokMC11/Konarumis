@@ -1,0 +1,9 @@
+{
+  "name": "konarumis",
+  "version": "1.0.0",
+  "private": true,
+  "main": "worker.js",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.4"
+  }
+}

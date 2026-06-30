@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,6 +68,14 @@
           Escribir
         </a>
 
+        <!-- Cart Button -->
+        <button class="cart-btn" id="cart-btn" aria-label="Carrito">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.17 14.75l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25z"/>
+          </svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+
         <!-- Dark Mode Toggle Button -->
         <button class="theme-toggle-btn" id="theme-toggle" aria-label="Cambiar tema">
           <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -84,6 +93,29 @@
   <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20una%20consulta%20sobre%20tus%20amigurumis." target="_blank" class="wa-float" aria-label="WhatsApp">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
   </a>
+
+  <!-- Cart Drawer -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Carrito de compras">
+    <div class="cart-drawer-header">
+      <h3 class="cart-drawer-title">Tu carrito</h3>
+      <button class="cart-drawer-close" id="cart-close" aria-label="Cerrar carrito">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="cart-drawer-items" id="cart-items">
+      <p class="cart-empty">Tu carrito está vacío</p>
+    </div>
+    <div class="cart-drawer-footer" id="cart-footer" style="display:none;">
+      <div class="cart-total">
+        <span>Total</span>
+        <span class="cart-total-amount" id="cart-total">S/. 0</span>
+      </div>
+      <button class="btn btn--primary" id="checkout-trigger" style="width:100%;">Pagar con Mercado Pago</button>
+      <div id="checkout-brick" style="margin-top:8px;"></div>
+      <p class="cart-wa-alt">O <a href="#" id="cart-wa-link" target="_blank">pedir por WhatsApp</a></p>
+    </div>
+  </aside>
 
   <main id="main-content">
     <!-- Hero Section -->
@@ -1177,6 +1209,193 @@
         img.classList.add('loaded');
       }
     });
+
+    // 10. Cart + Mercado Pago Integration
+    const cart = {
+      items: JSON.parse(localStorage.getItem('konarumis_cart') || '[]'),
+
+      save() {
+        localStorage.setItem('konarumis_cart', JSON.stringify(this.items));
+        this.render();
+      },
+
+      add(product) {
+        const existing = this.items.find(i => i.id === product.id);
+        if (existing) {
+          existing.qty = Math.min((existing.qty || 1) + 1, 99);
+        } else {
+          this.items.push({ ...product, qty: 1 });
+        }
+        this.animateCounter();
+        this.save();
+      },
+
+      remove(id) {
+        this.items = this.items.filter(i => i.id !== id);
+        this.save();
+      },
+
+      updateQty(id, qty) {
+        const item = this.items.find(i => i.id === id);
+        if (item) {
+          if (qty <= 0) return this.remove(id);
+          item.qty = qty;
+          this.save();
+        }
+      },
+
+      getTotal() {
+        return this.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+      },
+
+      getCount() {
+        return this.items.reduce((sum, i) => sum + i.qty, 0);
+      },
+
+      animateCounter() {
+        const el = document.getElementById('cart-count');
+        el.style.transform = 'scale(1.3)';
+        setTimeout(() => el.style.transform = '', 200);
+      },
+
+      render() {
+        const count = this.getCount();
+        document.getElementById('cart-count').textContent = count;
+        document.getElementById('cart-count').style.display = count ? 'flex' : 'none';
+
+        const container = document.getElementById('cart-items');
+        const footer = document.getElementById('cart-footer');
+        const totalEl = document.getElementById('cart-total');
+
+        if (!count) {
+          container.innerHTML = '<p class="cart-empty">Tu carrito está vacío</p>';
+          footer.style.display = 'none';
+          return;
+        }
+
+        footer.style.display = '';
+        totalEl.textContent = 'S/. ' + this.getTotal().toFixed(2);
+
+        container.innerHTML = this.items.map(item => `
+          <div class="cart-item" data-id="${item.id}">
+            <img src="${item.img}" alt="${item.name}" class="cart-item-img" loading="lazy">
+            <div class="cart-item-info">
+              <p class="cart-item-name">${item.name}</p>
+              <p class="cart-item-price">S/. ${item.price.toFixed(2)}</p>
+              <div class="cart-item-qty">
+                <button class="cart-qty-btn" data-action="dec">−</button>
+                <span class="cart-qty-val">${item.qty}</span>
+                <button class="cart-qty-btn" data-action="inc">+</button>
+              </div>
+            </div>
+            <button class="cart-item-remove" data-action="remove" aria-label="Eliminar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+          </div>
+        `).join('');
+
+        // Update WA link
+        const waText = this.items.map(i => `*${i.name}* x${i.qty}`).join(', ');
+        document.getElementById('cart-wa-link').href =
+          'https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20pedir:%20' +
+          encodeURIComponent(waText) + '%20(Total:%20S/.%20' + this.getTotal().toFixed(2) + ')';
+      },
+    };
+
+    // Add to cart on product button click
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn--primary[href*="wa.me"]');
+      if (!btn) return;
+      e.preventDefault();
+      const card = btn.closest('.product-card');
+      if (!card) return;
+      const name = card.querySelector('.product-title').textContent.trim();
+      const priceText = card.querySelector('.product-price')?.textContent.trim() || '0';
+      const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+      const img = card.querySelector('.product-img')?.src || '';
+      const wa = btn.getAttribute('href');
+      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa });
+      openCart();
+    });
+
+    // Cart drawer
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartOverlay = document.getElementById('cart-overlay');
+
+    function openCart() { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); }
+    function closeCart() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
+    document.getElementById('cart-btn').addEventListener('click', openCart);
+    document.getElementById('cart-close').addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    // Cart item interactions (event delegation)
+    document.getElementById('cart-items').addEventListener('click', (e) => {
+      const item = e.target.closest('.cart-item');
+      if (!item) return;
+      const id = item.dataset.id;
+      if (e.target.closest('[data-action="remove"]')) return cart.remove(id);
+      if (e.target.closest('[data-action="inc"]')) {
+        const existing = cart.items.find(i => i.id === id);
+        if (existing) cart.updateQty(id, existing.qty + 1);
+      }
+      if (e.target.closest('[data-action="dec"]')) {
+        const existing = cart.items.find(i => i.id === id);
+        if (existing) cart.updateQty(id, existing.qty - 1);
+      }
+    });
+
+    // Mercado Pago Bricks
+    const MERCADO_PAGO_PUBLIC_KEY = 'APP_USR-2522590402087187-062921-25eaccef9ae3edf1adf4bfa17fd3a782-2364425776';
+    let mpInstance = null;
+    let currentPreferenceId = null;
+
+    async function handleCheckout() {
+      const trigger = document.getElementById('checkout-trigger');
+      const brickContainer = document.getElementById('checkout-brick');
+
+      trigger.disabled = true;
+      trigger.textContent = 'Preparando...';
+      brickContainer.innerHTML = '';
+
+      try {
+        const res = await fetch('/api/create-preference', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: cart.items.map(i => ({
+              title: i.name,
+              unit_price: i.price,
+              quantity: i.qty,
+            })),
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al crear pago');
+
+        currentPreferenceId = data.preferenceId;
+        trigger.style.display = 'none';
+
+        if (!mpInstance) {
+          mpInstance = new MercadoPago(MERCADO_PAGO_PUBLIC_KEY, { locale: 'es-PE' });
+        }
+
+        mpInstance.bricks().create('wallet', 'checkout-brick', {
+          initialization: { preferenceId: currentPreferenceId },
+          customization: { texts: { action: 'pay', value: 'Pagar' } },
+        });
+
+      } catch (e) {
+        trigger.disabled = false;
+        trigger.textContent = 'Pagar con Mercado Pago';
+        brickContainer.innerHTML = '<p class="cart-error" style="margin-top:8px;color:var(--warm-accent);font-size:0.85rem;">' + e.message + '</p>';
+      }
+    }
+
+    document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
+
+    // Initial render
+    cart.render();
 
   </script>
 </body>

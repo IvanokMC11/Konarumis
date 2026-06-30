@@ -1,0 +1,11 @@
+name = "konarumis"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+workers_dev = true
+
+[site]
+bucket = "./"
+exclude = ["wrangler.toml", "package.json", "package-lock.json", "node_modules", ".git", ".gitignore", ".wrangler", "CONTEXT.md", "DESIGN.md", "README.md", "screen.png", "skills-lock.json"]
+
+[env.production]
+vars = { SITE_URL = "https://konarumis.ivanokmc11.workers.dev" }
