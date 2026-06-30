@@ -23,26 +23,87 @@ function isAdmin(req, env) {
 
 // ─── Admin Panel HTML ───
 function adminHtml() {
-  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Konarumis</title><style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hanken Grotesk',system-ui,-apple-system,sans-serif;background:#f5f2ef;color:#2c2c2c;padding:24px;max-width:1100px;margin:0 auto}.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #e0dbd7}h1{font-size:1.5rem;color:#6b4f3c;font-weight:700}.logout{color:#c44;text-decoration:none;font-size:0.85rem;padding:8px 16px;border:1px solid #e0dbd7;border-radius:8px}.login-box{max-width:340px;margin:100px auto;text-align:center;background:#fff;padding:40px 32px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}.login-box h1{font-size:1.3rem;margin-bottom:20px;color:#6b4f3c}.login-box input{width:100%;padding:12px;border:2px solid #e0dbd7;border-radius:8px;font-size:1rem;margin-bottom:12px;transition:border .2s}.login-box input:focus{border-color:#76946b;outline:none}.login-box button{width:100%;padding:12px;background:#76946b;color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600;transition:background .2s}.login-box button:hover{background:#5d7a53}.order-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid #e8e3df}.order-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:12px;flex-wrap:wrap;gap:8px}.order-id{font-size:1rem;font-weight:700;color:#6b4f3c}.order-date{font-size:0.75rem;color:#999}.order-body{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:640px){.order-body{grid-template-columns:1fr}}.order-section{font-size:0.85rem}.order-section h3{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:#999;margin-bottom:6px;font-weight:700}.order-section p,.order-section div{margin-bottom:3px;color:#555}.customer-info{background:#f9f7f5;padding:10px;border-radius:8px;margin-top:8px}.customer-info div{padding:2px 0;font-size:0.8rem;color:#555}.order-items-list div{padding:4px 0;border-bottom:1px solid #f0eeec;font-size:0.8rem;display:flex;justify-content:space-between}.order-items-list div:last-child{border:none}.order-total{text-align:right;font-weight:700;font-size:1rem;color:#6b4f3c;margin-top:8px}.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.3px}.badge-pending{background:#d4a373}.badge-started{background:#6b9ac4}.badge-halfway{background:#b088c4}.badge-finished{background:#76946b}.badge-ready{background:#4a7c59}.status-select{padding:6px 10px;border:2px solid #e0dbd7;border-radius:8px;font-size:0.8rem;background:#fff;cursor:pointer;font-family:inherit;margin-top:8px}.status-select:focus{border-color:#76946b;outline:none}.empty{text-align:center;color:#999;padding:64px 24px;font-size:0.9rem}.empty-icon{font-size:2rem;margin-bottom:12px;opacity:0.4}
-</style></head><body>
-<div class="admin-header"><h1>Pedidos</h1><a href="#" class="logout" onclick="sessionStorage.removeItem(KEY);render();return false">Cerrar sesion</a></div>
-<div id="app"></div>
-<script>
-const KEY='__admin_k';let pwd='';
-function getKey(){let k=sessionStorage.getItem(KEY);if(k){pwd=k;return pwd}return''}
-async function api(url,opts={}){const key=getKey();if(key)opts.headers={...opts.headers,'X-Admin-Key':key};const r=await fetch(url,opts);if(r.status===401){sessionStorage.removeItem(KEY);render()}return r}
-async function login(){pwd=document.getElementById('pwd').value;const r=await api('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pwd})});if(r.ok){sessionStorage.setItem(KEY,pwd);render()}else{alert('Contrasena incorrecta')}}
-async function updateStatus(id,status){await api('/api/order/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});render()}
-async function render(){const key=getKey();if(!key){document.getElementById('app').innerHTML='<div class="login-box"><h1>Admin Konarumis</h1><input id="pwd" type="password" placeholder="Contrasena" onkeydown="if(event.key==='Enter')login()"><button onclick="login()">Ingresar</button></div>';return}
-const r=await api('/api/orders');if(!r.ok)return;const orders=await r.json();const L={${Object.entries(STATUS_LABELS).map(([k,v]) => `${k}:'${v}'`).join(',')}};const N=['${STATUSES.join("','")}'];
-const fmt=d=>{const dt=new Date(d);return dt.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'})+' '+dt.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})};
-document.getElementById('app').innerHTML=orders.length?orders.map(o=>{
-const c=o.customer||{};const items=o.items||[];
-return'<div class="order-card"><div class="order-head"><div><div class="order-id">#'+o.id+'</div><div class="order-date">'+fmt(o.createdAt)+'</div></div><div><span class="badge badge-'+o.status+'">'+(L[o.status]||o.status)+'</span></div></div><div class="order-body"><div class="order-section"><h3>Productos</h3><div class="order-items-list">'+items.map(i=>'<div><span>'+i.title+' x'+i.qty+'</span><span>S/. '+(i.unit_price*i.qty).toFixed(2)+'</span></div>').join('')+'</div><div class="order-total">Total: S/. '+o.total.toFixed(2)+'</div></div><div class="order-section"><h3>Cliente</h3><div class="customer-info"><div><strong>Nombre:</strong> '+(c.name||'-')+'</div><div><strong>WhatsApp:</strong> '+(c.phone||'-')+'</div><div><strong>Direccion:</strong> '+(c.address||'-')+'</div></div><div style="margin-top:12px"><h3>Estado</h3><select class="status-select" onchange="updateStatus(\''+o.id+'\',this.value)">'+N.map(s=>'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+L[s]+'</option>').join('')+'</select></div></div></div></div>'
-}).join(''):'<div class="empty"><div class="empty-icon">&#128230;</div><p>No hay pedidos confirmados aun</p><p style="font-size:0.8rem;margin-top:8px;color:#ccc">Los pedidos aparecen aqui despues de un pago exitoso</p></div>'}
-render();
-</script></body></html>`;
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Konarumis</title><style>' +
+'@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap");' +
+'*{margin:0;padding:0;box-sizing:border-box}' +
+'body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:#f5f2ef;color:#2c2c2c;min-height:100vh}' +
+'.admin-wrap{max-width:1000px;margin:0 auto;padding:24px}' +
+'.top-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#2c2c2c;color:#fcf9f8;position:sticky;top:0;z-index:10}' +
+'.top-bar h1{font-family:"Source Serif 4",serif;font-size:1.2rem;font-weight:600;color:#fcf9f8}' +
+'.top-bar h1 span{color:#76946b}' +
+'.top-bar a{color:#e0dbd7;text-decoration:none;font-size:0.8rem;padding:6px 14px;border:1px solid #555;border-radius:6px;transition:all .2s}' +
+'.top-bar a:hover{border-color:#c17f59;color:#c17f59}' +
+'.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}' +
+'.stat-card{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.04)}' +
+'.stat-card .num{font-size:1.5rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}' +
+'.stat-card .label{font-size:0.7rem;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}' +
+'.login-box{max-width:340px;margin:120px auto;text-align:center;background:#fff;padding:40px 32px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}' +
+'.login-box .icon{width:48px;height:48px;background:#f5f2ef;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.2rem}' +
+'.login-box h2{font-family:"Source Serif 4",serif;font-size:1.2rem;color:#6b4f3c;margin-bottom:4px}' +
+'.login-box p{font-size:0.8rem;color:#999;margin-bottom:20px}' +
+'.login-box input{width:100%;padding:12px;border:2px solid #e0dbd7;border-radius:8px;font-size:0.9rem;margin-bottom:12px;transition:border .2s;font-family:inherit}' +
+'.login-box input:focus{border-color:#76946b;outline:none}' +
+'.login-box button{width:100%;padding:12px;background:#76946b;color:#fff;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;font-weight:700;transition:background .2s}' +
+'.login-box button:hover{background:#5d7a53}' +
+'.order-card{background:#fff;border-radius:12px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);overflow:hidden}' +
+'.order-card-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fcf9f8;border-bottom:1px solid #f0eeec;flex-wrap:wrap;gap:8px}' +
+'.order-info{display:flex;align-items:center;gap:12px}' +
+'.order-id{font-size:0.9rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}' +
+'.order-date{font-size:0.7rem;color:#aaa}' +
+'.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.5px}' +
+'.status-pending{background:#d4a373}.status-started{background:#6b9ac4}.status-halfway{background:#b088c4}.status-finished{background:#76946b}.status-ready{background:#4a7c59}' +
+'.order-card-body{display:grid;grid-template-columns:1fr 1fr;gap:0}@media(max-width:700px){.order-card-body{grid-template-columns:1fr}}' +
+'.order-col{padding:16px 20px}' +
+'.order-col+.order-col{border-left:1px solid #f0eeec}@media(max-width:700px){.order-col+.order-col{border-left:none;border-top:1px solid #f0eeec}}' +
+'.order-col h3{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.8px;color:#bbb;margin-bottom:10px;font-weight:700}' +
+'.product-row{display:flex;justify-content:space-between;padding:5px 0;font-size:0.8rem;color:#555;border-bottom:1px solid #f5f2ef}' +
+'.product-row:last-child{border:none}' +
+'.product-row .price{color:#6b4f3c;font-weight:600}' +
+'.order-total-row{display:flex;justify-content:space-between;font-size:0.9rem;font-weight:700;color:#6b4f3c;padding-top:8px;margin-top:4px;border-top:2px solid #e8e3df}' +
+'.customer-details{display:grid;gap:6px}' +
+'.customer-details div{font-size:0.8rem;color:#555;display:flex;gap:6px}' +
+'.customer-details .tag{color:#999;min-width:50px}' +
+'.status-control{margin-top:12px}' +
+'.status-control select{width:100%;padding:8px 10px;border:2px solid #e8e3df;border-radius:8px;font-size:0.8rem;background:#fff;cursor:pointer;font-family:inherit;transition:border .2s}' +
+'.status-control select:focus{border-color:#76946b;outline:none}' +
+'.empty-state{text-align:center;padding:80px 24px}' +
+'.empty-state .empty-icon{font-size:2.5rem;opacity:0.3;margin-bottom:16px}' +
+'.empty-state p{color:#bbb;font-size:0.9rem}' +
+'.empty-state .sub{color:#ddd;font-size:0.8rem;margin-top:8px}' +
+'@media(max-width:480px){.admin-wrap{padding:12px}.top-bar{padding:12px 16px}.top-bar h1{font-size:1rem}.order-card-header{padding:12px 16px}.order-col{padding:12px 16px}}' +
+'</style></head><body>' +
+'<div class="top-bar"><h1>Konarumis <span>Admin</span></h1><a href="#" onclick="sessionStorage.removeItem(\'__ak\');render();return false">Cerrar sesion</a></div>' +
+'<div class="admin-wrap"><div id="app"></div></div>' +
+'<script>' +
+'const SK="__ak",STATUS_LABELS={' + Object.entries(STATUS_LABELS).map(([k,v]) => k+':"'+v+'"').join(',') + '},ORDERED=' + JSON.stringify(STATUSES) + ';' +
+'function k(){let v=sessionStorage.getItem(SK);return v||""}' +
+'async function api(u,o){let h=o.headers||{};let kk=k();if(kk)h["X-Admin-Key"]=kk;let r=await fetch(u,{...o,headers:h});if(r.status===401){sessionStorage.removeItem(SK);render()}return r}' +
+'async function login(){let p=document.getElementById("pwd").value;let r=await api("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);render()}else{alert("Contrasena incorrecta")}}' +
+'async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}' +
+'function fmt(d){let t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}' +
+'async function render(){let kk=k();if(!kk){document.getElementById("app").innerHTML=' +
+"'<div class=\"login-box\"><div class=\"icon\">&#128274;</div><h2>Acceso restringido</h2><p>Ingresa la contrasena de administrador</p><input id=\"pwd\" type=\"password\" placeholder=\"Contrasena\" onkeydown=\"if(event.key==='Enter')login()\" autofocus><button onclick=\"login()\">Ingresar</button></div>';return}" +
+'let r=await api("/api/orders");if(!r.ok)return;let orders=await r.json();' +
+'let stats={};ORDERED.forEach(s=>stats[s]=0);orders.forEach(o=>{stats[o.status]=(stats[o.status]||0)+1});' +
+'let h="<div class=stats>"+ORDERED.map(s=>"<div class=stat-card><div class=num>"+(stats[s]||0)+"</div><div class=label>"+STATUS_LABELS[s]+"</div></div>").join("")+"</div>";' +
+'if(!orders.length){document.getElementById("app").innerHTML=h+"<div class=empty-state><div class=empty-icon>&#128230;</div><p>No hay pedidos confirmados</p><p class=sub>Los pedidos aparecen aqui despues de un pago exitoso</p></div>";return}' +
+'orders.forEach(o=>{let c=o.customer||{},items=o.items||[];' +
+'h+="<div class=order-card>"' +
++'"<div class=order-card-header><div class=order-info><div><div class=order-id>#"+o.id+"</div><div class=order-date>"+fmt(o.createdAt)+"</div></div></div><span class=\"status-badge status-"+o.status+"\">"+(STATUS_LABELS[o.status]||o.status)+"</span></div>"' +
++'"<div class=order-card-body><div class=order-col><h3>Productos</h3>"' +
++items.map(i=>"<div class=product-row><span>"+i.title+" x"+i.qty+"</span><span class=price>S/. "+(i.unit_price*i.qty).toFixed(2)+"</span></div>").join("")+'<div class=order-total-row><span>Total</span><span>S/. '+o.total.toFixed(2)+'</span></div></div>' +
++'<div class=order-col><h3>Cliente</h3>' +
++'<div class=customer-details>' +
++'<div><span class=tag>Nombre</span><span>'+(c.name||"-")+'</span></div>' +
++'<div><span class=tag>WhatsApp</span><span>'+(c.phone||"-")+'</span></div>' +
++'<div><span class=tag>Direccion</span><span>'+(c.address||"-")+'</span></div>' +
++'</div>' +
++'<div class=status-control><h3>Estado</h3><select onchange=\"setStatus(\\\''+o.id+'\\\',this.value)\">'+ORDERED.map(s=>'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+STATUS_LABELS[s]+'</option>').join('')+'</select></div>' +
++'</div></div></div>";});' +
+'document.getElementById("app").innerHTML=h;' +
+'}' +
+'render();' +
+'</script></body></html>';
 }
 
 // ─── Tracking Page HTML ───
