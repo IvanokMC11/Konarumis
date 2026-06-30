@@ -31,15 +31,16 @@ async function createPreference(request, env) {
   if (zeroPrice) return json({ error: 'El producto "' + zeroPrice.title + '" tiene precio 0' }, 400);
 
   try {
-    // Probar creación de preferencia directamente
-    const payload = { items: mapped };
+    const token = (env.MERCADO_PAGO_ACCESS_TOKEN || '').trim();
+    // Payload sin currency_id para que MP use el default de la cuenta
+    const payload = { items: mapped.map(({ currency_id, ...rest }) => rest) };
     console.log('MP payload:', JSON.stringify(payload));
 
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + env.MERCADO_PAGO_ACCESS_TOKEN,
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify(payload),
     });
