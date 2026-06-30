@@ -46,14 +46,18 @@ render();
 function trackingHtml(id, order) {
   const s = order.status || 'pending';
   const idx = STATUSES.indexOf(s);
-  const steps = STATUSES.map((st, i) => {
+  let steps = '';
+  STATUSES.forEach((st, i) => {
     const done = i <= idx;
     const current = i === idx;
-    return `<div class="step ${done ? 'done' : ''} ${current ? 'current' : ''}">
+    steps += `<div class="step ${done ? 'done' : ''} ${current ? 'current' : ''}">
       <div class="step-dot"></div>
       <div class="step-label">${STATUS_LABELS[st]}</div>
     </div>`;
-  }).join('<div class="step-line ${done ? 'done' : ''}"></div>');
+    if (i < STATUSES.length - 1) {
+      steps += `<div class="step-line ${done ? 'done' : ''}"></div>`;
+    }
+  });
 
   const itemsList = order.items.map(i => `<div class="track-item"><span>${i.title} x${i.qty}</span><span>S/. ${(i.unit_price * i.qty).toFixed(2)}</span></div>`).join('');
 
