@@ -2557,9 +2557,19 @@ body.dark-theme .social-bar-link:hover svg {
   font-family: var(--font-headline);
   font-size: 0.8rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: var(--on-surface);
 }
+.cf-label {
+  display: block;
+  font-family: var(--font-headline);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  margin-bottom: 4px;
+  margin-top: 6px;
+}
+.cf-label:first-of-type { margin-top: 0; }
 .cf-input {
   width: 100%;
   padding: 10px 12px;

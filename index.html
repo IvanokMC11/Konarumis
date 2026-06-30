@@ -112,17 +112,25 @@
       </div>
       <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--on-surface-variant);text-align:center;">Los productos a pedido pagan 50% de adelanto. El resto al recibir el pedido.</p>
       <div id="checkout-form" class="checkout-form">
-        <p class="checkout-form-title">Tus datos</p>
-        <input type="text" id="cf-name" placeholder="Nombre completo" required class="cf-input">
-        <input type="tel" id="cf-phone" placeholder="WhatsApp (ej: 987654321)" required class="cf-input">
+        <p class="checkout-form-title">Tus datos para el pedido</p>
+        <label class="cf-label">Nombre completo</label>
+        <input type="text" id="cf-name" required class="cf-input">
+        <label class="cf-label">WhatsApp</label>
+        <input type="tel" id="cf-phone" placeholder="ej: 987654321" required class="cf-input">
+        <label class="cf-label">Tipo de entrega</label>
         <div class="cf-location">
-          <label class="cf-radio"><input type="radio" name="cf-location" value="cusco" checked> Soy de Cusco</label>
-          <label class="cf-radio"><input type="radio" name="cf-location" value="otro"> Soy de otro lugar</label>
+          <label class="cf-radio"><input type="radio" name="cf-location" value="cusco" checked> Entrega gratis (Plaza Tupac Amaru)</label>
+          <label class="cf-radio"><input type="radio" name="cf-location" value="otro"> Envío a otro lado</label>
         </div>
         <div id="cf-address-group" style="display:none;">
-          <input type="text" id="cf-address" placeholder="Dirección de envío" class="cf-input">
+          <label class="cf-label">Distrito</label>
+          <input type="text" id="cf-distrito" class="cf-input">
+          <label class="cf-label">Ciudad</label>
+          <input type="text" id="cf-ciudad" class="cf-input">
+          <label class="cf-label">Dirección</label>
+          <input type="text" id="cf-address" class="cf-input">
         </div>
-        <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco)</p>
+        <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco) — sin costo</p>
       </div>
       <button class="btn btn--primary" id="checkout-trigger" style="width:100%;">Pagar con Mercado Pago</button>
       <div id="checkout-brick" style="margin-top:8px;"></div>
@@ -1315,6 +1323,11 @@
         setTimeout(() => el.style.transform = '', 200);
       },
 
+      clear() {
+        this.items = [];
+        this.save();
+      },
+
       render() {
         const count = this.getCount();
         document.getElementById('cart-count').textContent = count;
@@ -1408,8 +1421,14 @@
         const isOtro = document.querySelector('input[name="cf-location"]:checked').value === 'otro';
         document.getElementById('cf-address-group').style.display = isOtro ? 'block' : 'none';
         document.getElementById('cf-cusco-info').style.display = isOtro ? 'none' : 'block';
+        // Remove required validation from hidden fields
+        ['cf-distrito','cf-ciudad','cf-address'].forEach(id => {
+          document.getElementById(id).required = isOtro;
+        });
       });
     });
+    // Init required state
+    document.querySelectorAll('input[name="cf-location"]:checked').forEach(r => r.dispatchEvent(new Event('change')));
 
     // Mercado Pago Bricks
     const MERCADO_PAGO_PUBLIC_KEY = 'TEST-77a7d14b-edd8-4d4e-901a-ffe99401c4fc';
@@ -1456,9 +1475,17 @@
       const name = document.getElementById('cf-name').value.trim();
       const phone = document.getElementById('cf-phone').value.trim();
       const location = document.querySelector('input[name="cf-location"]:checked').value;
-      const address = location === 'cusco' ? 'Entrega en Plaza Tupac Amaru (Cusco)' : document.getElementById('cf-address').value.trim();
+      let address = '';
+      if (location === 'cusco') {
+        address = 'Entrega en Plaza Tupac Amaru (Cusco)';
+      } else {
+        const distrito = document.getElementById('cf-distrito').value.trim();
+        const ciudad = document.getElementById('cf-ciudad').value.trim();
+        const dir = document.getElementById('cf-address').value.trim();
+        address = [dir, distrito, ciudad].filter(Boolean).join(', ');
+      }
       const errors = [];
-      if (!name) errors.push('Nombre completo');
+      if (!name) errors.push('Nombre');
       if (!phone) errors.push('WhatsApp');
       if (location === 'otro' && !address) errors.push('Dirección');
       if (errors.length) return { error: 'Completa: ' + errors.join(', ') };
