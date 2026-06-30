@@ -209,6 +209,13 @@
           </p>
         </div>
 
+        <!-- Availability Tabs -->
+        <div class="av-tabs" id="av-tabs" role="group" aria-label="Disponibilidad">
+          <button class="av-tab active" data-av="all">Todos</button>
+          <button class="av-tab" data-av="stock">En Stock</button>
+          <button class="av-tab" data-av="pedido">A Pedido</button>
+        </div>
+
         <!-- Category Filters -->
         <div class="filters-container" id="category-filters" role="group" aria-label="Filtros del catálogo">
           <button class="filter-chip active" id="filter-all" data-category="all">Ver Todos</button>
@@ -375,7 +382,7 @@
               </article>
 
               <!-- Freddy -->
-              <article class="product-card" id="prod-freddy">
+              <article class="product-card" id="prod-freddy" data-av="stock">
                 <span class="product-tag">Terror</span>
                 <div class="product-img-wrapper">
                   <img src="images/Freddy.png" alt="Amigurumi de Freddy Krueger tejido a crochet" class="product-img" loading="lazy" decoding="async">
@@ -401,7 +408,7 @@
               </article>
 
               <!-- Chuky -->
-              <article class="product-card" id="prod-chuky">
+              <article class="product-card" id="prod-chuky" data-av="stock">
                 <span class="product-tag">Terror</span>
                 <div class="product-img-wrapper">
                   <img src="images/Chuky.png" alt="Amigurumi Chuky el muñeco diabólico" class="product-img" loading="lazy" decoding="async">
@@ -427,7 +434,7 @@
               </article>
 
               <!-- Jason -->
-              <article class="product-card" id="prod-jason">
+              <article class="product-card" id="prod-jason" data-av="stock">
                 <span class="product-tag">Terror</span>
                 <div class="product-img-wrapper">
                   <img src="images/Jason.png" alt="Amigurumi Jason Voorhees de Viernes 13" class="product-img" loading="lazy" decoding="async">
@@ -628,7 +635,7 @@
               </article>
 
               <!-- Conejo Llavero -->
-              <article class="product-card" id="prod-conejo-llavero">
+              <article class="product-card" id="prod-conejo-llavero" data-av="stock">
                 <span class="product-tag">Llavero</span>
                 <div class="product-img-wrapper">
                   <img src="images/conejo llavero.png" alt="Amigurumi llavero de conejito suave" class="product-img" loading="lazy" decoding="async">
@@ -977,30 +984,49 @@
     const collectionGroups = document.querySelectorAll('.collection-group');
     const emptyState = document.getElementById('filter-empty-state');
 
+    function applyFilters() {
+      const activeCat = document.querySelector('.filter-chip.active')?.dataset.category || 'all';
+      const activeAv = document.querySelector('.av-tab.active')?.dataset.av || 'all';
+      let visibleGroupCount = 0;
+      let anyCardVisible = false;
+
+      collectionGroups.forEach(group => {
+        const groupCategory = group.dataset.category;
+        const catMatch = activeCat === 'all' || groupCategory === activeCat;
+        group.style.display = catMatch ? 'block' : 'none';
+        if (!catMatch) return;
+
+        visibleGroupCount++;
+        const cards = group.querySelectorAll('.product-card');
+        let cardVisible = false;
+        cards.forEach(card => {
+          const cardAv = card.dataset.av || 'pedido';
+          const avMatch = activeAv === 'all' || cardAv === activeAv;
+          card.style.display = avMatch ? '' : 'none';
+          if (avMatch) cardVisible = true;
+        });
+        if (cardVisible) anyCardVisible = true;
+        if (!cardVisible && catMatch) group.style.display = 'none';
+      });
+
+      if (emptyState) emptyState.style.display = anyCardVisible ? 'none' : 'block';
+    }
+
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
-        // Toggle active class on buttons
         filterButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
+        applyFilters();
+      });
+    });
 
-        const filterCategory = button.getAttribute('data-category');
-        let visibleCount = 0;
-
-        // Filter whole collection groups
-        collectionGroups.forEach(group => {
-          const groupCategory = group.getAttribute('data-category');
-          if (filterCategory === 'all' || groupCategory === filterCategory) {
-            group.style.display = 'block';
-            visibleCount++;
-          } else {
-            group.style.display = 'none';
-          }
-        });
-
-        // Show empty state if no groups visible
-        if (emptyState) {
-          emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-        }
+    // Availability tabs
+    const avTabs = document.querySelectorAll('.av-tab');
+    avTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        avTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        applyFilters();
       });
     });
 
