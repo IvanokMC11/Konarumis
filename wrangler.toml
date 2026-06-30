@@ -5,4 +5,8 @@ workers_dev = true
 
 assets = { directory = "./", binding = "ASSETS" }
 
-vars = { SITE_URL = "https://konarumis.ivanokmc11.workers.dev" }
+vars = { SITE_URL = "https://konarumis.ivanokmc11.workers.dev", ADMIN_PASSWORD = "konarumis2026" }
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "b0ebe810c73e41eebd816fe744ae8b6d"

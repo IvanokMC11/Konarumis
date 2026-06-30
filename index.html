@@ -1482,6 +1482,7 @@
     // Post-pago: mostrar mensaje al volver de Mercado Pago
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
+    const orderId = params.get('order');
     if (status) {
       const savedItems = cart.items;
       const total = cart.getTotal();
@@ -1491,12 +1492,14 @@
       const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0APedido: ... %0AEntrega: ... %0ADireccion: ... %0A(completar datos)`;
       const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
 
+      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" target="_blank" class="btn" style="display:inline-block;padding:10px 24px;border-radius:var(--radius-full);background:var(--tertiary);color:#fff;text-decoration:none;margin-top:8px;">Ver seguimiento del pedido</a>` : '';
+
       const msgs = {
         success: {
           title: 'Pago exitoso',
           text: 'Gracias por tu compra. Enviame los detalles del pedido por WhatsApp para coordinar la entrega.',
           type: 'ok',
-          btn: `<a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-block;padding:10px 24px;border-radius:var(--radius-full);">Enviar pedido por WhatsApp</a>`,
+          btn: `<a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-block;padding:10px 24px;border-radius:var(--radius-full);">Enviar pedido por WhatsApp</a>${trackLink}`,
         },
         failure: {
           title: 'Pago no completado',
