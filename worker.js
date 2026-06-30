@@ -31,19 +31,8 @@ async function createPreference(request, env) {
   if (zeroPrice) return json({ error: 'El producto "' + zeroPrice.title + '" tiene precio 0' }, 400);
 
   try {
-    // Diagnosticar token primero
-    const tokenInfo = await fetch('https://api.mercadopago.com/users/me', {
-      headers: { Authorization: 'Bearer ' + env.MERCADO_PAGO_ACCESS_TOKEN },
-    });
-    if (!tokenInfo.ok) {
-      const body = await tokenInfo.text().catch(() => '');
-      return json({ error: 'Token rechazado. Estado: ' + tokenInfo.status + '. Cuerpo: ' + (body || 'vacío') + '. Largo token: ' + env.MERCADO_PAGO_ACCESS_TOKEN.length + ' caracteres' }, 500);
-    }
-    const userData = await tokenInfo.json();
-    console.log('MP user:', userData.email, userData.id);
-
+    // Probar creación de preferencia directamente
     const payload = { items: mapped };
-
     console.log('MP payload:', JSON.stringify(payload));
 
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
@@ -60,10 +49,10 @@ async function createPreference(request, env) {
       data = await res.json();
     } catch (_) {
       const text = await res.text().catch(() => '');
-      return json({ error: 'Mercado Pago respondió con código ' + res.status + ': ' + (text || 'sin cuerpo') }, 500);
+      return json({ error: 'MP respondió ' + res.status + ': ' + (text || 'sin cuerpo') }, 500);
     }
 
-    if (!res.ok) return json({ error: 'Error en Mercado Pago: ' + (data.message || JSON.stringify(data)) }, 500);
+    if (!res.ok) return json({ error: 'MP error: ' + JSON.stringify(data) }, 500);
     return json({ preferenceId: data.id });
   } catch (e) {
     return json({ error: 'Error al conectar con Mercado Pago: ' + e.message }, 500);
