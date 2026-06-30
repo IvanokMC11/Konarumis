@@ -31,24 +31,18 @@ async function createPreference(request, env) {
   if (zeroPrice) return json({ error: 'El producto "' + zeroPrice.title + '" tiene precio 0' }, 400);
 
   try {
-    // Primero testear si el token funciona con un endpoint simple
-    const test = await fetch('https://api.mercadopago.com/v1/payment_methods', {
+    // Diagnosticar token primero
+    const tokenInfo = await fetch('https://api.mercadopago.com/users/me', {
       headers: { Authorization: 'Bearer ' + env.MERCADO_PAGO_ACCESS_TOKEN },
     });
-    if (!test.ok) {
-      const testText = await test.text().catch(() => '');
-      return json({ error: 'Token inválido o cuenta no activa. MP respondió ' + test.status + ': ' + (testText || 'sin cuerpo') }, 500);
+    if (!tokenInfo.ok) {
+      const body = await tokenInfo.text().catch(() => '');
+      return json({ error: 'Token rechazado. Estado: ' + tokenInfo.status + '. Cuerpo: ' + (body || 'vacío') + '. Largo token: ' + env.MERCADO_PAGO_ACCESS_TOKEN.length + ' caracteres' }, 500);
     }
+    const userData = await tokenInfo.json();
+    console.log('MP user:', userData.email, userData.id);
 
-    const payload = {
-      items: mapped,
-      back_urls: {
-        success: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=success',
-        failure: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=failure',
-        pending: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=pending',
-      },
-      auto_return: 'approved',
-    };
+    const payload = { items: mapped };
 
     console.log('MP payload:', JSON.stringify(payload));
 
