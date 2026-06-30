@@ -30,11 +30,28 @@ async function createPreference(request, env) {
   const zeroPrice = mapped.find(i => i.unit_price === 0);
   if (zeroPrice) return json({ error: 'El producto "' + zeroPrice.title + '" tiene precio 0' }, 400);
 
-  const payload = { items: mapped };
-
-  console.log('MP payload:', JSON.stringify(payload));
-
   try {
+    // Primero testear si el token funciona con un endpoint simple
+    const test = await fetch('https://api.mercadopago.com/v1/payment_methods', {
+      headers: { Authorization: 'Bearer ' + env.MERCADO_PAGO_ACCESS_TOKEN },
+    });
+    if (!test.ok) {
+      const testText = await test.text().catch(() => '');
+      return json({ error: 'Token inválido o cuenta no activa. MP respondió ' + test.status + ': ' + (testText || 'sin cuerpo') }, 500);
+    }
+
+    const payload = {
+      items: mapped,
+      back_urls: {
+        success: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=success',
+        failure: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=failure',
+        pending: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=pending',
+      },
+      auto_return: 'approved',
+    };
+
+    console.log('MP payload:', JSON.stringify(payload));
+
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
