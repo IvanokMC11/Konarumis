@@ -30,16 +30,7 @@ async function createPreference(request, env) {
   const zeroPrice = mapped.find(i => i.unit_price === 0);
   if (zeroPrice) return json({ error: 'El producto "' + zeroPrice.title + '" tiene precio 0' }, 400);
 
-  const payload = {
-    items: mapped,
-    back_urls: {
-      success: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=success',
-      failure: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=failure',
-      pending: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=pending',
-    },
-    auto_return: 'approved',
-    notification_url: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/api/webhook',
-  };
+  const payload = { items: mapped };
 
   console.log('MP payload:', JSON.stringify(payload));
 
