@@ -77,8 +77,8 @@ body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:#f5f2ef;color:
 const SK="__ak",SD=${statusData},ORDERED=${statusesJson};
 var STATUS_LABELS={};SD.forEach(function(a){STATUS_LABELS[a[0]]=a[1]});
 function k(){return sessionStorage.getItem(SK)||""}
-async function api(u,o){var kk=k();if(kk){(o.headers=o.headers||{})["X-Admin-Key"]=kk}var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);render()}return r}
-async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);render()}else alert("Contrasena incorrecta")}catch(e){alert("Error de conexion")}}
+async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(kk)o.headers["X-Admin-Key"]=kk;var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);render()}return r}
+async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);await render()}else alert("Contrasena incorrecta")}catch(e){alert("Error: "+e.message)}}
 async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}
 function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
 function card(o){
