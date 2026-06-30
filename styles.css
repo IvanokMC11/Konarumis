@@ -2486,12 +2486,41 @@ body.dark-theme .social-bar-link:hover svg {
   flex-direction: column;
   gap: 10px;
 }
-.cart-total {
+.cart-payment-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: var(--surface-container-low);
+  border-radius: var(--radius-md);
+}
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+.payment-option:hover { background: var(--surface-container-high); }
+.payment-option input { accent-color: var(--primary); }
+.payment-option small { font-weight: 400; color: var(--on-surface-variant); font-size: 0.75rem; }
+.cart-total-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: var(--font-headline);
   font-weight: 700;
   font-size: 1rem;
+  margin-bottom: 8px;
+}
+.cart-total-label {
+  color: var(--on-surface);
 }
 .cart-total-amount {
   color: var(--primary);

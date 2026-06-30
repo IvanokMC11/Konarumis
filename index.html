@@ -106,13 +106,24 @@
       <p class="cart-empty">Tu carrito está vacío</p>
     </div>
     <div class="cart-drawer-footer" id="cart-footer" style="display:none;">
-      <div class="cart-total">
-        <span>Total</span>
+      <div class="cart-payment-mode">
+        <label class="payment-option">
+          <input type="radio" name="payment-mode" value="full" checked>
+          <span>Pago completo <small>(100%)</small></span>
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="payment-mode" value="half">
+          <span>Seña <small>(50%, el resto al recibir)</small></span>
+        </label>
+      </div>
+      <div class="cart-total-row">
+        <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
+      <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--on-surface-variant);text-align:center;">Pagás la seña ahora. El resto al recibir el pedido.</p>
       <button class="btn btn--primary" id="checkout-trigger" style="width:100%;">Pagar con Mercado Pago</button>
       <div id="checkout-brick" style="margin-top:8px;"></div>
-      <p class="cart-wa-alt">O <a href="#" id="cart-wa-link" target="_blank">pedir por WhatsApp</a></p>
+      <p class="cart-wa-alt">O <a href="#" id="cart-wa-link">pedir por WhatsApp</a></p>
     </div>
   </aside>
 
@@ -1344,9 +1355,20 @@
     });
 
     // Mercado Pago Bricks
-    const MERCADO_PAGO_PUBLIC_KEY = 'APP_USR-71a9c5ff-5f34-4880-abdf-5de9ea998811';
+    const MERCADO_PAGO_PUBLIC_KEY = 'TEST-77a7d14b-edd8-4d4e-901a-ffe99401c4fc';
     let mpInstance = null;
     let currentPreferenceId = null;
+
+    // Payment mode toggle
+    document.querySelectorAll('input[name="payment-mode"]').forEach(r => {
+      r.addEventListener('change', () => {
+        const isHalf = document.querySelector('input[name="payment-mode"]:checked').value === 'half';
+        document.getElementById('cart-total-label').textContent = isHalf ? 'Seña (50%)' : 'Total';
+        document.getElementById('cart-pay-note').style.display = isHalf ? 'block' : 'none';
+        const total = cart.getTotal();
+        document.getElementById('cart-total').textContent = 'S/. ' + (isHalf ? total / 2 : total).toFixed(2);
+      });
+    });
 
     async function handleCheckout() {
       const trigger = document.getElementById('checkout-trigger');
@@ -1356,14 +1378,17 @@
       trigger.textContent = 'Preparando...';
       brickContainer.innerHTML = '';
 
+      const isHalf = document.querySelector('input[name="payment-mode"]:checked').value === 'half';
+      const factor = isHalf ? 0.5 : 1;
+
       try {
         const res = await fetch('/api/create-preference', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             items: cart.items.map(i => ({
-              title: i.name,
-              unit_price: i.price,
+              title: (isHalf ? '✧ Seña: ' : '') + i.name,
+              unit_price: +(i.price * factor).toFixed(2),
               quantity: i.qty,
             })),
           }),
@@ -1400,6 +1425,10 @@
     }
 
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
+    document.getElementById('cart-wa-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.open(e.currentTarget.href, '_blank');
+    });
 
     // Initial render
     cart.render();
