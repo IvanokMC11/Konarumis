@@ -7,8 +7,13 @@ async function json(data, status = 200) {
 
 async function createPreference(request, env) {
   try {
-    const { items } = await request.json();
+    const body = await request.json();
+    const items = body?.items;
     if (!items?.length) return json({ error: 'Carrito vacío' }, 400);
+
+    if (!env.MERCADO_PAGO_ACCESS_TOKEN) {
+      return json({ error: 'Token de Mercado Pago no configurado' }, 500);
+    }
 
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
@@ -18,26 +23,26 @@ async function createPreference(request, env) {
       },
       body: JSON.stringify({
         items: items.map(i => ({
-          title: i.title,
-          unit_price: Number(i.unit_price),
-          quantity: Number(i.quantity),
+          title: String(i.title || 'Producto'),
+          unit_price: Number(i.unit_price) || 0,
+          quantity: Number(i.quantity) || 1,
           currency_id: 'PEN',
         })),
         back_urls: {
-          success: env.SITE_URL + '/?status=success',
-          failure: env.SITE_URL + '/?status=failure',
-          pending: env.SITE_URL + '/?status=pending',
+          success: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=success',
+          failure: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=failure',
+          pending: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/?status=pending',
         },
         auto_return: 'approved',
-        notification_url: env.SITE_URL + '/api/webhook',
+        notification_url: (env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev') + '/api/webhook',
       }),
     });
 
     const data = await res.json();
-    if (!res.ok) return json({ error: 'MP error' }, 500);
+    if (!res.ok) return json({ error: 'Error en Mercado Pago: ' + (data.message || 'desconocido') }, 500);
     return json({ preferenceId: data.id });
   } catch (e) {
-    return json({ error: e.message }, 500);
+    return json({ error: 'Error interno: ' + e.message }, 500);
   }
 }
 
@@ -65,8 +70,12 @@ export default {
       });
     }
 
-    if (url.pathname === '/api/create-preference') return createPreference(request, env);
-    if (url.pathname === '/api/webhook') return webhook(request, env);
+    if (url.pathname === '/api/create-preference' && request.method === 'POST') {
+      return createPreference(request, env);
+    }
+    if (url.pathname === '/api/webhook' && request.method === 'POST') {
+      return webhook(request, env);
+    }
 
     return env.ASSETS.fetch(request);
   },

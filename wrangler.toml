@@ -5,5 +5,4 @@ workers_dev = true
 
 assets = { directory = "./", binding = "ASSETS" }
 
-[env.production]
 vars = { SITE_URL = "https://konarumis.ivanokmc11.workers.dev" }

@@ -1370,8 +1370,16 @@
           }),
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Error al crear pago');
+        let errorMsg = '';
+        let data;
+        try {
+          data = await res.json();
+        } catch (_) {
+          errorMsg = 'El servidor no respondió correctamente (código ' + res.status + ')';
+        }
+
+        if (errorMsg) throw new Error(errorMsg);
+        if (!res.ok) throw new Error(data?.error || 'Error al crear pago');
 
         currentPreferenceId = data.preferenceId;
         trigger.style.display = 'none';
