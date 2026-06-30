@@ -32,8 +32,16 @@ async function createPreference(request, env) {
 
   try {
     const token = (env.MERCADO_PAGO_ACCESS_TOKEN || '').trim();
-    // Payload sin currency_id para que MP use el default de la cuenta
-    const payload = { items: mapped.map(({ currency_id, ...rest }) => rest) };
+    const baseUrl = env.SITE_URL || 'https://konarumis.ivanokmc11.workers.dev';
+    const payload = {
+      items: mapped.map(({ currency_id, ...rest }) => rest),
+      back_urls: {
+        success: baseUrl + '/?status=success',
+        failure: baseUrl + '/?status=failure',
+        pending: baseUrl + '/?status=pending',
+      },
+      auto_return: 'approved',
+    };
     console.log('MP payload:', JSON.stringify(payload));
 
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {

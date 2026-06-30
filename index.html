@@ -1404,6 +1404,30 @@
     // Initial render
     cart.render();
 
+    // Post-pago: mostrar mensaje al volver de Mercado Pago
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    if (status) {
+      const msgs = {
+        success: { title: '¡Pago exitoso!', text: 'Gracias por tu compra. Te contactaré pronto para coordinar la entrega.', type: 'ok' },
+        failure: { title: 'Pago no completado', text: 'El pago no se procesó. Podés intentar de nuevo o escribirme por WhatsApp.', type: 'error' },
+        pending: { title: 'Pago pendiente', text: 'El pago está en revisión. Te avisaré cuando se confirme.', type: 'info' },
+      };
+      const msg = msgs[status] || msgs.failure;
+      const overlay = document.createElement('div');
+      overlay.id = 'payment-overlay';
+      overlay.innerHTML = `
+        <div class="payment-modal">
+          <div class="payment-icon ${msg.type}">${status === 'success' ? '✓' : status === 'failure' ? '✗' : '…'}</div>
+          <h2>${msg.title}</h2>
+          <p>${msg.text}</p>
+          <button class="btn-ghost" onclick="document.getElementById('payment-overlay').remove();history.replaceState({},'','/');">Cerrar</button>
+        </div>`;
+      document.body.appendChild(overlay);
+      if (status === 'success') cart.clear();
+      history.replaceState({}, '', '/');
+    }
+
   </script>
   <script src="https://sdk.mercadopago.com/js/v2" async defer></script>
 </body>
