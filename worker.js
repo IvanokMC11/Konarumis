@@ -1,5 +1,3 @@
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
-
 async function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -60,15 +58,16 @@ async function webhook(request, env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
     if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
+      return new Response(null, {
+        headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' },
+      });
     }
+
     if (url.pathname === '/api/create-preference') return createPreference(request, env);
     if (url.pathname === '/api/webhook') return webhook(request, env);
-    try {
-      return await getAssetFromKV({ request, waitUntil: ctx.waitUntil.bind(ctx) });
-    } catch {
-      return new Response('Not Found', { status: 404 });
-    }
+
+    return env.ASSETS.fetch(request);
   },
 };
