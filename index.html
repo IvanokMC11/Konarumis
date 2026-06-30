@@ -1437,10 +1437,33 @@
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
     if (status) {
+      const savedItems = cart.items;
+      const total = cart.getTotal();
+      if (status === 'success') cart.clear();
+
+      const itemLines = savedItems.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A');
+      const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0APedido: ... %0AEntrega: ... %0ADireccion: ... %0A(completar datos)`;
+      const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
+
       const msgs = {
-        success: { title: '¡Pago exitoso!', text: 'Gracias por tu compra. Te contactaré pronto para coordinar la entrega.', type: 'ok' },
-        failure: { title: 'Pago no completado', text: 'El pago no se procesó. Podés intentar de nuevo o escribirme por WhatsApp.', type: 'error' },
-        pending: { title: 'Pago pendiente', text: 'El pago está en revisión. Te avisaré cuando se confirme.', type: 'info' },
+        success: {
+          title: 'Pago exitoso',
+          text: 'Gracias por tu compra. Enviame los detalles del pedido por WhatsApp para coordinar la entrega.',
+          type: 'ok',
+          btn: `<a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-block;padding:10px 24px;border-radius:var(--radius-full);">Enviar pedido por WhatsApp</a>`,
+        },
+        failure: {
+          title: 'Pago no completado',
+          text: 'El pago no se procesó. Podés intentar de nuevo o escribirme por WhatsApp.',
+          type: 'error',
+          btn: '',
+        },
+        pending: {
+          title: 'Pago pendiente',
+          text: 'El pago está en revisión. Te avisaré cuando se confirme.',
+          type: 'info',
+          btn: '',
+        },
       };
       const msg = msgs[status] || msgs.failure;
       const overlay = document.createElement('div');
@@ -1450,10 +1473,10 @@
           <div class="payment-icon ${msg.type}">${status === 'success' ? '✓' : status === 'failure' ? '✗' : '…'}</div>
           <h2>${msg.title}</h2>
           <p>${msg.text}</p>
+          ${msg.btn}
           <button class="btn-ghost" onclick="document.getElementById('payment-overlay').remove();history.replaceState({},'','/');">Cerrar</button>
         </div>`;
       document.body.appendChild(overlay);
-      if (status === 'success') cart.clear();
       history.replaceState({}, '', '/');
     }
 
