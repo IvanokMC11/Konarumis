@@ -6,15 +6,21 @@ async function json(data, status = 200) {
 }
 
 async function createPreference(request, env) {
+  let body;
   try {
-    const body = await request.json();
-    const items = body?.items;
-    if (!items?.length) return json({ error: 'Carrito vacío' }, 400);
+    body = await request.json();
+  } catch (_) {
+    return json({ error: 'El cuerpo de la solicitud no es JSON válido' }, 400);
+  }
 
-    if (!env.MERCADO_PAGO_ACCESS_TOKEN) {
-      return json({ error: 'Token de Mercado Pago no configurado' }, 500);
-    }
+  const items = body?.items;
+  if (!items?.length) return json({ error: 'Carrito vacío' }, 400);
 
+  if (!env.MERCADO_PAGO_ACCESS_TOKEN) {
+    return json({ error: 'Token de Mercado Pago no configurado' }, 500);
+  }
+
+  try {
     const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
@@ -38,11 +44,18 @@ async function createPreference(request, env) {
       }),
     });
 
-    const data = await res.json();
-    if (!res.ok) return json({ error: 'Error en Mercado Pago: ' + (data.message || 'desconocido') }, 500);
+    let data;
+    try {
+      data = await res.json();
+    } catch (_) {
+      const text = await res.text().catch(() => '');
+      return json({ error: 'Mercado Pago respondió con código ' + res.status + ': ' + (text || 'sin cuerpo') }, 500);
+    }
+
+    if (!res.ok) return json({ error: 'Error en Mercado Pago: ' + (data.message || JSON.stringify(data)) }, 500);
     return json({ preferenceId: data.id });
   } catch (e) {
-    return json({ error: 'Error interno: ' + e.message }, 500);
+    return json({ error: 'Error al conectar con Mercado Pago: ' + e.message }, 500);
   }
 }
 
