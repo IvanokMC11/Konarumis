@@ -23,87 +23,101 @@ function isAdmin(req, env) {
 
 // ─── Admin Panel HTML ───
 function adminHtml() {
-  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Konarumis</title><style>' +
-'@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap");' +
-'*{margin:0;padding:0;box-sizing:border-box}' +
-'body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:#f5f2ef;color:#2c2c2c;min-height:100vh}' +
-'.admin-wrap{max-width:1000px;margin:0 auto;padding:24px}' +
-'.top-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#2c2c2c;color:#fcf9f8;position:sticky;top:0;z-index:10}' +
-'.top-bar h1{font-family:"Source Serif 4",serif;font-size:1.2rem;font-weight:600;color:#fcf9f8}' +
-'.top-bar h1 span{color:#76946b}' +
-'.top-bar a{color:#e0dbd7;text-decoration:none;font-size:0.8rem;padding:6px 14px;border:1px solid #555;border-radius:6px;transition:all .2s}' +
-'.top-bar a:hover{border-color:#c17f59;color:#c17f59}' +
-'.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}' +
-'.stat-card{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.04)}' +
-'.stat-card .num{font-size:1.5rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}' +
-'.stat-card .label{font-size:0.7rem;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}' +
-'.login-box{max-width:340px;margin:120px auto;text-align:center;background:#fff;padding:40px 32px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}' +
-'.login-box .icon{width:48px;height:48px;background:#f5f2ef;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.2rem}' +
-'.login-box h2{font-family:"Source Serif 4",serif;font-size:1.2rem;color:#6b4f3c;margin-bottom:4px}' +
-'.login-box p{font-size:0.8rem;color:#999;margin-bottom:20px}' +
-'.login-box input{width:100%;padding:12px;border:2px solid #e0dbd7;border-radius:8px;font-size:0.9rem;margin-bottom:12px;transition:border .2s;font-family:inherit}' +
-'.login-box input:focus{border-color:#76946b;outline:none}' +
-'.login-box button{width:100%;padding:12px;background:#76946b;color:#fff;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;font-weight:700;transition:background .2s}' +
-'.login-box button:hover{background:#5d7a53}' +
-'.order-card{background:#fff;border-radius:12px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);overflow:hidden}' +
-'.order-card-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fcf9f8;border-bottom:1px solid #f0eeec;flex-wrap:wrap;gap:8px}' +
-'.order-info{display:flex;align-items:center;gap:12px}' +
-'.order-id{font-size:0.9rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}' +
-'.order-date{font-size:0.7rem;color:#aaa}' +
-'.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.5px}' +
-'.status-pending{background:#d4a373}.status-started{background:#6b9ac4}.status-halfway{background:#b088c4}.status-finished{background:#76946b}.status-ready{background:#4a7c59}' +
-'.order-card-body{display:grid;grid-template-columns:1fr 1fr;gap:0}@media(max-width:700px){.order-card-body{grid-template-columns:1fr}}' +
-'.order-col{padding:16px 20px}' +
-'.order-col+.order-col{border-left:1px solid #f0eeec}@media(max-width:700px){.order-col+.order-col{border-left:none;border-top:1px solid #f0eeec}}' +
-'.order-col h3{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.8px;color:#bbb;margin-bottom:10px;font-weight:700}' +
-'.product-row{display:flex;justify-content:space-between;padding:5px 0;font-size:0.8rem;color:#555;border-bottom:1px solid #f5f2ef}' +
-'.product-row:last-child{border:none}' +
-'.product-row .price{color:#6b4f3c;font-weight:600}' +
-'.order-total-row{display:flex;justify-content:space-between;font-size:0.9rem;font-weight:700;color:#6b4f3c;padding-top:8px;margin-top:4px;border-top:2px solid #e8e3df}' +
-'.customer-details{display:grid;gap:6px}' +
-'.customer-details div{font-size:0.8rem;color:#555;display:flex;gap:6px}' +
-'.customer-details .tag{color:#999;min-width:50px}' +
-'.status-control{margin-top:12px}' +
-'.status-control select{width:100%;padding:8px 10px;border:2px solid #e8e3df;border-radius:8px;font-size:0.8rem;background:#fff;cursor:pointer;font-family:inherit;transition:border .2s}' +
-'.status-control select:focus{border-color:#76946b;outline:none}' +
-'.empty-state{text-align:center;padding:80px 24px}' +
-'.empty-state .empty-icon{font-size:2.5rem;opacity:0.3;margin-bottom:16px}' +
-'.empty-state p{color:#bbb;font-size:0.9rem}' +
-'.empty-state .sub{color:#ddd;font-size:0.8rem;margin-top:8px}' +
-'@media(max-width:480px){.admin-wrap{padding:12px}.top-bar{padding:12px 16px}.top-bar h1{font-size:1rem}.order-card-header{padding:12px 16px}.order-col{padding:12px 16px}}' +
-'</style></head><body>' +
-'<div class="top-bar"><h1>Konarumis <span>Admin</span></h1><a href="#" onclick="sessionStorage.removeItem(\'__ak\');render();return false">Cerrar sesion</a></div>' +
-'<div class="admin-wrap"><div id="app"></div></div>' +
-'<script>' +
-'const SK="__ak",STATUS_LABELS={' + Object.entries(STATUS_LABELS).map(([k,v]) => k+':"'+v+'"').join(',') + '},ORDERED=' + JSON.stringify(STATUSES) + ';' +
-'function k(){let v=sessionStorage.getItem(SK);return v||""}' +
-'async function api(u,o){let h=o.headers||{};let kk=k();if(kk)h["X-Admin-Key"]=kk;let r=await fetch(u,{...o,headers:h});if(r.status===401){sessionStorage.removeItem(SK);render()}return r}' +
-'async function login(){let p=document.getElementById("pwd").value;let r=await api("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);render()}else{alert("Contrasena incorrecta")}}' +
-'async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}' +
-'function fmt(d){let t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}' +
-'async function render(){let kk=k();if(!kk){document.getElementById("app").innerHTML=' +
-"'<div class=\"login-box\"><div class=\"icon\">&#128274;</div><h2>Acceso restringido</h2><p>Ingresa la contrasena de administrador</p><input id=\"pwd\" type=\"password\" placeholder=\"Contrasena\" onkeydown=\"if(event.key==='Enter')login()\" autofocus><button onclick=\"login()\">Ingresar</button></div>';return}" +
-'let r=await api("/api/orders");if(!r.ok)return;let orders=await r.json();' +
-'let stats={};ORDERED.forEach(s=>stats[s]=0);orders.forEach(o=>{stats[o.status]=(stats[o.status]||0)+1});' +
-'let h="<div class=stats>"+ORDERED.map(s=>"<div class=stat-card><div class=num>"+(stats[s]||0)+"</div><div class=label>"+STATUS_LABELS[s]+"</div></div>").join("")+"</div>";' +
-'if(!orders.length){document.getElementById("app").innerHTML=h+"<div class=empty-state><div class=empty-icon>&#128230;</div><p>No hay pedidos confirmados</p><p class=sub>Los pedidos aparecen aqui despues de un pago exitoso</p></div>";return}' +
-'orders.forEach(o=>{let c=o.customer||{},items=o.items||[];' +
-'h+="<div class=order-card>"' +
-+'"<div class=order-card-header><div class=order-info><div><div class=order-id>#"+o.id+"</div><div class=order-date>"+fmt(o.createdAt)+"</div></div></div><span class=\"status-badge status-"+o.status+"\">"+(STATUS_LABELS[o.status]||o.status)+"</span></div>"' +
-+'"<div class=order-card-body><div class=order-col><h3>Productos</h3>"' +
-+items.map(i=>"<div class=product-row><span>"+i.title+" x"+i.qty+"</span><span class=price>S/. "+(i.unit_price*i.qty).toFixed(2)+"</span></div>").join("")+'<div class=order-total-row><span>Total</span><span>S/. '+o.total.toFixed(2)+'</span></div></div>' +
-+'<div class=order-col><h3>Cliente</h3>' +
-+'<div class=customer-details>' +
-+'<div><span class=tag>Nombre</span><span>'+(c.name||"-")+'</span></div>' +
-+'<div><span class=tag>WhatsApp</span><span>'+(c.phone||"-")+'</span></div>' +
-+'<div><span class=tag>Direccion</span><span>'+(c.address||"-")+'</span></div>' +
-+'</div>' +
-+'<div class=status-control><h3>Estado</h3><select onchange=\"setStatus(\\\''+o.id+'\\\',this.value)\">'+ORDERED.map(s=>'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+STATUS_LABELS[s]+'</option>').join('')+'</select></div>' +
-+'</div></div></div>";});' +
-'document.getElementById("app").innerHTML=h;' +
-'}' +
-'render();' +
-'</script></body></html>';
+  const css = `
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap");
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:#f5f2ef;color:#2c2c2c;min-height:100vh}
+.wrap{max-width:1000px;margin:0 auto;padding:24px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#2c2c2c;color:#fcf9f8;position:sticky;top:0;z-index:10}
+.top h1{font-family:"Source Serif 4",serif;font-size:1.2rem;font-weight:600;color:#fcf9f8}
+.top h1 span{color:#76946b}
+.top a{color:#e0dbd7;text-decoration:none;font-size:0.8rem;padding:6px 14px;border:1px solid #555;border-radius:6px;transition:all .2s}
+.top a:hover{border-color:#c17f59;color:#c17f59}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.sc{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.sc .n{font-size:1.5rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}
+.sc .l{font-size:.7rem;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.lb{max-width:340px;margin:120px auto;text-align:center;background:#fff;padding:40px 32px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.lb .ic{width:48px;height:48px;background:#f5f2ef;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.2rem}
+.lb h2{font-family:"Source Serif 4",serif;font-size:1.2rem;color:#6b4f3c;margin-bottom:4px}
+.lb p{font-size:.8rem;color:#999;margin-bottom:20px}
+.lb input{width:100%;padding:12px;border:2px solid #e0dbd7;border-radius:8px;font-size:.9rem;margin-bottom:12px;transition:border .2s;font-family:inherit}
+.lb input:focus{border-color:#76946b;outline:none}
+.lb button{width:100%;padding:12px;background:#76946b;color:#fff;border:none;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:700;transition:background .2s}
+.lb button:hover{background:#5d7a53}
+.oc{background:#fff;border-radius:12px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden}
+.och{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fcf9f8;border-bottom:1px solid #f0eeec;flex-wrap:wrap;gap:8px}
+.oi{display:flex;align-items:center;gap:12px}
+.oid{font-size:.9rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}
+.od{font-size:.7rem;color:#aaa}
+.sb{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.65rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.sp{background:#d4a373}.ss{background:#6b9ac4}.sh{background:#b088c4}.sf{background:#76946b}.sr{background:#4a7c59}
+.ocb{display:grid;grid-template-columns:1fr 1fr;gap:0}@media(max-width:700px){.ocb{grid-template-columns:1fr}}
+.cl{padding:16px 20px}
+.cl+.cl{border-left:1px solid #f0eeec}@media(max-width:700px){.cl+.cl{border-left:none;border-top:1px solid #f0eeec}}
+.cl h3{font-size:.65rem;text-transform:uppercase;letter-spacing:.8px;color:#bbb;margin-bottom:10px;font-weight:700}
+.pr{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem;color:#555;border-bottom:1px solid #f5f2ef}
+.pr:last-child{border:none}
+.pr .prc{color:#6b4f3c;font-weight:600}
+.otr{display:flex;justify-content:space-between;font-size:.9rem;font-weight:700;color:#6b4f3c;padding-top:8px;margin-top:4px;border-top:2px solid #e8e3df}
+.cd{display:grid;gap:6px}
+.cd div{font-size:.8rem;color:#555;display:flex;gap:6px}
+.cd .tg{color:#999;min-width:50px}
+.sctl{margin-top:12px}
+.sctl select{width:100%;padding:8px 10px;border:2px solid #e8e3df;border-radius:8px;font-size:.8rem;background:#fff;cursor:pointer;font-family:inherit;transition:border .2s}
+.sctl select:focus{border-color:#76946b;outline:none}
+.emp{text-align:center;padding:80px 24px}
+.emp .ei{font-size:2.5rem;opacity:.3;margin-bottom:16px}
+.emp p{color:#bbb;font-size:.9rem}
+.emp .sub{color:#ddd;font-size:.8rem;margin-top:8px}
+@media(max-width:480px){.wrap{padding:12px}.top{padding:12px 16px}.top h1{font-size:1rem}.och{padding:12px 16px}.cl{padding:12px 16px}}`;
+  const statusData = JSON.stringify(Object.entries(STATUS_LABELS).map(([k,v]) => [k,v]));
+  const statusesJson = JSON.stringify(STATUSES);
+  const renderJs = `
+const SK="__ak",SD=${statusData},ORDERED=${statusesJson};
+var STATUS_LABELS={};SD.forEach(function(a){STATUS_LABELS[a[0]]=a[1]});
+function k(){return sessionStorage.getItem(SK)||""}
+async function api(u,o){var h=o.headers||{},kk=k();if(kk)h["X-Admin-Key"]=kk;var r=await fetch(u,Object.assign({},o,{headers:h}));if(r.status===401){sessionStorage.removeItem(SK);render()}return r}
+async function login(){var p=document.getElementById("pwd").value,r=await api("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);render()}else alert("Contrasena incorrecta")}
+async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}
+function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
+function card(o){
+  var c=o.customer||{},it=o.items||[];
+  return '<div class=oc>'+
+    '<div class=och><div class=oi><div><div class=oid>#'+o.id+'</div><div class=od>'+fmt(o.createdAt)+'</div></div></div><span class="sb s'+o.status.charAt(0)+'">'+(STATUS_LABELS[o.status]||o.status)+'</span></div>'+
+    '<div class=ocb><div class=cl><h3>Productos</h3>'+
+    it.map(function(i){return'<div class=pr><span>'+i.title+' x'+i.qty+'</span><span class=prc>S/. '+(i.unit_price*i.qty).toFixed(2)+'</span></div>'}).join('')+
+    '<div class=otr><span>Total</span><span>S/. '+o.total.toFixed(2)+'</span></div></div>'+
+    '<div class=cl><h3>Cliente</h3>'+
+    '<div class=cd>'+
+    '<div><span class=tg>Nombre</span><span>'+(c.name||'-')+'</span></div>'+
+    '<div><span class=tg>WhatsApp</span><span>'+(c.phone||'-')+'</span></div>'+
+    '<div><span class=tg>Direccion</span><span>'+(c.address||'-')+'</span></div>'+
+    '</div>'+
+    '<div class=sctl><h3>Estado</h3><select onchange="setStatus(' + "'" + o.id + "'" + ',this.value)">'+
+    ORDERED.map(function(s){return'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+STATUS_LABELS[s]+'</option>'}).join('')+
+    '</select></div>'+
+    '</div></div></div>';
+}
+async function render(){
+  var kk=k();
+  if(!kk){document.getElementById("app").innerHTML='<div class=lb><div class=ic>&#128274;</div><h2>Acceso restringido</h2><p>Ingresa la contrasena de administrador</p><input id=pwd type=password placeholder=Contrasena onkeydown="if(event.key===\\'Enter\\')login()" autofocus><button onclick=login()>Ingresar</button></div>';return}
+  var r=await api("/api/orders");
+  if(!r.ok)return;
+  var orders=await r.json();
+  var sm={};
+  ORDERED.forEach(function(s){sm[s]=0});
+  orders.forEach(function(o){sm[o.status]=(sm[o.status]||0)+1});
+  var h='<div class=st>'+ORDERED.map(function(s){return'<div class=sc><div class=n>'+(sm[s]||0)+'</div><div class=l>'+STATUS_LABELS[s]+'</div></div>'}).join('')+'</div>';
+  if(!orders.length){document.getElementById("app").innerHTML=h+'<div class=emp><div class=ei>&#128230;</div><p>No hay pedidos confirmados</p><p class=sub>Los pedidos aparecen aqui despues de un pago exitoso</p></div>';return}
+  h+=orders.map(card).join('');
+  document.getElementById("app").innerHTML=h;
+}
+render();`;
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Konarumis</title><style>' + css + '</style></head><body>' +
+    '<div class="top"><h1>Konarumis <span>Admin</span></h1><a href="#" onclick="sessionStorage.removeItem(\'__ak\');render();return false">Cerrar sesion</a></div>' +
+    '<div class="wrap"><div id="app"></div></div>' +
+    '<script>' + renderJs + '</script></body></html>';
 }
 
 // ─── Tracking Page HTML ───
