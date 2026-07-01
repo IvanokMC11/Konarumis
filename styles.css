@@ -244,6 +244,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  position: relative;
 }
 
 .sk-logo {
@@ -323,15 +324,37 @@ body {
 
 .sk-hamburger span {
   display: block;
-  width: 24px;
+  width: 22px;
   height: 3px;
   background: var(--color-ink);
-  border-radius: 1px;
+  border-radius: 0;
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 768px) {
-  .sk-nav-links { display: none; }
+  .sk-nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--color-paper);
+    border-bottom: var(--border-width) solid var(--color-ink);
+    padding: 16px;
+    gap: 8px;
+  }
+  .sk-nav-links.open { display: flex; }
   .sk-hamburger { display: flex; }
+  .sk-hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(4px, 4px);
+  }
+  .sk-hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .sk-hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(4px, -4px);
+  }
 }
 
 /* ==========================================
@@ -369,16 +392,12 @@ body {
 .sk-spin-slow { animation: sk-spin-slow 12s linear infinite; }
 .sk-wiggle    { animation: sk-wiggle 3s ease-in-out infinite; }
 
-/* Stagger children */
+/* Stagger children — animation handled by JS on scroll */
 .sk-stagger > * {
   opacity: 0;
-  animation: sk-fade-in-up 0.5s ease forwards;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
-.sk-stagger > *:nth-child(1) { animation-delay: 0.1s; }
-.sk-stagger > *:nth-child(2) { animation-delay: 0.2s; }
-.sk-stagger > *:nth-child(3) { animation-delay: 0.3s; }
-.sk-stagger > *:nth-child(4) { animation-delay: 0.4s; }
-.sk-stagger > *:nth-child(5) { animation-delay: 0.5s; }
 
 /* Hover lift for cards */
 .sk-hover-lift {
@@ -416,7 +435,12 @@ body {
   position: absolute;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+body.dark-theme .sk-hero-deco {
+  opacity: 0.3;
+  mix-blend-mode: screen;
 }
 .sk-hero-deco--1 {
   top: 5%;
@@ -1381,7 +1405,7 @@ body {
   transform-style: preserve-3d;
 }
 .sk-card-flip:hover .sk-card-inner,
-.sk-card-flip:focus .sk-card-inner { transform: rotateY(180deg); }
+.sk-card-flip.flipped .sk-card-inner { transform: rotateY(180deg); }
 .sk-card-face {
   position: absolute;
   inset: 0;

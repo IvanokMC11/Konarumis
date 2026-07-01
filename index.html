@@ -46,7 +46,8 @@
         <ul class="sk-nav-links">
           <li><a href="#inicio" class="sk-nav-link">Inicio</a></li>
           <li><a href="#catalogo" class="sk-nav-link">Catálogo</a></li>
-          <li><a href="#como-hacemos" class="sk-nav-link">Proceso</a></li>
+          <li><a href="#medidas" class="sk-nav-link">Personalizados</a></li>
+          <li><a href="#nosotros" class="sk-nav-link">Nosotros</a></li>
           <li><a href="#contacto" class="sk-nav-link">Contacto</a></li>
         </ul>
       </nav>
@@ -83,7 +84,7 @@
         <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
-      <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--on-surface-variant);text-align:center;">Los productos a pedido pagan 50% de adelanto. El resto al recibir el pedido.</p>
+      <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--color-ink-variant);text-align:center;">Los productos a pedido pagan 50% de adelanto. El resto al recibir el pedido.</p>
       <div id="checkout-form" class="checkout-form">
         <p class="checkout-form-title">Tus datos para el pedido</p>
         <label class="cf-label">Nombre completo</label>
@@ -139,7 +140,7 @@
           </p>
           <div class="sk-hero-actions sk-fade-in-up">
             <a href="#catalogo" class="sk-btn sk-btn-teal">EXPLORAR ARTE</a>
-            <a href="#como-hacemos" class="sk-btn sk-btn-outline">MI MUNDO</a>
+            <a href="#nosotros" class="sk-btn sk-btn-outline">MI MUNDO</a>
           </div>
 
           <!-- Social links inside hero -->
@@ -1013,7 +1014,7 @@
 
     // 3b. Update active nav link on scroll
     const pageSections = document.querySelectorAll('section[id]');
-    const pageNavLinks = document.querySelectorAll('.nav-link');
+    const pageNavLinks = document.querySelectorAll('.sk-nav-link');
     function updateActiveNav() {
       let current = '';
       pageSections.forEach(section => {
@@ -1041,164 +1042,44 @@
       });
     }
 
-    // 5. Dark Mode Toggle implementation
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const logoBrandName = document.getElementById('logo-brand-name');
-    const badgeBrandName = document.getElementById('badge-brand-name');
-
-    // Sun icon SVG path
-    const sunIconPath = `<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm-1.06-12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm-11.31 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06z"/>`;
-    // Moon icon SVG path
-    const moonIconPath = `<path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10 0-4.8 3.5-8.9 8.2-9.8.5-.1 1 .3.9.8-.1.5-.6.9-1.1.9-3.9.5-6.8 4-6.3 8 .4 3.4 3.1 6.2 6.6 6.6 4 .5 7.5-2.4 8-6.3.1-.5.5-1 1.1-.9.5.1.9.6.8.9-.9 4.7-5 8.2-9.8 8.2z"/>`;
-
-    // Apply saved theme on load (default dark)
+    // 5. Dark Mode — default dark, save/load preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
       document.body.classList.remove('dark-theme');
-      themeIcon.innerHTML = moonIconPath;
-      if (logoBrandName) logoBrandName.src = 'images/nombre.png';
-      if (badgeBrandName) badgeBrandName.src = 'images/nombre.png';
     } else {
       document.body.classList.add('dark-theme');
-      themeIcon.innerHTML = sunIconPath;
-      if (logoBrandName) logoBrandName.src = 'images/modo noche.png';
-      if (badgeBrandName) badgeBrandName.src = 'images/modo noche.png';
     }
 
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.body.classList.toggle('dark-theme');
-      if (isDark) {
-        localStorage.setItem('theme', 'dark');
-        themeIcon.innerHTML = sunIconPath;
-        if (logoBrandName) logoBrandName.src = 'images/modo noche.png';
-        if (badgeBrandName) badgeBrandName.src = 'images/modo noche.png';
-      } else {
-        localStorage.setItem('theme', 'light');
-        themeIcon.innerHTML = moonIconPath;
-        if (logoBrandName) logoBrandName.src = 'images/nombre.png';
-        if (badgeBrandName) badgeBrandName.src = 'images/nombre.png';
-      }
-    });
-
-    // 6. Hero Image Slider
-    const sliderImages = [
-      'images/jake.png',
-      'images/luffy.png',
-      'images/zoro.png',
-      'images/chopper.png',
-      'images/Finn.png',
-      'images/Freddy.png',
-      'images/Chuky.png',
-      'images/Jason.png',
-      'images/SP1.png',
-      'images/SP2.png',
-      'images/SP3.png',
-      'images/SP4.png',
-      'images/llama.png',
-      'images/Snoopy.png',
-      'images/conejo llavero.png',
-      'images/ANNE.png'
-    ];
-
-    const sliderImg = document.getElementById('hero-main-image');
-    const prevBtn = document.getElementById('slider-prev');
-    const nextBtn = document.getElementById('slider-next');
-    const dotsContainer = document.getElementById('slider-dots');
-    let currentIndex = 0;
-    let autoSlide;
-
-    function goToSlide(index) {
-      const nextIdx = (index + sliderImages.length) % sliderImages.length;
-      if (nextIdx === currentIndex) return;
-      sliderImg.classList.add('fade-out');
-      setTimeout(() => {
-        currentIndex = nextIdx;
-        sliderImg.src = sliderImages[currentIndex];
-        sliderImg.alt = 'Amigurumi ' + sliderImages[currentIndex].replace('images/', '').replace('.png', '');
-        sliderImg.classList.remove('fade-out');
-        document.querySelectorAll('.slider-dot').forEach((dot, i) => {
-          dot.classList.toggle('active', i === currentIndex);
-        });
-      }, 250);
-    }
-
-    function nextSlide() { goToSlide(currentIndex + 1); }
-    function prevSlide() { goToSlide(currentIndex - 1); }
-
-    function startAutoSlide() {
-      stopAutoSlide();
-      autoSlide = setInterval(nextSlide, 7000);
-    }
-
-    function stopAutoSlide() {
-      clearInterval(autoSlide);
-    }
-
-    // Create dots
-    sliderImages.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Ir a imagen ' + (i + 1));
-      dot.addEventListener('click', () => { goToSlide(i); startAutoSlide(); });
-      dotsContainer.appendChild(dot);
-    });
-
-    prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
-    nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
-
-    // Pause on hover/touch
-    const sliderContainer = document.getElementById('hero-slider-container');
-    sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-    sliderContainer.addEventListener('mouseleave', startAutoSlide);
-
-    startAutoSlide();
-
-    // 7. Hamburger Menu Toggle
-    const hamburger = document.getElementById('hamburger-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const navOverlay = document.getElementById('nav-overlay');
+    // 6. Hamburger Menu Toggle
+    const hamburger = document.getElementById('sk-hamburger');
+    const navLinks = document.querySelector('.sk-nav-links');
 
     function closeMenu() {
-      hamburger.classList.remove('active');
-      navLinks.classList.remove('open');
-      navOverlay.classList.remove('open');
+      if (hamburger) hamburger.classList.remove('active');
+      if (navLinks) navLinks.classList.remove('open');
     }
 
     function openMenu() {
-      hamburger.classList.add('active');
-      navLinks.classList.add('open');
-      navOverlay.classList.add('open');
+      if (hamburger) hamburger.classList.add('active');
+      if (navLinks) navLinks.classList.add('open');
     }
 
-    hamburger.addEventListener('click', () => {
-      if (navLinks.classList.contains('open')) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-
-    navOverlay.addEventListener('click', closeMenu);
-
-    // Close menu on nav link click
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', closeMenu);
-    });
-
-    // 8. Scroll Reveal Animations (Intersection Observer)
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        if (navLinks && navLinks.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
         }
       });
-    }, { threshold: 0.15 });
+    }
 
-    document.querySelectorAll('.product-card, .testimonial-card, .craft-img-card, .feature-item').forEach(el => {
-      el.classList.add('reveal');
-      revealObserver.observe(el);
-    });
+    // Close menu on nav link click
+    if (navLinks) {
+      navLinks.querySelectorAll('.sk-nav-link').forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+    }
 
     // 9. Skeleton Loading - remove shimmer on image load
     document.querySelectorAll('.product-img').forEach(img => {
@@ -1538,7 +1419,7 @@
       const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
 
       const trackLink = orderId ? `<a href="/pedido?id=${orderId}" class="btn btn--secondary" style="text-decoration:none;">Ver seguimiento</a>` : '';
-      const codeTag = orderId ? `<p style="font-size:1.5rem;font-weight:700;color:var(--primary);margin:8px 0;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>` : '';
+      const codeTag = orderId ? `<p style="font-size:1.5rem;font-weight:700;color:var(--color-teal);margin:8px 0;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>` : '';
 
       const msgs = {
         success: {
@@ -1592,7 +1473,7 @@
       revealEls.forEach(el => el.classList.add('sk-visible'));
     }
 
-    // 5. Apply staggered animation to testimonial cards
+    // 5. Apply staggered animation on scroll
     const staggerContainers = document.querySelectorAll('.sk-stagger');
     staggerContainers.forEach(container => {
       const children = container.children;
@@ -1600,8 +1481,10 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             Array.from(children).forEach((child, i) => {
-              child.style.animationDelay = (0.1 * (i + 1)) + 's';
-              child.style.opacity = '1';
+              setTimeout(() => {
+                child.style.opacity = '1';
+                child.style.transform = 'translateY(0)';
+              }, i * 100);
             });
             observer.unobserve(container);
           }
