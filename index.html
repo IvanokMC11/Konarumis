@@ -39,7 +39,14 @@
     <div class="sk-container sk-nav-wrap">
       <a href="#" class="sk-logo" aria-label="Konarumis Home">
         <img src="images/logo.png" alt="Konarumis" class="sk-logo-img">
-        <span class="sk-logo-wordmark">KONA<span class="sk-logo-accent">RUMIS</span></span>
+        <span class="sk-logo-wordmark">
+          <span class="sk-logo-line">
+            <span class="sk-logo-char" style="--i:0">K</span><span class="sk-logo-char" style="--i:1">O</span><span class="sk-logo-char" style="--i:2">N</span><span class="sk-logo-char" style="--i:3">A</span>
+          </span>
+          <span class="sk-logo-line sk-logo-accent">
+            <span class="sk-logo-char" style="--i:4">R</span><span class="sk-logo-char" style="--i:5">U</span><span class="sk-logo-char" style="--i:6">M</span><span class="sk-logo-char" style="--i:7">I</span><span class="sk-logo-char" style="--i:8">S</span>
+          </span>
+        </span>
       </a>
       <nav aria-label="Navegación principal">
         <ul class="sk-nav-links">
@@ -165,7 +172,7 @@
           <div class="sk-hero-img-circle">
             <img src="images/logo.png" alt="Konarumis" class="sk-hero-logo-img">
           </div>
-          <div class="sk-badge sk-badge-orange sk-hero-badge">CUSCO · PUNK</div>
+          <div class="sk-badge sk-badge-orange sk-hero-badge">CUSCO</div>
         </div>
 
       </div>
@@ -1241,6 +1248,8 @@
     document.getElementById('cart-btn').addEventListener('click', openCart);
     document.getElementById('cart-close').addEventListener('click', closeCart);
     cartOverlay.addEventListener('click', closeCart);
+    const floatingCart = document.getElementById('floating-cart-btn');
+    if (floatingCart) floatingCart.addEventListener('click', openCart);
 
     // Cart item interactions (event delegation)
     document.getElementById('cart-items').addEventListener('click', (e) => {
