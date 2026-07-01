@@ -13,7 +13,7 @@
 
   /* Acentos */
   --color-teal:         #76946b;
-  --color-teal-dark:    #006480;
+  --color-teal-dark:    #5a7a52;
   --color-orange:       #E67E22;
   --color-marker:       #FE9D7A;
 
@@ -1675,7 +1675,7 @@ body.dark-theme {
   --color-surface-high: #2A2F31;
   --color-ink:          #E8E6E1;
   --color-ink-variant:  #A5ADB0;
-  --color-teal-dark:    #3D9BB8;
+  --color-teal-dark:    #8fb887;
   --shadow-ink:         #111;
 }
 
