@@ -1279,7 +1279,7 @@
             <div class="cart-item-info">
               <p class="cart-item-name">${item.name}</p>
               <p class="cart-item-detail">${item.size || 'Único'}${isPedido ? ' · Adelanto 50%' : ' · Pago completo'}</p>
-              <p class="cart-item-price">S/. ${item.price.toFixed(2)}${isPedido ? ` <span style="font-size:0.6rem;color:var(--color-ink-variant);font-weight:400;">(hoy: S/. ${(item.price/2).toFixed(2)})</span>` : ''}</p>
+              <p class="cart-item-price">S/. ${item.price.toFixed(2)}${isPedido ? ' <span style="font-size:0.6rem;color:var(--color-ink-variant);font-weight:400;">(hoy: S/. ' + (item.price/2).toFixed(2) + ')</span>' : ''}</p>
               <div class="cart-item-qty">
                 <button class="cart-qty-btn" data-action="dec">−</button>
                 <span class="cart-qty-val">${item.qty}</span>
@@ -1480,11 +1480,16 @@
 
       document.getElementById('confirm-order-btn').addEventListener('click', function() {
         const orderId = genOrderId();
-        const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${items.map(i => {
+        const itemParts = items.map(i => {
           const isPed = (i.av || 'pedido') === 'pedido';
-          return `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}${isPed ? ` (adelanto: S/. ${((i.price * i.qty)/2).toFixed(2)})` : ''}`;
-        }).join('%0A')}%0A%0A${hasPedido ? `Adelanto hoy: S/. ${advTotal.toFixed(2)}%0ATotal: S/. ${fullTotal.toFixed(2)}` : `Total: S/. ${fullTotal.toFixed(2)}`}${useMP ? `%0A(Comisión MP: S/. ${fee.toFixed(2)})` : ''}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATel: ${customer.phone}%0AEntrega: ${customer.address}%0A%0AMétodo: ${useMP ? 'Mercado Pago' : 'WhatsApp'}`;
-        const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
+          let line = '- ' + i.name + ' x' + i.qty + ' — S/. ' + (i.price * i.qty).toFixed(2);
+          if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty)/2).toFixed(2) + ')';
+          return line;
+        }).join('%0A');
+        let totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
+        let mpLine = useMP ? '%0A(Comisión MP: S/. ' + fee.toFixed(2) + ')' : '';
+        let waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + mpLine + '%0A%0ACódigo: ' + orderId + '%0A%0ANombre: ' + customer.name + '%0ATel: ' + customer.phone + '%0AEntrega: ' + customer.address + '%0A%0AMétodo: ' + (useMP ? 'Mercado Pago' : 'WhatsApp');
+        const waUrl = 'https://wa.me/51922330331?text=' + waMsg;
 
         // Save order
         const orders = getOrders();
