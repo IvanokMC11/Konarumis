@@ -91,10 +91,6 @@
         <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
-      <div class="cart-total-row" id="cart-advance" style="display:none;font-size:0.78rem;color:var(--color-teal-dark);">
-        <span>Adelanto hoy (50%)</span>
-        <span style="font-weight:800;" id="cart-advance-amount">S/. 0</span>
-      </div>
       <div id="cart-mp-fee" style="display:none;font-size:0.7rem;color:var(--color-ink-variant);margin-bottom:2px;">
         <span>Comisión MP (3.49% + S/1.00):</span>
         <span id="cart-mp-fee-amount">S/. 0</span>
@@ -1212,17 +1208,6 @@
         return this.items.reduce((sum, i) => sum + i.price * i.qty, 0);
       },
 
-      getAdvanceTotal() {
-        return this.items.reduce((sum, i) => {
-          const isPedido = (i.av || 'pedido') === 'pedido';
-          return sum + (isPedido ? (i.price * i.qty) / 2 : i.price * i.qty);
-        }, 0);
-      },
-
-      hasPedidoItems() {
-        return this.items.some(i => (i.av || 'pedido') === 'pedido');
-      },
-
       getCount() {
         return this.items.reduce((sum, i) => sum + i.qty, 0);
       },
@@ -1256,30 +1241,15 @@
         }
 
         footer.style.display = '';
-        const fullTotal = this.getTotal();
-        const advTotal = this.getAdvanceTotal();
-        const hasPedido = this.hasPedidoItems();
+        totalEl.textContent = 'S/. ' + this.getTotal().toFixed(2);
 
-        totalEl.textContent = 'S/. ' + fullTotal.toFixed(2);
-        const advEl = document.getElementById('cart-advance');
-        const advTotalEl = document.getElementById('cart-advance-amount');
-        if (advEl && advTotalEl) {
-          advEl.style.display = hasPedido ? 'flex' : 'none';
-          advTotalEl.textContent = 'S/. ' + advTotal.toFixed(2);
-        }
-
-        const payNote = document.getElementById('cart-pay-note');
-        if (payNote) payNote.style.display = hasPedido ? 'block' : 'none';
-
-        container.innerHTML = this.items.map(item => {
-          const isPedido = (item.av || 'pedido') === 'pedido';
-          return `
+        container.innerHTML = this.items.map(item => `
           <div class="cart-item" data-id="${item.id}">
             <img src="${item.img}" alt="${item.name}" class="cart-item-img" loading="lazy">
             <div class="cart-item-info">
               <p class="cart-item-name">${item.name}</p>
-              <p class="cart-item-detail">${item.size || 'Único'}${isPedido ? ' · Adelanto 50%' : ' · Pago completo'}</p>
-              <p class="cart-item-price">S/. ${item.price.toFixed(2)}${isPedido ? ` <span style="font-size:0.6rem;color:var(--color-ink-variant);font-weight:400;">(hoy: S/. ${(item.price/2).toFixed(2)})</span>` : ''}</p>
+              <p class="cart-item-detail">${item.size || 'Único'}</p>
+              <p class="cart-item-price">S/. ${item.price.toFixed(2)}</p>
               <div class="cart-item-qty">
                 <button class="cart-qty-btn" data-action="dec">−</button>
                 <span class="cart-qty-val">${item.qty}</span>
@@ -1296,7 +1266,7 @@
         const waText = this.items.map(i => `*${i.name}* x${i.qty}`).join(', ');
         document.getElementById('cart-wa-link').href =
           'https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20pedir:%20' +
-          encodeURIComponent(waText) + '%20(Pagar%20hoy:%20S/.%20' + advTotal.toFixed(2) + '%20-%20Total:%20S/.%20' + fullTotal.toFixed(2) + ')';
+          encodeURIComponent(waText) + '%20(Total:%20S/.%20' + this.getTotal().toFixed(2) + ')';
       },
     };
 
@@ -1365,15 +1335,15 @@
 
     function updateTotalWithMP() {
       const useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      const base = cart.getAdvanceTotal();
+      const subtotal = cart.getTotal();
       const feeEl = document.getElementById('cart-mp-fee');
       const feeAmtEl = document.getElementById('cart-mp-fee-amount');
       const totalMPEl = document.getElementById('cart-total-mp');
       const totalMPAmtEl = document.getElementById('cart-total-mp-amount');
 
-      if (useMP && base > 0) {
-        const fee = base * MP_RATE + MP_FIXED;
-        const totalMP = base + fee;
+      if (useMP && subtotal > 0) {
+        const fee = subtotal * MP_RATE + MP_FIXED;
+        const totalMP = subtotal + fee;
         feeAmtEl.textContent = 'S/. ' + fee.toFixed(2);
         totalMPAmtEl.textContent = 'S/. ' + totalMP.toFixed(2);
         feeEl.style.display = 'flex';
@@ -1436,18 +1406,14 @@
       if (customer.error) { alert(customer.error); return; }
 
       const items = cart.items;
-      const fullTotal = cart.getTotal();
-      const advTotal = cart.getAdvanceTotal();
+      const subtotal = cart.getTotal();
       const useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      const hasPedido = cart.hasPedidoItems();
-      let payable = advTotal;
+      const hasPedido = items.some(i => i.av === 'pedido');
+      let total = subtotal;
       let fee = 0;
-      if (useMP) { fee = +(payable * MP_RATE + MP_FIXED).toFixed(2); payable = advTotal + fee; }
+      if (useMP) { fee = +(subtotal * MP_RATE + MP_FIXED).toFixed(2); total = subtotal + fee; }
 
-      const itemLines = items.map(i => {
-        const isPed = (i.av || 'pedido') === 'pedido';
-        return `• ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}${isPed ? ' (adelanto: S/. ' + ((i.price * i.qty)/2).toFixed(2) + ')' : ''}`;
-      }).join('\n');
+      const itemLines = items.map(i => `• ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('\n');
       const payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
 
       // Preview modal
@@ -1459,12 +1425,13 @@
           <div style="background:var(--color-surface);border-radius:4px;padding:10px;margin-bottom:8px;text-align:left;font-size:0.78rem;">
             <pre style="font-family:var(--font-body);margin:0;white-space:pre-wrap;color:var(--color-ink);line-height:1.4;">${itemLines}</pre>
             <hr style="border:none;border-top:1px dashed var(--color-ink-variant);margin:8px 0;">
-            ${hasPedido ? `<div style="display:flex;justify-content:space-between;font-size:0.72rem;"><span>Total productos</span><span>S/. ${fullTotal.toFixed(2)}</span></div>` : ''}
-            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:800;font-size:0.9rem;color:var(--color-teal-dark);">
-              <span>${hasPedido ? 'Adelanto hoy' : 'Total a pagar'}</span><span>S/. ${advTotal.toFixed(2)}</span>
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:700;font-size:0.85rem;">
+              <span>Subtotal</span><span>S/. ${subtotal.toFixed(2)}</span>
             </div>
             ${useMP ? `<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-ink-variant);"><span>Comisión MP (3.49% + S/1)</span><span>S/. ${fee.toFixed(2)}</span></div>` : ''}
-            ${useMP ? `<div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:900;font-size:0.95rem;color:var(--color-teal-dark);margin-top:2px;"><span>Total con MP</span><span>S/. ${payable.toFixed(2)}</span></div>` : ''}
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:900;font-size:0.95rem;color:var(--color-teal-dark);margin-top:4px;">
+              <span>${useMP ? 'Total con MP' : 'Total'}</span><span>S/. ${total.toFixed(2)}</span>
+            </div>
           </div>
           <p style="font-size:0.7rem;color:var(--color-ink-variant);margin:0 0 10px;">${payNote}</p>
           <div style="font-size:0.72rem;color:var(--color-ink-variant);margin-bottom:10px;padding:6px;background:var(--color-surface);border-radius:4px;">
@@ -1480,10 +1447,7 @@
 
       document.getElementById('confirm-order-btn').addEventListener('click', function() {
         const orderId = genOrderId();
-        const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${items.map(i => {
-          const isPed = (i.av || 'pedido') === 'pedido';
-          return `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}${isPed ? ` (adelanto: S/. ${((i.price * i.qty)/2).toFixed(2)})` : ''}`;
-        }).join('%0A')}%0A%0A${hasPedido ? `Adelanto hoy: S/. ${advTotal.toFixed(2)}%0ATotal: S/. ${fullTotal.toFixed(2)}` : `Total: S/. ${fullTotal.toFixed(2)}`}${useMP ? `%0A(Comisión MP: S/. ${fee.toFixed(2)})` : ''}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATel: ${customer.phone}%0AEntrega: ${customer.address}%0A%0AMétodo: ${useMP ? 'Mercado Pago' : 'WhatsApp'}`;
+        const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${items.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A')}%0A%0ATotal: S/. ${total.toFixed(2)}${useMP ? `%0A(Comisión MP: S/. ${fee.toFixed(2)})` : ''}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATel: ${customer.phone}%0AEntrega: ${customer.address}%0A%0AMétodo: ${useMP ? 'Mercado Pago' : 'WhatsApp'}`;
         const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
 
         // Save order
@@ -1493,10 +1457,9 @@
           date: new Date().toISOString(),
           customer: customer,
           items: items,
-          fullTotal: fullTotal,
-          advTotal: advTotal,
+          subtotal: subtotal,
           fee: fee,
-          payable: payable,
+          total: total,
           payment: useMP ? 'mp' : 'wpp',
           paid: useMP ? true : false, // MP = pago confirmado, WPP = pendiente
           status: 'pending',
@@ -1586,8 +1549,7 @@
           </div>
           <div class="admin-order-customer">${o.customer.name} · ${o.customer.phone} · ${o.customer.address}</div>
           <div class="admin-order-items">${itemsHtml}</div>
-          <div class="admin-order-total">Pagar: S/. ${o.advTotal.toFixed(2)}${o.fullTotal !== o.advTotal ? ` · Total: S/. ${o.fullTotal.toFixed(2)}` : ''}${o.fee > 0 ? ` (MP: +S/. ${o.fee.toFixed(2)})` : ''}
-          </div>
+          <div class="admin-order-total">S/. ${o.total.toFixed(2)}</div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
             <span class="admin-order-payment ${o.payment}">${o.payment === 'mp' ? 'Mercado Pago ✓' : 'WhatsApp'}</span>
             ${o.payment === 'mp' ? '<span style="font-size:0.6rem;color:#2e7d32;font-weight:600;">Pagado — Listo para procesar</span>' : ''}
