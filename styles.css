@@ -760,65 +760,52 @@ body.dark-theme .sk-hero-deco {
   .sk-filter-btn { font-size: 0.6rem; padding: 4px 10px; }
   .sk-filters { gap: 4px; }
   .product-card {
-    flex-direction: row !important;
-    margin-bottom: 0;
+    flex-direction: row;
     box-shadow: 2px 2px 0 var(--shadow-ink);
     border-width: 2px;
     border-radius: 2% 4% 3% 3% / 1% 1% 2% 3%;
-    max-height: 85px;
     overflow: hidden;
   }
   .product-img-wrapper {
-    width: 100px;
-    min-width: 100px;
-    aspect-ratio: auto !important;
-    height: auto;
-    align-self: stretch;
-    display: flex;
-    border-bottom: none !important;
+    width: 90px;
+    min-width: 90px;
+    aspect-ratio: auto;
+    border-bottom: none;
     border-right: 2px solid var(--color-ink);
+    display: flex;
   }
   .product-img {
     width: 100%;
-    height: 100% !important;
-    object-fit: cover;
-    flex: 1;
-    min-height: 0;
-  }
-  .reversible-doll .product-img-back {
-    width: 100%;
     height: 100%;
+    object-fit: cover;
   }
   .product-info {
-    padding: 3px 6px;
+    padding: 4px 6px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 0;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
   }
   .product-header {
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     gap: 4px;
-    margin-bottom: 0;
   }
-  .product-title { font-size: 0.6rem; margin-bottom: 0; }
-  .product-price { font-size: 0.6rem; }
+  .product-title { font-size: 0.6rem; }
+  .product-price { font-size: 0.6rem; white-space: nowrap; }
   .product-desc { display: none; }
-  .product-meta { gap: 1px; margin-bottom: 1px; }
-  .meta-chip { font-size: 0.38rem; padding: 0 3px; letter-spacing: 0; }
-  .product-tag { font-size: 0.32rem; padding: 1px 3px; top: -3px; left: 3px; letter-spacing: 0; }
-  .badge--popular { font-size: 0.32rem; padding: 1px 3px; top: -3px; right: 3px; }
+  .product-meta { display: flex; gap: 2px; }
+  .meta-chip { font-size: 0.4rem; padding: 0 4px; }
+  .product-tag, .badge--popular { display: none; }
   .product-card .btn--primary {
-    font-size: 0.45rem;
-    padding: 1px 5px;
-    gap: 2px;
-    margin-top: 1px;
+    font-size: 0.5rem;
+    padding: 2px 6px;
     width: 100%;
-    border-radius: 0.1rem;
     border-width: 1px;
+    margin-top: auto;
   }
-  .product-card .btn--primary svg { width: 6px; height: 6px; }
+  .product-card .btn--primary svg { width: 8px; height: 8px; }
   .product-card:hover {
     transform: none;
     box-shadow: 2px 2px 0 var(--color-ink);
