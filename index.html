@@ -160,80 +160,18 @@
         </div>
 
         <div class="sk-hero-visual">
+          <!-- Background carousel behind logo -->
+          <div class="sk-hero-carousel" id="hero-carousel">
+            <img src="images/jake.png" alt="" class="sk-hero-carousel-img" aria-hidden="true">
+            <img src="images/luffy.png" alt="" class="sk-hero-carousel-img" aria-hidden="true">
+            <img src="images/zoro.png" alt="" class="sk-hero-carousel-img" aria-hidden="true">
+          </div>
           <div class="sk-hero-img-circle">
             <img src="images/logo.png" alt="Konarumis" class="sk-hero-logo-img">
           </div>
           <div class="sk-badge sk-badge-orange sk-hero-badge">CUSCO · PUNK</div>
         </div>
 
-      </div>
-
-      <!-- Stories carousel -->
-      <div class="sk-stories">
-        <div class="sk-stories-track" id="stories-track">
-          <a href="#catalogo" class="sk-story-item" data-img="images/jake.png">
-            <span class="sk-story-ring"><img src="images/jake.png" alt="Jake"></span>
-            <span class="sk-story-label">Jake</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/luffy.png">
-            <span class="sk-story-ring"><img src="images/luffy.png" alt="Luffy"></span>
-            <span class="sk-story-label">Luffy</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/zoro.png">
-            <span class="sk-story-ring"><img src="images/zoro.png" alt="Zoro"></span>
-            <span class="sk-story-label">Zoro</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/chopper.png">
-            <span class="sk-story-ring"><img src="images/chopper.png" alt="Chopper"></span>
-            <span class="sk-story-label">Chopper</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/Finn.png">
-            <span class="sk-story-ring"><img src="images/Finn.png" alt="Finn"></span>
-            <span class="sk-story-label">Finn</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/Freddy.png">
-            <span class="sk-story-ring"><img src="images/Freddy.png" alt="Freddy"></span>
-            <span class="sk-story-label">Freddy</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/Chuky.png">
-            <span class="sk-story-ring"><img src="images/Chuky.png" alt="Chuky"></span>
-            <span class="sk-story-label">Chuky</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/Jason.png">
-            <span class="sk-story-ring"><img src="images/Jason.png" alt="Jason"></span>
-            <span class="sk-story-label">Jason</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/SP1.png">
-            <span class="sk-story-ring"><img src="images/SP1.png" alt="Stan"></span>
-            <span class="sk-story-label">Stan</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/SP2.png">
-            <span class="sk-story-ring"><img src="images/SP2.png" alt="Kyle"></span>
-            <span class="sk-story-label">Kyle</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/SP3.png">
-            <span class="sk-story-ring"><img src="images/SP3.png" alt="Cartman"></span>
-            <span class="sk-story-label">Cartman</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/llama.png">
-            <span class="sk-story-ring"><img src="images/llama.png" alt="Llama"></span>
-            <span class="sk-story-label">Llama</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/Snoopy.png">
-            <span class="sk-story-ring"><img src="images/Snoopy.png" alt="Snoopy"></span>
-            <span class="sk-story-label">Snoopy</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/conejo llavero.png">
-            <span class="sk-story-ring"><img src="images/conejo llavero.png" alt="Conejo"></span>
-            <span class="sk-story-label">Conejo</span>
-          </a>
-          <a href="#catalogo" class="sk-story-item" data-img="images/ANNE.png">
-            <span class="sk-story-ring"><img src="images/ANNE.png" alt="Anne"></span>
-            <span class="sk-story-label">Anne</span>
-          </a>
-        </div>
-        <button class="sk-stories-btn sk-stories-prev" id="stories-prev" aria-label="Anterior">‹</button>
-        <button class="sk-stories-btn sk-stories-next" id="stories-next" aria-label="Siguiente">›</button>
       </div>
 
     </section>
@@ -1080,13 +1018,27 @@
       });
     });
 
-    // 3b. Stories carousel scroll buttons
-    const storiesTrack = document.getElementById('stories-track');
-    const storiesPrev = document.getElementById('stories-prev');
-    const storiesNext = document.getElementById('stories-next');
-    if (storiesTrack && storiesPrev) {
-      storiesPrev.addEventListener('click', () => { storiesTrack.scrollBy({ left: -300, behavior: 'smooth' }); });
-      storiesNext.addEventListener('click', () => { storiesTrack.scrollBy({ left: 300, behavior: 'smooth' }); });
+    // 3b. Hero background carousel — 3 images at a time
+    const carouselImgs = [
+      'images/jake.png','images/luffy.png','images/zoro.png','images/chopper.png',
+      'images/Finn.png','images/Freddy.png','images/Chuky.png','images/Jason.png',
+      'images/SP1.png','images/SP2.png','images/SP3.png','images/llama.png',
+      'images/Snoopy.png','images/conejo llavero.png','images/ANNE.png',
+      'images/muñeca reversible 1.png','images/muñeca reversible 2.png'
+    ];
+    const carouselSlots = document.querySelectorAll('#hero-carousel .sk-hero-carousel-img');
+    if (carouselSlots.length) {
+      let idx = 0;
+      function rotateCarousel() {
+        carouselSlots.forEach((slot, i) => {
+          const imgIdx = (idx + i) % carouselImgs.length;
+          slot.src = carouselImgs[imgIdx];
+          slot.classList.add('visible');
+        });
+        idx = (idx + 3) % carouselImgs.length;
+      }
+      rotateCarousel();
+      setInterval(rotateCarousel, 4000);
     }
 
     // 3c. Update active nav link on scroll
