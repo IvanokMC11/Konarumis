@@ -1371,18 +1371,18 @@
 
     function updateTotalWithMP() {
       var useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      var subtotal = cart.getTotal();
+      var base = cart.getAdvanceTotal();
       var feeEl = document.getElementById('cart-mp-fee');
       var feeAmtEl = document.getElementById('cart-mp-fee-amount');
       var totalMPEl = document.getElementById('cart-total-mp');
       var totalMPAmtEl = document.getElementById('cart-total-mp-amount');
 
-      document.getElementById('checkout-trigger').style.display = (useMP && subtotal > 0) ? '' : 'none';
-      document.getElementById('cart-wa-link').style.display = (!useMP && subtotal > 0) ? '' : 'none';
+      document.getElementById('checkout-trigger').style.display = (useMP && cart.getCount() > 0) ? '' : 'none';
+      document.getElementById('cart-wa-link').style.display = (!useMP && cart.getCount() > 0) ? '' : 'none';
 
-      if (useMP && subtotal > 0) {
-        var fee = subtotal * MP_RATE + MP_FIXED;
-        var totalMP = subtotal + fee;
+      if (useMP && base > 0) {
+        var fee = base * MP_RATE + MP_FIXED;
+        var totalMP = base + fee;
         feeAmtEl.textContent = 'S/. ' + fee.toFixed(2);
         totalMPAmtEl.textContent = 'S/. ' + totalMP.toFixed(2);
         feeEl.style.display = 'flex';
