@@ -1548,7 +1548,7 @@
         var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
         var mpLine = useMP ? '%0A(Comisi\u00F3n MP: S/. ' + fee.toFixed(2) + ')' : '';
         var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + mpLine + '%0A%0AC\u00F3digo: ' + orderId + '%0A%0ANombre: ' + customer.name + '%0ATel: ' + customer.phone + '%0AEntrega: ' + customer.address + '%0A%0AM\u00E9todo: ' + (useMP ? 'Mercado Pago' : 'WhatsApp');
-        var waUrl = 'https://wa.me/51922330331?text=' + waMsg;
+        var waUrl = 'https://wa.me/51922330331?text=' + encodeURIComponent(waMsg);
 
         // Save order
         var orders = getOrders();
@@ -1556,7 +1556,7 @@
           id: orderId,
           date: new Date().toISOString(),
           customer: customer,
-          items: items,
+          items: items.map(function(x) { return { id: x.id, name: x.name, price: x.price, qty: x.qty, img: x.img, av: x.av, size: x.size }; }),
           fullTotal: fullTotal,
           advTotal: advTotal,
           fee: fee,
@@ -1650,14 +1650,14 @@
         }).join('%0A');
         var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
         var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + '%0A%0AC\u00F3digo: ' + orderId + '%0A%0ANombre: ' + customer.name + '%0ATel: ' + customer.phone + '%0AEntrega: ' + customer.address + '%0A%0AM\u00E9todo: WhatsApp';
-        var waUrl = 'https://wa.me/51922330331?text=' + waMsg;
+        var waUrl = 'https://wa.me/51922330331?text=' + encodeURIComponent(waMsg);
 
         var orders = getOrders();
         orders.push({
           id: orderId,
           date: new Date().toISOString(),
           customer: customer,
-          items: items,
+          items: items.map(function(x) { return { id: x.id, name: x.name, price: x.price, qty: x.qty, img: x.img, av: x.av, size: x.size }; }),
           fullTotal: fullTotal,
           advTotal: advTotal,
           fee: 0,
