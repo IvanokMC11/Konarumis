@@ -263,10 +263,20 @@ body {
 
 .sk-logo-wordmark {
   font-family: var(--font-headline);
-  font-weight: 800;
-  font-size: 1.25rem;
+  font-weight: 900;
+  font-size: 1.1rem;
+  line-height: 1;
   color: var(--color-ink);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sk-logo-accent {
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--color-teal);
 }
 
 .sk-nav-links {
