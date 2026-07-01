@@ -91,6 +91,10 @@
         <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
+      <div class="cart-total-row" id="cart-advance" style="display:none;font-size:0.78rem;color:var(--color-teal-dark);">
+        <span>Adelanto hoy (50%)</span>
+        <span style="font-weight:800;" id="cart-advance-amount">S/. 0</span>
+      </div>
       <div id="cart-mp-fee" style="display:none;font-size:0.7rem;color:var(--color-ink-variant);margin-bottom:2px;">
         <span>Comisión MP (3.49% + S/1.00):</span>
         <span id="cart-mp-fee-amount">S/. 0</span>
@@ -1205,7 +1209,18 @@
       },
 
       getTotal() {
-        return this.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+        return this.items.reduce(function(sum, i) { return sum + i.price * i.qty; }, 0);
+      },
+
+      getAdvanceTotal: function() {
+        return this.items.reduce(function(sum, i) {
+          var isPedido = (i.av || 'pedido') === 'pedido';
+          return sum + (isPedido ? (i.price * i.qty) / 2 : i.price * i.qty);
+        }, 0);
+      },
+
+      hasPedidoItems: function() {
+        return this.items.some(function(i) { return (i.av || 'pedido') === 'pedido'; });
       },
 
       getCount() {
@@ -1241,32 +1256,52 @@
         }
 
         footer.style.display = '';
-        totalEl.textContent = 'S/. ' + this.getTotal().toFixed(2);
+        var fullTotal = this.getTotal();
+        var advTotal = this.getAdvanceTotal();
+        var hasPedido = this.hasPedidoItems();
 
-        container.innerHTML = this.items.map(item => `
-          <div class="cart-item" data-id="${item.id}">
-            <img src="${item.img}" alt="${item.name}" class="cart-item-img" loading="lazy">
-            <div class="cart-item-info">
-              <p class="cart-item-name">${item.name}</p>
-              <p class="cart-item-detail">${item.size || 'Único'}</p>
-              <p class="cart-item-price">S/. ${item.price.toFixed(2)}</p>
-              <div class="cart-item-qty">
-                <button class="cart-qty-btn" data-action="dec">−</button>
-                <span class="cart-qty-val">${item.qty}</span>
-                <button class="cart-qty-btn" data-action="inc">+</button>
-              </div>
-            </div>
-            <button class="cart-item-remove" data-action="remove" aria-label="Eliminar">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-            </button>
-          </div>
-        `).join('');
+        totalEl.textContent = 'S/. ' + fullTotal.toFixed(2);
+        var advEl = document.getElementById('cart-advance');
+        var advTotalEl = document.getElementById('cart-advance-amount');
+        if (advEl && advTotalEl) {
+          advEl.style.display = hasPedido ? 'flex' : 'none';
+          advTotalEl.textContent = 'S/. ' + advTotal.toFixed(2);
+        }
+
+        var payNote = document.getElementById('cart-pay-note');
+        if (payNote) payNote.style.display = hasPedido ? 'block' : 'none';
+
+        container.innerHTML = this.items.map(function(item) {
+          var isPed = (item.av || 'pedido') === 'pedido';
+          var detail = item.size || 'Único';
+          detail += isPed ? ' · Adelanto 50%' : ' · Pago completo';
+          var priceHtml = 'S/. ' + item.price.toFixed(2);
+          if (isPed) {
+            priceHtml += ' <span style="font-size:0.6rem;color:var(--color-ink-variant);font-weight:400;">(hoy: S/. ' + (item.price / 2).toFixed(2) + ')</span>';
+          }
+          return '<div class="cart-item" data-id="' + item.id + '">' +
+            '<img src="' + item.img + '" alt="' + item.name + '" class="cart-item-img" loading="lazy">' +
+            '<div class="cart-item-info">' +
+            '<p class="cart-item-name">' + item.name + '</p>' +
+            '<p class="cart-item-detail">' + detail + '</p>' +
+            '<p class="cart-item-price">' + priceHtml + '</p>' +
+            '<div class="cart-item-qty">' +
+            '<button class="cart-qty-btn" data-action="dec">\u2212</button>' +
+            '<span class="cart-qty-val">' + item.qty + '</span>' +
+            '<button class="cart-qty-btn" data-action="inc">+</button>' +
+            '</div>' +
+            '</div>' +
+            '<button class="cart-item-remove" data-action="remove" aria-label="Eliminar">' +
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>' +
+            '</button>' +
+            '</div>';
+        }).join('');
 
         // Update WA link
-        const waText = this.items.map(i => `*${i.name}* x${i.qty}`).join(', ');
+        var waText = this.items.map(function(i) { return '*' + i.name + '* x' + i.qty; }).join(', ');
         document.getElementById('cart-wa-link').href =
           'https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20pedir:%20' +
-          encodeURIComponent(waText) + '%20(Total:%20S/.%20' + this.getTotal().toFixed(2) + ')';
+          encodeURIComponent(waText) + '%20(Pagar%20hoy:%20S/.%20' + advTotal.toFixed(2) + '%20-%20Total:%20S/.%20' + fullTotal.toFixed(2) + ')';
       },
     };
 
@@ -1334,16 +1369,16 @@
     const MP_FIXED = 1.00;
 
     function updateTotalWithMP() {
-      const useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      const subtotal = cart.getTotal();
-      const feeEl = document.getElementById('cart-mp-fee');
-      const feeAmtEl = document.getElementById('cart-mp-fee-amount');
-      const totalMPEl = document.getElementById('cart-total-mp');
-      const totalMPAmtEl = document.getElementById('cart-total-mp-amount');
+      var useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
+      var base = cart.getAdvanceTotal();
+      var feeEl = document.getElementById('cart-mp-fee');
+      var feeAmtEl = document.getElementById('cart-mp-fee-amount');
+      var totalMPEl = document.getElementById('cart-total-mp');
+      var totalMPAmtEl = document.getElementById('cart-total-mp-amount');
 
-      if (useMP && subtotal > 0) {
-        const fee = subtotal * MP_RATE + MP_FIXED;
-        const totalMP = subtotal + fee;
+      if (useMP && base > 0) {
+        var fee = base * MP_RATE + MP_FIXED;
+        var totalMP = base + fee;
         feeAmtEl.textContent = 'S/. ' + fee.toFixed(2);
         totalMPAmtEl.textContent = 'S/. ' + totalMP.toFixed(2);
         feeEl.style.display = 'flex';
@@ -1402,66 +1437,81 @@
     }
 
     function handleCheckout() {
-      const customer = getCustomerData();
+      var customer = getCustomerData();
       if (customer.error) { alert(customer.error); return; }
 
-      const items = cart.items;
-      const subtotal = cart.getTotal();
-      const useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      const hasPedido = items.some(i => i.av === 'pedido');
-      let total = subtotal;
-      let fee = 0;
-      if (useMP) { fee = +(subtotal * MP_RATE + MP_FIXED).toFixed(2); total = subtotal + fee; }
+      var items = cart.items;
+      var fullTotal = cart.getTotal();
+      var advTotal = cart.getAdvanceTotal();
+      var useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
+      var hasPedido = cart.hasPedidoItems();
+      var payable = advTotal;
+      var fee = 0;
+      if (useMP) { fee = +(payable * MP_RATE + MP_FIXED).toFixed(2); payable = advTotal + fee; }
 
-      const itemLines = items.map(i => `• ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('\n');
-      const payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
+      var itemLines = items.map(function(i) {
+        var isPed = (i.av || 'pedido') === 'pedido';
+        var line = '\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
+        if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+        return line;
+      }).join('\n');
+      var payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
 
       // Preview modal
-      const overlay = document.createElement('div');
+      var overlay = document.createElement('div');
       overlay.id = 'payment-overlay';
-      overlay.innerHTML = `
-        <div class="payment-modal order-preview-modal">
-          <h2 style="font-family:var(--font-headline);font-weight:800;margin:0 0 12px;color:var(--color-ink);font-size:1.1rem;">Resumen del pedido</h2>
-          <div style="background:var(--color-surface);border-radius:4px;padding:10px;margin-bottom:8px;text-align:left;font-size:0.78rem;">
-            <pre style="font-family:var(--font-body);margin:0;white-space:pre-wrap;color:var(--color-ink);line-height:1.4;">${itemLines}</pre>
-            <hr style="border:none;border-top:1px dashed var(--color-ink-variant);margin:8px 0;">
-            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:700;font-size:0.85rem;">
-              <span>Subtotal</span><span>S/. ${subtotal.toFixed(2)}</span>
-            </div>
-            ${useMP ? `<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-ink-variant);"><span>Comisión MP (3.49% + S/1)</span><span>S/. ${fee.toFixed(2)}</span></div>` : ''}
-            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:900;font-size:0.95rem;color:var(--color-teal-dark);margin-top:4px;">
-              <span>${useMP ? 'Total con MP' : 'Total'}</span><span>S/. ${total.toFixed(2)}</span>
-            </div>
-          </div>
-          <p style="font-size:0.7rem;color:var(--color-ink-variant);margin:0 0 10px;">${payNote}</p>
-          <div style="font-size:0.72rem;color:var(--color-ink-variant);margin-bottom:10px;padding:6px;background:var(--color-surface);border-radius:4px;">
-            <strong style="color:var(--color-ink);">${customer.name}</strong> · ${customer.phone}<br>
-            ${customer.address} · <strong>${useMP ? 'Mercado Pago' : 'WhatsApp'}</strong>
-          </div>
-          <button id="confirm-order-btn" class="btn btn--primary" style="width:100%;justify-content:center;text-transform:none;font-size:0.8rem;padding:10px;margin-bottom:6px;">
-            Confirmar y enviar por WhatsApp
-          </button>
-          <button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.7rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest('#payment-overlay').remove()">Cancelar</button>
-        </div>`;
+      var mpFeeHtml = useMP ? '<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-ink-variant);"><span>Comisi\u00F3n MP (3.49% + S/1)</span><span>S/. ' + fee.toFixed(2) + '</span></div>' : '';
+      var mpTotalHtml = useMP ? '<div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:900;font-size:0.95rem;color:var(--color-teal-dark);margin-top:2px;"><span>Total con MP</span><span>S/. ' + payable.toFixed(2) + '</span></div>' : '';
+      var totalHeaderHtml = hasPedido ? '<div style="display:flex;justify-content:space-between;font-size:0.72rem;"><span>Total productos</span><span>S/. ' + fullTotal.toFixed(2) + '</span></div>' : '';
+
+      overlay.innerHTML = '' +
+        '<div class="payment-modal order-preview-modal">' +
+        '<h2 style="font-family:var(--font-headline);font-weight:800;margin:0 0 12px;color:var(--color-ink);font-size:1.1rem;">Resumen del pedido</h2>' +
+        '<div style="background:var(--color-surface);border-radius:4px;padding:10px;margin-bottom:8px;text-align:left;font-size:0.78rem;">' +
+        '<pre style="font-family:var(--font-body);margin:0;white-space:pre-wrap;color:var(--color-ink);line-height:1.4;">' + itemLines + '</pre>' +
+        '<hr style="border:none;border-top:1px dashed var(--color-ink-variant);margin:8px 0;">' +
+        totalHeaderHtml +
+        '<div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:800;font-size:0.9rem;color:var(--color-teal-dark);">' +
+        '<span>' + (hasPedido ? 'Adelanto hoy' : 'Total a pagar') + '</span><span>S/. ' + advTotal.toFixed(2) + '</span>' +
+        '</div>' +
+        mpFeeHtml + mpTotalHtml +
+        '</div>' +
+        '<p style="font-size:0.7rem;color:var(--color-ink-variant);margin:0 0 10px;">' + payNote + '</p>' +
+        '<div style="font-size:0.72rem;color:var(--color-ink-variant);margin-bottom:10px;padding:6px;background:var(--color-surface);border-radius:4px;">' +
+        '<strong style="color:var(--color-ink);">' + customer.name + '</strong> \u00B7 ' + customer.phone + '<br>' +
+        customer.address + ' \u00B7 <strong>' + (useMP ? 'Mercado Pago' : 'WhatsApp') + '</strong>' +
+        '</div>' +
+        '<button id="confirm-order-btn" class="btn btn--primary" style="width:100%;justify-content:center;text-transform:none;font-size:0.8rem;padding:10px;margin-bottom:6px;">Confirmar y enviar por WhatsApp</button>' +
+        '<button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.7rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest(\'#payment-overlay\').remove()">Cancelar</button>' +
+        '</div>';
       document.body.appendChild(overlay);
 
       document.getElementById('confirm-order-btn').addEventListener('click', function() {
-        const orderId = genOrderId();
-        const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${items.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A')}%0A%0ATotal: S/. ${total.toFixed(2)}${useMP ? `%0A(Comisión MP: S/. ${fee.toFixed(2)})` : ''}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATel: ${customer.phone}%0AEntrega: ${customer.address}%0A%0AMétodo: ${useMP ? 'Mercado Pago' : 'WhatsApp'}`;
-        const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
+        var orderId = genOrderId();
+        var itemParts = items.map(function(i) {
+          var isPed = (i.av || 'pedido') === 'pedido';
+          var line = '- ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
+          if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+          return line;
+        }).join('%0A');
+        var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
+        var mpLine = useMP ? '%0A(Comisi\u00F3n MP: S/. ' + fee.toFixed(2) + ')' : '';
+        var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + mpLine + '%0A%0AC\u00F3digo: ' + orderId + '%0A%0ANombre: ' + customer.name + '%0ATel: ' + customer.phone + '%0AEntrega: ' + customer.address + '%0A%0AM\u00E9todo: ' + (useMP ? 'Mercado Pago' : 'WhatsApp');
+        var waUrl = 'https://wa.me/51922330331?text=' + waMsg;
 
         // Save order
-        const orders = getOrders();
+        var orders = getOrders();
         orders.push({
           id: orderId,
           date: new Date().toISOString(),
           customer: customer,
           items: items,
-          subtotal: subtotal,
+          fullTotal: fullTotal,
+          advTotal: advTotal,
           fee: fee,
-          total: total,
+          payable: payable,
           payment: useMP ? 'mp' : 'wpp',
-          paid: useMP ? true : false, // MP = pago confirmado, WPP = pendiente
+          paid: useMP ? true : false,
           status: 'pending',
           createdAt: Date.now()
         });
@@ -1549,7 +1599,7 @@
           </div>
           <div class="admin-order-customer">${o.customer.name} · ${o.customer.phone} · ${o.customer.address}</div>
           <div class="admin-order-items">${itemsHtml}</div>
-          <div class="admin-order-total">S/. ${o.total.toFixed(2)}</div>
+          <div class="admin-order-total">Pagar: S/. ${o.advTotal.toFixed(2)}${o.fullTotal !== o.advTotal ? ' \u00B7 Total: S/. ' + o.fullTotal.toFixed(2) : ''}${o.fee > 0 ? ' (MP: +S/. ' + o.fee.toFixed(2) + ')' : ''}</div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
             <span class="admin-order-payment ${o.payment}">${o.payment === 'mp' ? 'Mercado Pago ✓' : 'WhatsApp'}</span>
             ${o.payment === 'mp' ? '<span style="font-size:0.6rem;color:#2e7d32;font-weight:600;">Pagado — Listo para procesar</span>' : ''}
