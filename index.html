@@ -133,7 +133,8 @@
         <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco) — sin costo</p>
       </div>
       <div class="cart-btns">
-        <button class="btn btn--primary" id="checkout-trigger">Pagar por WhatsApp</button>
+        <button class="btn btn--primary" id="checkout-trigger">Pagar en la página</button>
+        <a href="#" class="btn btn--secondary" id="cart-wa-link">Consultar por WhatsApp</a>
       </div>
       <div id="post-payment-info" style="display:none;"></div>
     </div>
@@ -898,9 +899,8 @@
         <p class="sk-tracking-desc sk-reveal">Ingresa tu código de pedido para ver el estado actual.</p>
         <div class="sk-tracking-form sk-reveal">
           <input type="text" id="tracking-input" placeholder="Ej: KAB12C" class="sk-tracking-input">
-          <button id="tracking-btn" class="sk-btn sk-btn-teal">Buscar</button>
+          <button onclick="var id=document.getElementById('tracking-input').value.trim();if(id)window.location.href='/pedido?id='+id" class="sk-btn sk-btn-teal">Buscar</button>
         </div>
-        <div id="tracking-result" style="margin-top:16px;"></div>
       </div>
     </section>
   </main>
@@ -1297,7 +1297,11 @@
             '</div>';
         }).join('');
 
-        </div>').join('');
+        // Update WA link
+        var waText = this.items.map(function(i) { return '*' + i.name + '* x' + i.qty; }).join(', ');
+        document.getElementById('cart-wa-link').href =
+          'https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20pedir:%20' +
+          encodeURIComponent(waText) + '%20(Pagar%20hoy:%20S/.%20' + advTotal.toFixed(2) + '%20-%20Total:%20S/.%20' + fullTotal.toFixed(2) + ')';
       },
     };
 
@@ -1371,7 +1375,6 @@
       var feeAmtEl = document.getElementById('cart-mp-fee-amount');
       var totalMPEl = document.getElementById('cart-total-mp');
       var totalMPAmtEl = document.getElementById('cart-total-mp-amount');
-      var btn = document.getElementById('checkout-trigger');
 
       if (useMP && base > 0) {
         var fee = base * MP_RATE + MP_FIXED;
@@ -1382,11 +1385,9 @@
         feeEl.style.justifyContent = 'space-between';
         totalMPEl.style.display = 'flex';
         totalMPEl.style.justifyContent = 'space-between';
-        if (btn) btn.textContent = 'Pagar en la p\u00e1gina';
       } else {
         feeEl.style.display = 'none';
         totalMPEl.style.display = 'none';
-        if (btn) btn.textContent = 'Pagar por WhatsApp';
       }
     }
 
@@ -1534,27 +1535,10 @@
       });
     }
 
-    document.getElementById('checkout-trigger').addEventListener('click', function() {
-      var isMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      if (isMP) { handleCheckout(); return; }
-
-      // Direct WhatsApp - no preview, just send cart info
-      var items = cart.items;
-      if (!items.length) { alert('Carrito vac\u00edo'); return; }
-      var customer = getCustomerData();
-      if (customer.error) { alert(customer.error); return; }
-      var fullTotal = cart.getTotal();
-      var advTotal = cart.getAdvanceTotal();
-      var hasPedido = cart.hasPedidoItems();
-      var itemParts = items.map(function(i) {
-        var isPed = (i.av || 'pedido') === 'pedido';
-        var line = '- ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
-        if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-        return line;
-      }).join('%0A');
-      var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
-      var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + '%0A%0APago por WhatsApp';
-      window.open('https://wa.me/51922330331?text=' + waMsg, '_blank');
+    document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
+    document.getElementById('cart-wa-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.open('https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20consultar%20sobre%20un%20pedido.', '_blank');
     });
 
     // Initial render
@@ -1594,41 +1578,6 @@
         });
       }, { threshold: 0.2 });
       if (children.length) observer.observe(container);
-    });
-
-    // Tracking
-    document.getElementById('tracking-btn').addEventListener('click', function() {
-      var code = document.getElementById('tracking-input').value.trim().toUpperCase();
-      var resultEl = document.getElementById('tracking-result');
-      if (!code) { resultEl.innerHTML = '<p style="color:var(--color-ink-variant);font-size:0.85rem;">Ingresa un c\u00F3digo de pedido</p>'; return; }
-      var orders = getOrders();
-      var order = orders.find(function(o) { return o.id === code; });
-      if (!order) {
-        resultEl.innerHTML = '<p style="color:#f44336;font-size:0.85rem;">No se encontr\u00F3 ning\u00FAn pedido con el c\u00F3digo <strong>' + code + '</strong></p>';
-        return;
-      }
-      var itemsHtml = order.items.map(function(i) {
-        return '<div style="font-size:0.75rem;color:var(--color-ink);">\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2) + '</div>';
-      }).join('');
-      var paidStatus = order.payment === 'mp' ? 'Pagado (Mercado Pago)' : (order.paid ? 'Pagado' : 'Pendiente de pago');
-      var result = '' +
-        '<div style="background:var(--color-surface);border:var(--border-width) solid var(--color-ink);padding:16px;max-width:400px;margin:0 auto;text-align:left;">' +
-        '<div style="font-family:var(--font-headline);font-weight:800;font-size:1rem;color:var(--color-teal);letter-spacing:2px;margin-bottom:8px;">#' + order.id + '</div>' +
-        '<div style="font-size:0.75rem;color:var(--color-ink);margin-bottom:8px;">' +
-        '<strong>' + order.customer.name + '</strong> \u00B7 ' + order.customer.phone + '<br>' +
-        order.customer.address +
-        '</div>' +
-        itemsHtml +
-        '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--color-ink-variant);font-size:0.8rem;color:var(--color-ink);">' +
-        'Pagar: S/. ' + order.advTotal.toFixed(2) +
-        (order.fullTotal !== order.advTotal ? ' \u00B7 Total: S/. ' + order.fullTotal.toFixed(2) : '') +
-        '</div>' +
-        '<div style="margin-top:6px;font-size:0.7rem;font-weight:700;color:' + (order.paid ? '#2e7d32' : '#ff9800') + ';">' + paidStatus + '</div>' +
-        '</div>';
-      resultEl.innerHTML = result;
-    });
-    document.getElementById('tracking-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') document.getElementById('tracking-btn').click();
     });
 
     // 6. Admin panel
