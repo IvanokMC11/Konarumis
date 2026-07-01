@@ -759,9 +759,9 @@ body.dark-theme .sk-hero-deco {
   .sk-filter-btn { font-size: 0.6rem; padding: 4px 10px; }
   .sk-filters { gap: 4px; }
   .product-card {
-    flex-direction: row;
-    box-shadow: 2px 2px 0 var(--shadow-ink);
-    border-width: 2px;
+    flex-direction: row !important;
+    box-shadow: 2px 2px 0 var(--shadow-ink) !important;
+    border-width: 2px !important;
     border-radius: 2% 4% 3% 3% / 1% 1% 2% 3%;
     overflow: hidden;
     min-height: 0;
