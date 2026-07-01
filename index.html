@@ -1248,8 +1248,7 @@
     document.getElementById('cart-btn').addEventListener('click', openCart);
     document.getElementById('cart-close').addEventListener('click', closeCart);
     cartOverlay.addEventListener('click', closeCart);
-    const floatingCart = document.getElementById('floating-cart-btn');
-    if (floatingCart) floatingCart.addEventListener('click', openCart);
+    document.addEventListener('click', (e) => { if (e.target.closest('#floating-cart-btn')) openCart(); });
 
     // Cart item interactions (event delegation)
     document.getElementById('cart-items').addEventListener('click', (e) => {
