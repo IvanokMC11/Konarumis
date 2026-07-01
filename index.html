@@ -899,8 +899,9 @@
         <p class="sk-tracking-desc sk-reveal">Ingresa tu código de pedido para ver el estado actual.</p>
         <div class="sk-tracking-form sk-reveal">
           <input type="text" id="tracking-input" placeholder="Ej: KAB12C" class="sk-tracking-input">
-          <button onclick="var id=document.getElementById('tracking-input').value.trim();if(id)window.location.href='/pedido?id='+id" class="sk-btn sk-btn-teal">Buscar</button>
+          <button id="tracking-btn" class="sk-btn sk-btn-teal">Buscar</button>
         </div>
+        <div id="tracking-result" style="margin-top:16px;"></div>
       </div>
     </section>
   </main>
@@ -1401,6 +1402,35 @@
     // Override cart.render to also update MP display and button visibility
     var origRender2 = cart.render.bind(cart);
     cart.render = function() { origRender2(); updateTotalWithMP(); };
+
+    // Tracking
+    document.getElementById('tracking-btn').addEventListener('click', function() {
+      var code = document.getElementById('tracking-input').value.trim().toUpperCase();
+      var resultEl = document.getElementById('tracking-result');
+      if (!code) { resultEl.innerHTML = '<p style="color:var(--color-ink-variant);font-size:0.85rem;">Ingresa un c\u00f3digo de pedido</p>'; return; }
+      var orders = getOrders();
+      var order = orders.find(function(o) { return o.id === code; });
+      if (!order) {
+        resultEl.innerHTML = '<p style="color:#f44336;font-size:0.85rem;">No se encontr\u00f3 el c\u00f3digo <strong>' + code + '</strong></p>';
+        return;
+      }
+      var itemsHtml = order.items.map(function(i) {
+        return '<div style="font-size:0.75rem;color:var(--color-ink);">\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2) + '</div>';
+      }).join('');
+      var paidStatus = order.payment === 'mp' ? 'Pagado (Mercado Pago)' : (order.paid ? 'Pagado' : 'Pendiente de pago');
+      resultEl.innerHTML = '' +
+        '<div style="background:var(--color-surface);border:var(--border-width) solid var(--color-ink);padding:16px;max-width:400px;margin:0 auto;text-align:left;">' +
+        '<div style="font-family:var(--font-headline);font-weight:800;font-size:1rem;color:var(--color-teal);letter-spacing:2px;margin-bottom:8px;">#' + order.id + '</div>' +
+        '<div style="font-size:0.75rem;color:var(--color-ink);margin-bottom:8px;"><strong>' + order.customer.name + '</strong> \u00b7 ' + order.customer.phone + '<br>' + order.customer.address + '</div>' +
+        itemsHtml +
+        '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--color-ink-variant);font-size:0.8rem;color:var(--color-ink);">Pagar: S/. ' + order.advTotal.toFixed(2) +
+        (order.fullTotal !== order.advTotal ? ' \u00b7 Total: S/. ' + order.fullTotal.toFixed(2) : '') + '</div>' +
+        '<div style="margin-top:6px;font-size:0.7rem;font-weight:700;color:' + (order.paid || order.payment === 'mp' ? '#2e7d32' : '#ff9800') + ';">' + paidStatus + '</div>' +
+        '</div>';
+    });
+    document.getElementById('tracking-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('tracking-btn').click();
+    });
 
     // Generate order ID
     function genOrderId() {
