@@ -796,9 +796,9 @@ body.dark-theme .sk-hero-deco {
   }
   .product-title { font-size: 0.65rem; }
   .product-price { font-size: 0.65rem; white-space: nowrap; }
-  .product-desc { display: none; }
-  .product-meta { gap: 3px; }
-  .meta-chip { font-size: 0.45rem; padding: 1px 5px; }
+  .product-desc { font-size: 0.5rem; line-height: 1.2; margin-bottom: 1px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .product-meta { gap: 2px; }
+  .meta-chip { font-size: 0.4rem; padding: 0 4px; }
   .product-tag, .badge--popular { display: none; }
   .product-card .btn--primary {
     font-size: 0.55rem;
