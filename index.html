@@ -32,8 +32,7 @@
 </head>
 <body>
 
-  <!-- Skip to content link for keyboard users -->
-  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+  
 
   <!-- Header -->
   <header class="sk-header" id="main-header">
@@ -168,6 +167,75 @@
         </div>
 
       </div>
+
+      <!-- Stories carousel -->
+      <div class="sk-stories">
+        <div class="sk-stories-track" id="stories-track">
+          <a href="#catalogo" class="sk-story-item" data-img="images/jake.png">
+            <span class="sk-story-ring"><img src="images/jake.png" alt="Jake"></span>
+            <span class="sk-story-label">Jake</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/luffy.png">
+            <span class="sk-story-ring"><img src="images/luffy.png" alt="Luffy"></span>
+            <span class="sk-story-label">Luffy</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/zoro.png">
+            <span class="sk-story-ring"><img src="images/zoro.png" alt="Zoro"></span>
+            <span class="sk-story-label">Zoro</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/chopper.png">
+            <span class="sk-story-ring"><img src="images/chopper.png" alt="Chopper"></span>
+            <span class="sk-story-label">Chopper</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/Finn.png">
+            <span class="sk-story-ring"><img src="images/Finn.png" alt="Finn"></span>
+            <span class="sk-story-label">Finn</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/Freddy.png">
+            <span class="sk-story-ring"><img src="images/Freddy.png" alt="Freddy"></span>
+            <span class="sk-story-label">Freddy</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/Chuky.png">
+            <span class="sk-story-ring"><img src="images/Chuky.png" alt="Chuky"></span>
+            <span class="sk-story-label">Chuky</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/Jason.png">
+            <span class="sk-story-ring"><img src="images/Jason.png" alt="Jason"></span>
+            <span class="sk-story-label">Jason</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/SP1.png">
+            <span class="sk-story-ring"><img src="images/SP1.png" alt="Stan"></span>
+            <span class="sk-story-label">Stan</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/SP2.png">
+            <span class="sk-story-ring"><img src="images/SP2.png" alt="Kyle"></span>
+            <span class="sk-story-label">Kyle</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/SP3.png">
+            <span class="sk-story-ring"><img src="images/SP3.png" alt="Cartman"></span>
+            <span class="sk-story-label">Cartman</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/llama.png">
+            <span class="sk-story-ring"><img src="images/llama.png" alt="Llama"></span>
+            <span class="sk-story-label">Llama</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/Snoopy.png">
+            <span class="sk-story-ring"><img src="images/Snoopy.png" alt="Snoopy"></span>
+            <span class="sk-story-label">Snoopy</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/conejo llavero.png">
+            <span class="sk-story-ring"><img src="images/conejo llavero.png" alt="Conejo"></span>
+            <span class="sk-story-label">Conejo</span>
+          </a>
+          <a href="#catalogo" class="sk-story-item" data-img="images/ANNE.png">
+            <span class="sk-story-ring"><img src="images/ANNE.png" alt="Anne"></span>
+            <span class="sk-story-label">Anne</span>
+          </a>
+        </div>
+        <button class="sk-stories-btn sk-stories-prev" id="stories-prev" aria-label="Anterior">‹</button>
+        <button class="sk-stories-btn sk-stories-next" id="stories-next" aria-label="Siguiente">›</button>
+      </div>
+
     </section>
 
     <!-- Catalog -->
@@ -1012,7 +1080,16 @@
       });
     });
 
-    // 3b. Update active nav link on scroll
+    // 3b. Stories carousel scroll buttons
+    const storiesTrack = document.getElementById('stories-track');
+    const storiesPrev = document.getElementById('stories-prev');
+    const storiesNext = document.getElementById('stories-next');
+    if (storiesTrack && storiesPrev) {
+      storiesPrev.addEventListener('click', () => { storiesTrack.scrollBy({ left: -300, behavior: 'smooth' }); });
+      storiesNext.addEventListener('click', () => { storiesTrack.scrollBy({ left: 300, behavior: 'smooth' }); });
+    }
+
+    // 3c. Update active nav link on scroll
     const pageSections = document.querySelectorAll('section[id]');
     const pageNavLinks = document.querySelectorAll('.sk-nav-link');
     function updateActiveNav() {
