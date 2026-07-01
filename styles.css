@@ -614,10 +614,13 @@ body.dark-theme .sk-hero-deco {
 }
 
 .sk-hero-badge {
-  position: absolute;
-  bottom: -5px;
-  right: -10px;
+  position: relative;
+  bottom: auto;
+  right: auto;
   z-index: 2;
+  align-self: flex-end;
+  margin-left: -25px;
+  margin-bottom: 15px;
 }
 
 @media (max-width: 768px) {
@@ -1931,7 +1934,7 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .sk-hero-headline { font-size: clamp(1.6rem, 6vw, 2rem); }
   .sk-hero-body { font-size: 0.85rem; }
   .sk-hero-img-circle { width: 160px; height: 160px; }
-  .sk-hero-badge { font-size: 0.55rem; padding: 3px 8px; bottom: -5px; right: -5px; }
+  .sk-hero-badge { font-size: 0.55rem; padding: 3px 8px; }
   .sk-hero-social { gap: 6px; }
   .sk-hero-social-label { font-size: 0.65rem; }
   .sk-hero-social-icons a svg { width: 18px; height: 18px; }
@@ -1960,7 +1963,7 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .sk-hero-body { font-size: 0.75rem; }
   .sk-hero-body br { display: none; }
   .sk-hero-img-circle { width: 110px; height: 110px; }
-  .sk-hero-badge { font-size: 0.45rem; padding: 2px 5px; bottom: -8px; right: -8px; }
+  .sk-hero-badge { font-size: 0.45rem; padding: 2px 5px; }
   .sk-hero-deco { display: none; }
   .sk-hero-inner { gap: 12px; }
   .sk-container { padding: 0 12px; }
