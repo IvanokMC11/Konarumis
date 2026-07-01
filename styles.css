@@ -12,7 +12,7 @@
   --color-ink-variant:  #3F484D;
 
   /* Acentos */
-  --color-teal:         #2D7D9A;
+  --color-teal:         #76946b;
   --color-teal-dark:    #006480;
   --color-orange:       #E67E22;
   --color-marker:       #FE9D7A;
@@ -805,7 +805,7 @@ body.dark-theme .sk-hero-deco {
   transform: translateX(-50%);
   font-family: var(--font-body);
   font-size: 0.7rem;
-  color: #76946b;
+  color: var(--color-teal);
   background: rgba(255,255,255,0.85);
   padding: 3px 10px;
   border-radius: 4px;
@@ -820,7 +820,7 @@ body.dark-theme .sk-hero-deco {
 }
 body.dark-theme .reversible-doll-toggle-indicator {
   background: rgba(26,29,30,0.85);
-  color: #76946b;
+  color: var(--color-teal);
 }
 
 .product-img {
