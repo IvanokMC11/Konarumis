@@ -133,8 +133,8 @@
         <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco) — sin costo</p>
       </div>
       <div class="cart-btns">
-        <button class="btn btn--primary" id="checkout-trigger">Pagar en la página</button>
-        <a href="#" class="btn btn--secondary" id="cart-wa-link">Consultar por WhatsApp</a>
+        <button class="btn btn--primary" id="checkout-trigger" style="display:none;">Pagar en la página</button>
+        <a href="#" class="btn btn--primary" id="cart-wa-link">Pagar por WhatsApp</a>
       </div>
       <div id="post-payment-info" style="display:none;"></div>
     </div>
@@ -1370,15 +1370,18 @@
 
     function updateTotalWithMP() {
       var useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      var base = cart.getAdvanceTotal();
+      var subtotal = cart.getTotal();
       var feeEl = document.getElementById('cart-mp-fee');
       var feeAmtEl = document.getElementById('cart-mp-fee-amount');
       var totalMPEl = document.getElementById('cart-total-mp');
       var totalMPAmtEl = document.getElementById('cart-total-mp-amount');
 
-      if (useMP && base > 0) {
-        var fee = base * MP_RATE + MP_FIXED;
-        var totalMP = base + fee;
+      document.getElementById('checkout-trigger').style.display = (useMP && subtotal > 0) ? '' : 'none';
+      document.getElementById('cart-wa-link').style.display = (!useMP && subtotal > 0) ? '' : 'none';
+
+      if (useMP && subtotal > 0) {
+        var fee = subtotal * MP_RATE + MP_FIXED;
+        var totalMP = subtotal + fee;
         feeAmtEl.textContent = 'S/. ' + fee.toFixed(2);
         totalMPAmtEl.textContent = 'S/. ' + totalMP.toFixed(2);
         feeEl.style.display = 'flex';
@@ -1395,8 +1398,8 @@
       r.addEventListener('change', updateTotalWithMP);
     });
 
-    // Override cart.render to also update MP display
-    const origRender2 = cart.render.bind(cart);
+    // Override cart.render to also update MP display and button visibility
+    var origRender2 = cart.render.bind(cart);
     cart.render = function() { origRender2(); updateTotalWithMP(); };
 
     // Generate order ID
