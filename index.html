@@ -1319,7 +1319,13 @@
       const img = card.querySelector('.product-img')?.src || '';
       const wa = btn.getAttribute('href');
       const av = card.dataset.av || 'pedido';
-      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa, av });
+      var sizeChips = card.querySelectorAll('.meta-chip');
+      var size = '';
+      for (var si = 0; si < sizeChips.length; si++) {
+        var txt = sizeChips[si].textContent.trim();
+        if (/\d+\s*cm/i.test(txt)) { size = txt; break; }
+      }
+      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa, av, size: size });
       openCart();
     });
 
