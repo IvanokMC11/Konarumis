@@ -748,31 +748,34 @@ body.dark-theme .sk-hero-deco {
 }
 
 @media (max-width: 1024px) {
-  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .product-card { box-shadow: 4px 4px 0 var(--shadow-ink); }
 }
 @media (max-width: 480px) {
-  .products-grid { grid-template-columns: 1fr; }
-  .sk-catalog { padding: 48px 0; }
-  .sk-section-header { margin-bottom: 24px; }
+  .products-grid { grid-template-columns: 1fr; gap: 10px; }
+  .sk-catalog { padding: 32px 0; }
+  .sk-section-header { margin-bottom: 16px; }
   .sk-section-sub { font-size: var(--text-body-sm); }
-  .sk-filter-btn { font-size: 0.7rem; padding: 6px 14px; }
-  .sk-filters { gap: 6px; }
+  .sk-filter-btn { font-size: 0.65rem; padding: 5px 12px; }
+  .sk-filters { gap: 4px; }
   .product-card {
     flex-direction: row;
     margin-bottom: 0;
-    box-shadow: 3px 3px 0 var(--shadow-ink);
+    box-shadow: 2px 2px 0 var(--shadow-ink);
+    border-width: 3px;
+    border-radius: 2% 5% 4% 3% / 1% 1% 2% 3%;
   }
   .product-img-wrapper {
-    width: 120px;
-    min-width: 120px;
+    width: 140px;
+    min-width: 140px;
     aspect-ratio: auto;
     height: auto;
     border-bottom: none;
-    border-right: var(--border-width) solid var(--color-ink);
+    border-right: 3px solid var(--color-ink);
   }
   .product-img {
     width: 100%;
-    height: 120px;
+    height: 140px;
     object-fit: cover;
   }
   .product-img-wrapper.reversible-doll .product-img-back {
@@ -784,34 +787,36 @@ body.dark-theme .sk-hero-deco {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 2px;
   }
   .product-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 2px;
+    gap: 1px;
     margin-bottom: 0;
   }
-  .product-title { font-size: 0.75rem; margin-bottom: 0; }
-  .product-price { font-size: 0.78rem; }
-  .product-desc { font-size: 0.6rem; margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .product-meta { gap: 2px; margin-bottom: 4px; }
-  .meta-chip { font-size: 0.48rem; padding: 1px 5px; letter-spacing: 0; }
-  .product-tag { font-size: 0.4rem; padding: 2px 5px; top: -5px; left: 5px; }
-  .badge--popular { font-size: 0.4rem; padding: 2px 5px; top: -5px; right: 5px; }
+  .product-title { font-size: 0.72rem; margin-bottom: 0; }
+  .product-price { font-size: 0.72rem; }
+  .product-desc { font-size: 0.58rem; margin-bottom: 2px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .product-meta { gap: 2px; margin-bottom: 2px; }
+  .meta-chip { font-size: 0.45rem; padding: 1px 4px; letter-spacing: 0; }
+  .product-tag { font-size: 0.38rem; padding: 1px 4px; top: -4px; left: 4px; letter-spacing: 0; }
+  .badge--popular { font-size: 0.38rem; padding: 1px 4px; top: -4px; right: 4px; }
   .product-card .btn--primary {
-    font-size: 0.6rem;
-    padding: 4px 8px;
-    gap: 4px;
+    font-size: 0.55rem;
+    padding: 3px 6px;
+    gap: 3px;
     margin-top: auto;
     width: 100%;
-    border-radius: 0.25rem;
+    border-radius: 0.2rem;
+    border-width: 2px;
   }
-  .product-card .btn--primary svg { width: 10px; height: 10px; }
-  .sk-filter-btn { font-size: 0.7rem; padding: 6px 14px; }
-  .sk-filters { gap: 6px; }
+  .product-card .btn--primary svg { width: 8px; height: 8px; }
+  .sk-filter-btn { font-size: 0.65rem; padding: 5px 12px; }
+  .sk-filters { gap: 4px; }
   .product-card:hover {
     transform: none;
-    box-shadow: 3px 3px 0 var(--color-ink);
+    box-shadow: 2px 2px 0 var(--color-ink);
   }
 }
 
@@ -1930,7 +1935,7 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .section-header { margin-bottom: 24px; }
   .sk-section-label { font-size: 0.6rem; }
   .sk-section-title { font-size: clamp(1.2rem, 4vw, 1.5rem); }
-  .product-card { margin-bottom: 0; }
+  .product-card { margin-bottom: 0; box-shadow: 3px 3px 0 var(--shadow-ink); }
   .product-img-wrapper { aspect-ratio: 3 / 4; }
   .sk-floating-actions { bottom: 16px; right: 16px; gap: 10px; }
   .sk-floating-btn { width: 44px; height: 44px; }
