@@ -1196,6 +1196,7 @@ body.dark-theme .sk-hero-carousel::after {
   object-fit: cover;
   display: block;
   border: var(--border-width) solid var(--color-ink);
+  box-sizing: border-box;
   opacity: 0;
   transition: opacity 1.2s ease;
 }
