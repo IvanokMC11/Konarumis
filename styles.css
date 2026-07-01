@@ -1851,3 +1851,109 @@ body.dark-theme .btn--primary { border-color: var(--color-teal-dark); }
 body.dark-theme .product-img-wrapper { background: var(--color-surface-high); }
 
 body.dark-theme .product-card .btn--primary svg { fill: white; }
+
+/* ==========================================
+   MOBILE RESPONSIVE — mejoras adicionales
+   ========================================== */
+@media (max-width: 768px) {
+  .sk-hero-headline { font-size: clamp(1.6rem, 6vw, 2rem); }
+  .sk-hero-body { font-size: 0.85rem; }
+  .sk-hero-img-circle { width: 160px; height: 160px; }
+  .sk-hero-badge { font-size: 0.55rem; padding: 3px 8px; top: -8px; right: -8px; }
+  .sk-hero-social { gap: 6px; }
+  .sk-hero-social-label { font-size: 0.65rem; }
+  .sk-hero-social-icons a svg { width: 18px; height: 18px; }
+  .sk-hero-actions { flex-direction: column; align-items: center; gap: 8px; }
+  .sk-hero-actions .sk-btn { width: 100%; max-width: 260px; justify-content: center; }
+  .sk-header { padding: 8px 0; }
+  .sk-logo-img { width: 32px; height: 32px; }
+  .sk-logo-wordmark { font-size: 0.95rem; }
+  .sk-logo-accent { font-size: 0.65rem; }
+  .sk-nav-links.open { padding: 12px 16px; gap: 4px; }
+  .sk-nav-link { font-size: 0.8rem; padding: 8px 12px; }
+  .sk-nav-cta .sk-btn-teal { display: none; }
+  .section-header { margin-bottom: 24px; }
+  .sk-section-label { font-size: 0.6rem; }
+  .sk-section-title { font-size: clamp(1.2rem, 4vw, 1.5rem); }
+  .product-card { margin-bottom: 0; }
+  .product-img-wrapper { aspect-ratio: 3 / 4; }
+  .product-title { font-size: 0.9rem; }
+  .product-price { font-size: 1rem; }
+  .product-desc { font-size: 0.78rem; }
+  .meta-chip { font-size: 0.6rem; padding: 2px 8px; }
+  .product-card .btn--primary { font-size: 0.7rem; padding: 6px 12px; }
+  .sk-floating-actions { bottom: 16px; right: 16px; gap: 10px; }
+  .sk-floating-btn { width: 44px; height: 44px; }
+  .sk-floating-btn svg { width: 18px; height: 18px; }
+  .sk-floating-badge { width: 18px; height: 18px; font-size: 0.55rem; }
+  .payment-modal { padding: 24px 20px; margin: 0 12px; }
+}
+
+@media (max-width: 480px) {
+  .sk-hero { padding: 48px 0 40px; min-height: auto; }
+  .sk-hero-headline { font-size: clamp(1.3rem, 7vw, 1.6rem); }
+  .sk-hero-body { font-size: 0.78rem; }
+  .sk-hero-body br { display: none; }
+  .sk-hero-img-circle { width: 120px; height: 120px; }
+  .sk-hero-badge { font-size: 0.5rem; padding: 2px 6px; top: -6px; right: -6px; }
+  .sk-hero-deco { display: none; }
+  .sk-hero-inner { gap: 16px; }
+  .sk-container { padding: 0 12px; }
+  .sk-section { padding: 40px 0; }
+  .sk-catalog { padding: 36px 0; }
+  .section-header { margin-bottom: 16px; }
+  .sk-nav-cta .sk-btn { font-size: 0.7rem; padding: 6px 10px; }
+  .sk-nav-cta .sk-btn-teal { display: none; }
+  .sk-cart-badge { width: 16px; height: 16px; font-size: 0.5rem; }
+  .sk-section-sub { font-size: 0.75rem; }
+  .product-img-wrapper { aspect-ratio: 4 / 5; }
+  .product-img { height: 100%; }
+  .product-info { padding: 10px; }
+  .product-title { font-size: 0.82rem; }
+  .product-price { font-size: 0.9rem; }
+  .product-desc { font-size: 0.72rem; margin-bottom: 8px; }
+  .product-tag { font-size: 0.5rem; padding: 3px 8px; top: -8px; left: 8px; }
+  .badge--popular { font-size: 0.5rem; padding: 3px 8px; top: -8px; right: 8px; }
+  .meta-chip { font-size: 0.55rem; padding: 2px 6px; }
+  .product-meta { gap: 3px; margin-bottom: 8px; }
+  .product-card .btn--primary { gap: 4px; }
+  .sk-table { font-size: 0.7rem; }
+  .sk-table th, .sk-table td { padding: 6px 8px; }
+  .sk-footer { padding: 32px 0 16px; }
+  .sk-footer-logo { font-size: 1rem; }
+  .sk-footer-desc { font-size: 0.7rem; }
+  .sk-footer-nav a { font-size: 0.72rem; }
+  .sk-footer-contact-item { font-size: 0.72rem; }
+  .sk-footer-bottom p { font-size: 0.65rem; }
+  .cart-drawer-header { padding: 14px 16px; }
+  .cart-drawer-title { font-size: 0.9rem; }
+  .cart-drawer-items { padding: 8px 12px; }
+  .cart-item { padding: 8px 0; gap: 8px; }
+  .cart-item-img { width: 44px; height: 44px; }
+  .cart-item-name { font-size: 0.72rem; }
+  .cart-item-price { font-size: 0.72rem; }
+  .cart-drawer-footer { padding: 12px; }
+  .cart-btns .btn--primary { font-size: 0.72rem; padding: 8px 12px; }
+  .cart-btns .btn--secondary { font-size: 0.7rem; padding: 6px 12px; }
+  .cf-input { font-size: 0.72rem; padding: 5px 8px; }
+  .cf-label { font-size: 0.65rem; }
+  .cf-radio { font-size: 0.6rem; padding: 4px 8px; }
+  .checkout-form-title { font-size: 0.65rem; }
+  .sk-about-grid { gap: 16px; }
+  .sk-about-features { grid-template-columns: 1fr; }
+  .sk-testimonial-card { padding: 20px; }
+  .sk-card-flip { width: 240px; height: 160px; }
+  .sk-floating-actions { bottom: 12px; right: 12px; gap: 8px; }
+  .sk-floating-btn { width: 40px; height: 40px; }
+  .sk-floating-btn svg { width: 16px; height: 16px; }
+  .payment-modal { padding: 20px 16px; }
+  .payment-modal h2 { font-size: 1.1rem; }
+}
+
+@media (max-width: 380px) {
+  .sk-hero-img-circle { width: 100px; height: 100px; }
+  .sk-hero-headline { font-size: 1.2rem; }
+  .products-grid { gap: 12px; }
+  .product-card { margin-bottom: 0; }
+  .sk-footer-grid { gap: 16px; }
+}
