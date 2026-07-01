@@ -650,6 +650,7 @@ body.dark-theme .sk-hero-deco {
    CATÁLOGO
    ========================================== */
 .sk-catalog {
+  position: relative;
   padding: 80px 0;
   background: var(--color-paper);
 }
@@ -1430,6 +1431,7 @@ body.dark-theme .sk-hero-carousel-img.visible {
    MÉTRICAS / SIZE GUIDE
    ========================================== */
 .sk-medidas {
+  position: relative;
   padding: 80px 0;
   background: var(--color-paper);
   border-top: var(--border-width) solid var(--color-ink);
@@ -1505,6 +1507,7 @@ body.dark-theme .sk-hero-carousel-img.visible {
    ABOUT / NOSOTROS
    ========================================== */
 .sk-about {
+  position: relative;
   padding: 80px 0;
   background: var(--color-surface);
   border-top: var(--border-width) solid var(--color-ink);
@@ -2178,38 +2181,35 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 }
 
 /* ==========================================
-   STICKERS LATERALES
+   STICKERS (capas por seccion)
    ========================================== */
-.sticker-lateral {
+.stickers-layer {
   position: absolute;
-  top: 40%;
-  z-index: 9999;
-  cursor: pointer;
-  filter: drop-shadow(3px 5px 8px rgba(0, 0, 0, 0.3));
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+.sticker {
+  position: absolute;
+  will-change: transform;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.2));
+  pointer-events: auto;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.sticker-lateral img {
-  display: block;
-  width: 110px;
-  height: auto;
+.sticker:hover {
+  transform: scale(1.12) rotate(0deg) !important;
 }
-.sticker-izquierdo {
-  left: -15px;
-  transform: rotate(12deg);
-}
-.sticker-izquierdo:hover {
-  left: 0px;
-  transform: scale(1.1) rotate(0deg);
-}
-.sticker-derecho {
-  right: -15px;
-  transform: rotate(-15deg);
-}
-.sticker-derecho:hover {
-  right: 0px;
-  transform: scale(1.1) rotate(0deg);
-}
+.s-left-top    { top: 5%;  left: -30px; width: 110px; animation: floatA 6.5s ease-in-out infinite; }
+.s-left-bottom { bottom: 8%; left: -10px; width: 75px;  animation: floatC 7.2s ease-in-out infinite; animation-delay: -3s; }
+.s-right-top    { top: 8%;  right: -20px; width: 90px;  animation: floatB 8s ease-in-out infinite; animation-delay: -2s; }
+.s-right-bottom { bottom: 5%; right: -30px; width: 120px; animation: floatA 5.8s ease-in-out infinite; animation-delay: -1s; }
 
-@media (max-width: 900px) {
-  .sticker-lateral { display: none; }
+@keyframes floatA { 0%,100% { transform: translate(0,0) rotate(-4deg); } 50% { transform: translate(6px,-16px) rotate(4deg); } }
+@keyframes floatB { 0%,100% { transform: translate(0,0) rotate(3deg); }  50% { transform: translate(-8px,-12px) rotate(-5deg); } }
+@keyframes floatC { 0%,100% { transform: translate(0,0) rotate(-2deg) scale(1); } 50% { transform: translate(8px,-10px) rotate(3deg) scale(1.03); } }
+
+@media (max-width: 700px) {
+  .s-left-top, .s-right-top       { width: 55px; }
+  .s-left-bottom, .s-right-bottom { width: 45px; }
 }
