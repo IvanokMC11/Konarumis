@@ -1930,8 +1930,6 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .section-header { margin-bottom: 24px; }
   .sk-section-label { font-size: 0.6rem; }
   .sk-section-title { font-size: clamp(1.2rem, 4vw, 1.5rem); }
-  .product-card { margin-bottom: 0; box-shadow: 3px 3px 0 var(--shadow-ink); }
-  .product-img-wrapper { aspect-ratio: 3 / 4; }
   .sk-floating-actions { bottom: 16px; right: 16px; gap: 10px; }
   .sk-floating-btn { width: 44px; height: 44px; }
   .sk-floating-btn svg { width: 18px; height: 18px; }
@@ -1998,6 +1996,5 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .sk-hero-img-circle { width: 100px; height: 100px; }
   .sk-hero-headline { font-size: 1.2rem; }
   .products-grid { gap: 12px; }
-  .product-card { margin-bottom: 0; }
   .sk-footer-grid { gap: 16px; }
 }
