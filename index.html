@@ -114,11 +114,10 @@
         <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco) — sin costo</p>
       </div>
       <div class="cart-btns">
-        <button class="btn btn--primary" id="checkout-trigger">Pagar con MP</button>
-        <a href="#" class="btn btn--secondary" id="cart-wa-link">Pedir por WhatsApp</a>
+        <button class="btn btn--primary" id="checkout-trigger">Pagar en la página</button>
+        <a href="#" class="btn btn--secondary" id="cart-wa-link">Consultar por WhatsApp</a>
       </div>
-      <div id="checkout-brick" style="margin-top:8px;"></div>
-      <div id="post-payment-info" style="display:none;margin-top:8px;"></div>
+      <div id="post-payment-info" style="display:none;"></div>
     </div>
   </aside>
 
@@ -1282,46 +1281,13 @@
     // Init required state
     document.querySelectorAll('input[name="cf-location"]:checked').forEach(r => r.dispatchEvent(new Event('change')));
 
-    // Mercado Pago Bricks
-    const MERCADO_PAGO_PUBLIC_KEY = 'TEST-77a7d14b-edd8-4d4e-901a-ffe99401c4fc';
-    let mpInstance = null;
-    let currentPreferenceId = null;
-
-    // Update button texts based on availability
-    document.querySelectorAll('.product-card').forEach(card => {
-      const btn = card.querySelector('.btn--primary');
-      if (!btn) return;
-      const isStock = (card.dataset.av || 'pedido') === 'stock';
-      btn.innerHTML = isStock ? 'Pedir amigurumi' : 'Encargar (50% adelanto)';
-      if (!isStock) {
-        const svg = btn.querySelector('svg');
-        if (svg) svg.remove();
-      }
-    });
-
-    // Calculate what to pay per item
-    function getCheckoutItems() {
-      return cart.items.map(i => {
-        if (i.av === 'pedido') {
-          return { ...i, payPrice: +(i.price * 0.5).toFixed(2), label: 'Adelanto: ' + i.name };
-        }
-        return { ...i, payPrice: i.price, label: i.name };
-      });
+    // Generate order ID
+    function genOrderId() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let id = '';
+      for (let i = 0; i < 6; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+      return 'K' + id;
     }
-
-    function updateCartDisplay() {
-      const items = getCheckoutItems();
-      const hasPedido = items.some(i => i.av === 'pedido');
-      const fullTotal = cart.getTotal();
-      const payTotal = items.reduce((s, i) => s + i.payPrice * i.qty, 0);
-      document.getElementById('cart-total-label').textContent = hasPedido ? 'A pagar ahora' : 'Total';
-      document.getElementById('cart-pay-note').style.display = hasPedido ? 'block' : 'none';
-      document.getElementById('cart-total').textContent = 'S/. ' + payTotal.toFixed(2);
-    }
-
-    // Override cart.render to also call updateCartDisplay
-    const origRender = cart.render.bind(cart);
-    cart.render = function() { origRender(); updateCartDisplay(); };
 
     function getCustomerData() {
       const name = document.getElementById('cf-name').value.trim();
@@ -1344,154 +1310,49 @@
       return { name, phone, address, location };
     }
 
-    async function handleCheckout() {
-      const trigger = document.getElementById('checkout-trigger');
-      const brickContainer = document.getElementById('checkout-brick');
-
+    function handleCheckout() {
       const customer = getCustomerData();
       if (customer.error) {
-        trigger.disabled = false;
-        trigger.textContent = 'Pagar con Mercado Pago';
-        brickContainer.innerHTML = '<p class="cart-error">' + customer.error + '</p>';
+        alert(customer.error);
         return;
       }
 
-      trigger.disabled = true;
-      trigger.textContent = 'Preparando...';
-      brickContainer.innerHTML = '';
+      const orderId = genOrderId();
+      const items = cart.items;
+      const total = cart.getTotal();
 
-      const items = getCheckoutItems();
+      const itemLines = items.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A');
+      const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATeléfono: ${customer.phone}%0AEntrega: ${customer.address}`;
+      const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
 
-      try {
-        const res = await fetch('/api/create-preference', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            items: items.map(i => ({
-              title: i.label,
-              unit_price: i.payPrice,
-              quantity: i.qty,
-            })),
-            customer: { name: customer.name, phone: customer.phone, address: customer.address, location: customer.location },
-          }),
-        });
+      cart.clear();
 
-        let errorMsg = '';
-        let data;
-        try {
-          data = await res.json();
-        } catch (_) {
-          errorMsg = 'El servidor no respondió correctamente (código ' + res.status + ')';
-        }
-
-        if (errorMsg) throw new Error(errorMsg);
-        if (!res.ok) throw new Error(data?.error || 'Error al crear pago');
-
-        currentPreferenceId = data.preferenceId;
-        trigger.style.display = 'none';
-
-        if (!mpInstance) {
-          mpInstance = new MercadoPago(MERCADO_PAGO_PUBLIC_KEY, { locale: 'es-PE' });
-        }
-
-        mpInstance.bricks().create('wallet', 'checkout-brick', {
-          initialization: { preferenceId: currentPreferenceId },
-          customization: { texts: { action: 'pay', value: 'Pagar' } },
-        });
-
-      } catch (e) {
-        trigger.disabled = false;
-        trigger.textContent = 'Pagar con Mercado Pago';
-        brickContainer.innerHTML = '<p class="cart-error" style="margin-top:8px;color:var(--warm-accent);font-size:0.85rem;">' + e.message + '</p>';
-      }
+      const overlay = document.createElement('div');
+      overlay.id = 'payment-overlay';
+      overlay.innerHTML = `
+        <div class="payment-modal">
+          <div class="payment-icon ok">✓</div>
+          <h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">Pedido registrado</h2>
+          <p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">Código de pedido:</p>
+          <p style="font-size:1.5rem;font-weight:900;color:var(--color-teal);margin:0 0 12px;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>
+          <p style="font-family:var(--font-body);font-size:0.8rem;color:var(--color-ink-variant);margin:0 0 16px;">Envía los datos por WhatsApp para confirmar tu pedido.</p>
+          <a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978z"/></svg>
+            Enviar pedido por WhatsApp
+          </a>
+          <button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-weight:700;font-size:0.75rem;color:var(--color-ink-variant);display:block;margin:0 auto;" onclick="this.closest('#payment-overlay').remove()">Cerrar</button>
+        </div>`;
+      document.body.appendChild(overlay);
     }
 
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
     document.getElementById('cart-wa-link').addEventListener('click', (e) => {
       e.preventDefault();
-      window.open(e.currentTarget.href, '_blank');
+      window.open('https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20consultar%20sobre%20un%20pedido.', '_blank');
     });
 
     // Initial render
     cart.render();
-
-    // Post-pago: mostrar mensaje al volver de Mercado Pago
-    const params = new URLSearchParams(window.location.search);
-    const status = params.get('status');
-    const orderId = params.get('order');
-
-    async function showPaymentResult() {
-      if (!status) return;
-
-      // Confirm order if success
-      if (status === 'success' && orderId) {
-        try { await fetch('/api/order/' + orderId + '/confirm', { method: 'POST' }); } catch (_) {}
-      }
-
-      // Fetch order data from API (works across tabs)
-      let savedItems = [];
-      let total = 0;
-      if (orderId) {
-        try {
-          const r = await fetch('/api/order/' + orderId);
-          if (r.ok) {
-            const o = await r.json();
-            savedItems = o.items || [];
-            total = o.total || 0;
-          }
-        } catch (_) {}
-      }
-
-      // Fallback to localStorage if API failed
-      if (!savedItems.length) {
-        savedItems = cart.items;
-        total = cart.getTotal();
-      }
-
-      if (status === 'success') cart.clear();
-
-      const itemLines = savedItems.map(i => `- ${i.title || i.name} x${i.qty} — S/. ${((i.unit_price || i.price || 0) * i.qty).toFixed(2)}`).join('%0A');
-      const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0ACodigo de pedido: ${orderId || '---'}%0A(completar datos)`;
-      const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
-
-      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" class="btn btn--secondary" style="text-decoration:none;">Ver seguimiento</a>` : '';
-      const codeTag = orderId ? `<p style="font-size:1.5rem;font-weight:700;color:var(--color-teal);margin:8px 0;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>` : '';
-
-      const msgs = {
-        success: {
-          title: 'Pago exitoso',
-          text: 'Gracias por tu compra. Guarda tu codigo de pedido para hacer seguimiento.',
-          type: 'ok',
-          html: codeTag + `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;"><a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;">Enviar por WhatsApp</a>${trackLink}</div>`,
-        },
-        failure: {
-          title: 'Pago no completado',
-          text: 'El pago no se proceso. Podés intentar de nuevo o escribirme por WhatsApp.',
-          type: 'error',
-          html: '',
-        },
-        pending: {
-          title: 'Pago pendiente',
-          text: 'El pago esta en revision. Te avisare cuando se confirme.',
-          type: 'info',
-          html: '',
-        },
-      };
-      const msg = msgs[status] || msgs.failure;
-      const overlay = document.createElement('div');
-      overlay.id = 'payment-overlay';
-      overlay.innerHTML = `
-        <div class="payment-modal">
-          <div class="payment-icon ${msg.type}">${status === 'success' ? '✓' : status === 'failure' ? '✗' : '…'}</div>
-          <h2>${msg.title}</h2>
-          <p>${msg.text}</p>
-          ${msg.html}
-          <button class="btn-ghost" onclick="document.getElementById('payment-overlay').remove();history.replaceState({},'','/');">Cerrar</button>
-        </div>`;
-      document.body.appendChild(overlay);
-      history.replaceState({}, '', '/');
-    }
-    showPaymentResult();
 
     // 4. Scroll reveal animation
     const revealEls = document.querySelectorAll('.sk-reveal');
@@ -1530,7 +1391,7 @@
     });
 
   </script>
-  <script src="https://sdk.mercadopago.com/js/v2" async defer></script>
+
 
   <!-- Floating actions: cart + WhatsApp -->
   <div class="sk-floating-actions">
