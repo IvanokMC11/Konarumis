@@ -1589,26 +1589,102 @@
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
     document.getElementById('cart-wa-link').addEventListener('click', function(e) {
       e.preventDefault();
+      var customer = getCustomerData();
+      if (customer.error) { alert(customer.error); return; }
+
       var items = cart.items;
-      if (!items.length) { alert('Carrito vac\u00edo'); return; }
       var fullTotal = cart.getTotal();
       var advTotal = cart.getAdvanceTotal();
       var hasPedido = cart.hasPedidoItems();
-      var parts = items.map(function(i) {
+
+      var itemLines = items.map(function(i) {
         var isPed = (i.av || 'pedido') === 'pedido';
         var size = i.size || '';
         var chipEl = document.getElementById(i.id);
         var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-        var line = '\uD83E\uDD96 ' + i.name + ' x' + i.qty;
+        var line = '\u2022 ' + i.name + ' x' + i.qty;
         if (size) line += ' (' + size + ')';
         line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
-        if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-        if (chips) line += ' | ' + chips;
+        if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+        if (chips) line += ' \u2014 ' + chips;
         return line;
-      }).join('%0A');
-      var totalLine = hasPedido ? 'Pago hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
-      var msg = 'Hola! Quiero pedir:%0A%0A' + parts + '%0A%0A' + totalLine + '%0A%0A' + (hasPedido ? '\u26A0\uFE0F Los productos a pedido requieren 50% de adelanto.%0A%0A' : '') + '\uD83D\uDCCD Entrega: Cusco (Plaza Tupac Amaru) o env\u00edo a todo Per\u00FA';
-      window.open('https://wa.me/51922330331?text=' + msg, '_blank');
+      }).join('\n');
+      var payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
+
+      var overlay = document.createElement('div');
+      overlay.id = 'payment-overlay';
+      overlay.innerHTML = '' +
+        '<div class="payment-modal order-preview-modal">' +
+        '<h2 style="font-family:var(--font-headline);font-weight:800;margin:0 0 12px;color:var(--color-ink);font-size:1.1rem;">Resumen del pedido</h2>' +
+        '<div style="background:var(--color-surface);border-radius:4px;padding:10px;margin-bottom:8px;text-align:left;font-size:0.78rem;">' +
+        '<pre style="font-family:var(--font-body);margin:0;white-space:pre-wrap;color:var(--color-ink);line-height:1.4;">' + itemLines + '</pre>' +
+        '<hr style="border:none;border-top:1px dashed var(--color-ink-variant);margin:8px 0;">' +
+        (hasPedido ? '<div style="display:flex;justify-content:space-between;font-size:0.72rem;"><span>Total productos</span><span>S/. ' + fullTotal.toFixed(2) + '</span></div>' : '') +
+        '<div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:800;font-size:0.9rem;color:var(--color-teal-dark);">' +
+        '<span>' + (hasPedido ? 'Adelanto hoy' : 'Total a pagar') + '</span><span>S/. ' + advTotal.toFixed(2) + '</span>' +
+        '</div>' +
+        '</div>' +
+        '<p style="font-size:0.7rem;color:var(--color-ink-variant);margin:0 0 10px;">' + payNote + '</p>' +
+        '<div style="font-size:0.72rem;color:var(--color-ink-variant);margin-bottom:10px;padding:6px;background:var(--color-surface);border-radius:4px;">' +
+        '<strong style="color:var(--color-ink);">' + customer.name + '</strong> \u00B7 ' + customer.phone + '<br>' +
+        customer.address + ' \u00B7 <strong>WhatsApp</strong>' +
+        '</div>' +
+        '<button id="confirm-wpp-btn" class="btn btn--primary" style="width:100%;justify-content:center;text-transform:none;font-size:0.8rem;padding:10px;margin-bottom:6px;">Confirmar y enviar por WhatsApp</button>' +
+        '<button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.7rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest(\'#payment-overlay\').remove()">Cancelar</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      document.getElementById('confirm-wpp-btn').addEventListener('click', function() {
+        var orderId = genOrderId();
+        var itemParts = items.map(function(i) {
+          var isPed = (i.av || 'pedido') === 'pedido';
+          var size = i.size || '';
+          var chipEl = document.getElementById(i.id);
+          var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
+          var line = '\uD83E\uDD96 ' + i.name + ' x' + i.qty;
+          if (size) line += ' (' + size + ')';
+          line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
+          if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+          if (chips) line += ' | ' + chips;
+          return line;
+        }).join('%0A');
+        var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
+        var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + '%0A%0AC\u00F3digo: ' + orderId + '%0A%0ANombre: ' + customer.name + '%0ATel: ' + customer.phone + '%0AEntrega: ' + customer.address + '%0A%0AM\u00E9todo: WhatsApp';
+        var waUrl = 'https://wa.me/51922330331?text=' + waMsg;
+
+        var orders = getOrders();
+        orders.push({
+          id: orderId,
+          date: new Date().toISOString(),
+          customer: customer,
+          items: items,
+          fullTotal: fullTotal,
+          advTotal: advTotal,
+          fee: 0,
+          payable: advTotal,
+          payment: 'wpp',
+          paid: false,
+          status: 'pending',
+          createdAt: Date.now()
+        });
+        saveOrders(orders);
+
+        cart.clear();
+
+        overlay.innerHTML = '' +
+          '<div class="payment-modal">' +
+          '<div class="payment-icon ok">\u2713</div>' +
+          '<h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">Pedido registrado</h2>' +
+          '<p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">C\u00F3digo de seguimiento:</p>' +
+          '<p style="font-size:1.8rem;font-weight:900;color:var(--color-teal);margin:0 0 12px;font-family:var(--font-headline);letter-spacing:3px;">#' + orderId + '</p>' +
+          '<p style="font-family:var(--font-body);font-size:0.78rem;color:var(--color-ink-variant);margin:0 0 16px;">Env\u00EDa los datos por WhatsApp para confirmar tu pedido.</p>' +
+          '<a href="' + waUrl + '" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;width:100%;">' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>' +
+          'Enviar por WhatsApp' +
+          '</a>' +
+          '<button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.72rem;color:var(--color-ink-variant);display:block;margin:0 auto;" onclick="this.closest(\'#payment-overlay\').remove()">Cerrar</button>' +
+          '</div>';
+      });
     });
 
     // Initial render
