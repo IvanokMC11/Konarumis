@@ -271,12 +271,28 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1px;
+  text-decoration: none;
+  position: relative;
+}
+.sk-logo-wordmark::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: -4px;
+  right: -4px;
+  height: 3px;
+  background: var(--color-teal);
+  border-radius: 2px;
+  transform: rotate(-0.5deg) scaleX(0.95);
+  opacity: 0.7;
 }
 .sk-logo-accent {
   font-weight: 800;
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   color: var(--color-teal);
+  position: relative;
+  padding-left: 2px;
 }
 
 .sk-nav-links {
@@ -1676,6 +1692,66 @@ body.dark-theme .sk-card-face,
 body.dark-theme .sk-tracking-input { background: var(--color-surface); }
 body.dark-theme .sk-table td { background: var(--color-surface); }
 body.dark-theme .sk-footer { background: #76946b; }
+
+/* ==========================================
+   FLOATING ACTIONS (cart + WhatsApp)
+   ========================================== */
+.sk-floating-actions {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999;
+}
+.sk-floating-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-width) solid var(--color-ink);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  position: relative;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink);
+}
+.sk-floating-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+.sk-floating-cart {
+  background: white;
+  color: var(--color-ink);
+}
+.sk-floating-whatsapp {
+  background: #25D366;
+  color: white;
+  border-color: #1da851;
+}
+.sk-floating-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-orange);
+  color: white;
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 0.65rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-ink);
+}
+body.dark-theme .sk-floating-cart {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
 
 /* ==========================================
    DARK THEME
