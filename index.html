@@ -35,64 +35,36 @@
   <!-- Skip to content link for keyboard users -->
   <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 
-  <!-- Header / Navigation Bar -->
-  <header class="header" id="main-header">
-    <div class="container nav-container">
-      <a href="#" class="logo" id="header-logo" aria-label="Konarumis Home">
-        <img src="images/logo.png" alt="Konarumis Logo" class="logo-img">
-        <!-- Brand Name Image that changes based on theme -->
-        <img src="images/nombre.png" alt="Konarumis" class="logo-text-img" id="logo-brand-name">
+  <!-- Header -->
+  <header class="sk-header" id="main-header">
+    <div class="sk-container sk-nav-wrap">
+      <a href="#" class="sk-logo" aria-label="Konarumis Home">
+        <img src="images/logo.png" alt="Konarumis" class="sk-logo-img">
+        <span class="sk-logo-wordmark">KONARUMIS</span>
       </a>
-      
-      <nav aria-label="Main Navigation">
-        <ul class="nav-links">
-          <li><a href="#" class="nav-link" id="nav-link-home">Inicio</a></li>
-          <li><a href="#productos" class="nav-link" id="nav-link-catalog">Catálogo</a></li>
-          <li><a href="#medidas" class="nav-link" id="nav-link-sizes">Medidas</a></li>
-          <li><a href="#nosotros" class="nav-link" id="nav-link-about">Nosotros</a></li>
-          <li><a href="#contacto" class="nav-link" id="nav-link-contact">Contacto</a></li>
+      <nav aria-label="Navegación principal">
+        <ul class="sk-nav-links">
+          <li><a href="#inicio" class="sk-nav-link">Inicio</a></li>
+          <li><a href="#catalogo" class="sk-nav-link">Catálogo</a></li>
+          <li><a href="#como-hacemos" class="sk-nav-link">Proceso</a></li>
+          <li><a href="#contacto" class="sk-nav-link">Contacto</a></li>
         </ul>
       </nav>
-
-      <div class="nav-cta" style="display: flex; align-items: center;">
-        <button class="hamburger" id="hamburger-btn" aria-label="Menú">
-          <span></span>
-          <span></span>
-          <span></span>
+      <div class="sk-nav-cta">
+        <button id="cart-btn" class="sk-btn sk-btn-sm" aria-label="Carrito">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <span id="cart-count" class="sk-cart-badge">0</span>
         </button>
-        <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20una%20consulta%20sobre%20tus%20amigurumis." target="_blank" class="btn btn--secondary" id="nav-action-btn" style="padding: 8px 18px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
-          <!-- Small WhatsApp icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/>
-          </svg>
+        <a href="https://wa.me/51922330331" target="_blank" class="sk-btn sk-btn-teal sk-btn-sm">
+          <span class="material-symbols-outlined">chat</span>
           Escribir
         </a>
-
-        <!-- Cart Button -->
-        <button class="cart-btn" id="cart-btn" aria-label="Carrito">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.17 14.75l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25z"/>
-          </svg>
-          <span class="cart-count" id="cart-count">0</span>
-        </button>
-
-        <!-- Dark Mode Toggle Button -->
-        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Cambiar tema">
-          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm-1.06-12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm-11.31 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06z"/>
-          </svg>
+        <button class="sk-hamburger" id="sk-hamburger" aria-label="Menú">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </header>
-
-  <!-- Mobile nav overlay -->
-  <div class="nav-overlay" id="nav-overlay"></div>
-
-  <!-- WhatsApp Float Button -->
-  <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20deseo%20hacer%20una%20consulta%20sobre%20tus%20amigurumis." target="_blank" class="wa-float" aria-label="WhatsApp">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
-  </a>
 
   <!-- Cart Drawer -->
   <div class="cart-overlay" id="cart-overlay"></div>
@@ -143,101 +115,70 @@
   </aside>
 
   <main id="main-content">
-    <!-- Hero Section -->
-    <section class="hero" id="hero-section">
+    <!-- Hero -->
+    <section class="sk-hero" id="inicio">
+      <div class="sk-container sk-hero-inner">
 
-      <!-- Decorative thread element -->
-      <div class="thread-line" aria-hidden="true" style="bottom: 10%; right: 5%; width: 180px; height: 80px; opacity: 0.08;">
-        <svg viewBox="0 0 180 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 40 Q45 -10 90 40 T180 40" stroke="url(#threadGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <defs>
-            <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#76946b"/>
-              <stop offset="50%" stop-color="#c17a5d"/>
-              <stop offset="100%" stop-color="#76946b"/>
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      <!-- Full-screen background slider -->
-      <div class="hero-slider-bg" id="hero-slider-container">
-        <img src="images/jake.png" alt="Amigurumi en exhibición" class="slider-bg-img" id="hero-main-image">
-        <button class="slider-btn slider-btn--prev" id="slider-prev" aria-label="Anterior">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </button>
-        <button class="slider-btn slider-btn--next" id="slider-next" aria-label="Siguiente">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-        </button>
-        <div class="slider-dots" id="slider-dots"></div>
-      </div>
-
-      <!-- Static content on top -->
-      <div class="container hero-overlay">
-        <div class="hero-content">
-          <div class="brand-corner-badge">
-            <img src="images/nombre.png" alt="Konarumis" id="badge-brand-name">
-            <span class="badge-label">Hecho a mano</span>
-          </div>
-          <div class="hero-logo-wrap">
-            <img src="images/logo.png" alt="Konarumis Logo" class="hero-logo-img">
-          </div>
-          <span class="hero-tag label-md" id="hero-tagline">Cusco · Hecho a mano</span>
-          <h1 class="headline-xl hero-title" id="main-heading">Donde el hilo encuentra a tus personajes favoritos</h1>
-          <p class="body-lg hero-desc" id="hero-description">
-            Tejemos tus mundos favoritos — del anime al terror, de la ternura al detalle — <strong>punto a punto, desde Cusco</strong>. Cada amigurumi Konarumis es una pieza original que no encontrarás en ningún otro lado.
+        <div class="sk-hero-text">
+          <div class="sk-badge sk-badge-teal">ESTILO KONARUMIS</div>
+          <h1 class="sk-hero-headline">
+            Amigurumis<br>
+            con <span class="sk-highlight">Actitud</span> y<br>
+            Estilo Propio.
+          </h1>
+          <p class="sk-hero-body">
+            No son solo juguetes. Son piezas de arte tejidas con<br>
+            técnica de Cusco y vibras de sketchbook. Anime,<br>
+            música y crochet en un solo lugar.
           </p>
-          <div class="hero-actions">
-            <a href="#productos" class="btn btn--primary" id="hero-cta-catalog">Explorar Catálogo</a>
-            <a href="https://wa.me/51922330331?text=Hola%20Konarumis,%20estoy%20interesado(a)%20en%20ver%20las%20opciones%20de%20amigurumis%20personalizados." target="_blank" class="btn btn--secondary" id="hero-cta-contact">Hacer un Pedido</a>
-          </div>
-          <div class="hero-social">
-            <span class="hero-social-text">Sígueme en mis redes</span>
-            <div class="hero-social-links">
-              <a href="https://www.instagram.com/konarumis/" target="_blank" class="hero-social-link" aria-label="Instagram">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                Instagram
-              </a>
-              <a href="https://www.tiktok.com/@konarumis" target="_blank" class="hero-social-link" aria-label="TikTok">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.03 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.99-1.72-.08-.07-.16-.14-.24-.21v6.23c0 2.14-.66 4.34-2.18 5.85-1.52 1.51-3.78 2.24-5.94 1.95-2.15-.29-4.22-1.62-5.18-3.6-1.02-2.11-.79-4.78.65-6.66 1.44-1.87 3.93-2.73 6.22-2.2v4.07c-1.4-.41-2.99-.08-4.04.9-.99.92-1.33 2.41-.88 3.69.45 1.28 1.74 2.18 3.1 2.19 1.56.01 2.97-1.12 3.16-2.67.07-.58.05-1.18.05-1.77V.02h-.01z"/></svg>
-                TikTok
-              </a>
-              <a href="https://wa.me/51922330331" target="_blank" class="hero-social-link" aria-label="WhatsApp">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
-                WhatsApp
-              </a>
-            </div>
+          <div class="sk-hero-actions">
+            <a href="#catalogo" class="sk-btn sk-btn-teal sk-level-1">EXPLORAR ARTE</a>
+            <a href="#como-hacemos" class="sk-btn sk-btn-outline">MI MUNDO</a>
           </div>
         </div>
+
+        <div class="sk-hero-visual">
+          <div class="sk-hero-img-wrap sk-level-2 sk-stitched">
+            <img src="assets/svgs/hero-1.svg" alt="Amigurumi Konarumis hero" class="sk-hero-img">
+            <div class="sk-badge sk-badge-orange sk-hero-badge">CUSCO · PUNK</div>
+          </div>
+
+          <div class="sk-hero-app-preview sk-level-1">
+            <img src="assets/svgs/hero-2.svg" alt="" aria-hidden="true">
+          </div>
+
+          <svg class="sk-hero-bolt" viewBox="0 0 24 40" fill="none" aria-hidden="true">
+            <path d="M13 2L2 22h9l-4 16 15-22h-9L13 2z" fill="var(--color-orange)" stroke="var(--color-ink)" stroke-width="2"/>
+          </svg>
+        </div>
+
       </div>
     </section>
 
-    <!-- Catalog Section -->
-    <section class="catalog-section" id="productos">
-      <div class="container">
-        
-        <div class="section-header">
-          <span class="section-subtitle label-md" id="catalog-subtitle">Galería</span>
-          <h2 class="headline-lg" id="catalog-title">Diseños disponibles</h2>
-          <p class="body-md" id="catalog-description">
-            Cada pieza está tejida a mano con hilo de algodón y relleno de primera. Elige tu favorito y encarga el tuyo directamente por WhatsApp — sin vueltas.
+    <!-- Catalog -->
+    <section class="sk-catalog" id="catalogo">
+      <div class="sk-container">
+
+        <div class="sk-section-header">
+          <span class="sk-section-label">CATÁLOGO DE PIEZAS</span>
+          <p class="sk-section-sub">
+            Coleccionables únicos con vibras de anime y técnica artesanal. Cero aburrimiento.
           </p>
-        </div>
 
-        <!-- Availability Tabs -->
-        <div class="av-tabs" id="av-tabs" role="group" aria-label="Disponibilidad">
-          <button class="av-tab active" data-av="all">Todos</button>
-          <button class="av-tab" data-av="stock">En Stock</button>
-          <button class="av-tab" data-av="pedido">A Pedido</button>
-        </div>
-        <p class="av-info" id="av-info" style="display:none;text-align:center;font-size:0.85rem;color:var(--on-surface-variant);max-width:600px;margin:0 auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega. Verifica los dias de trabajo del amigurumi para que le pueda llegar a tiempo cuando lo necesites.</p>
+          <div class="sk-filters av-tabs" id="av-tabs" role="group" aria-label="Filtrar por categoría">
+            <button class="sk-filter-btn av-tab active" data-av="all" data-filter="all">Todo</button>
+            <button class="sk-filter-btn av-tab" data-av="stock" data-filter="personalizado">En Stock</button>
+            <button class="sk-filter-btn av-tab" data-av="pedido" data-filter="anime">A Pedido</button>
+            <button class="sk-filter-btn" data-filter="horror">Horror</button>
+          </div>
+          <p class="av-info" id="av-info" style="display:none;font-size:0.8rem;color:var(--color-ink-variant);max-width:600px;margin:-16px auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega.</p>
 
-        <!-- Category Filters -->
-        <div class="filters-container" id="category-filters" role="group" aria-label="Filtros del catálogo">
-          <button class="filter-chip active" id="filter-all" data-category="all">Ver Todos</button>
-          <button class="filter-chip" id="filter-series" data-category="series">Anime & Series</button>
-          <button class="filter-chip" id="filter-animals" data-category="animales">Animales & Llaveros</button>
-          <button class="filter-chip" id="filter-dolls" data-category="muñecas">Muñecas</button>
+          <div class="sk-filters" style="margin-bottom:24px;" role="group" aria-label="Categorías">
+            <button class="sk-filter-btn filter-chip active" data-category="all">Ver Todos</button>
+            <button class="sk-filter-btn filter-chip" data-category="series">Anime & Series</button>
+            <button class="sk-filter-btn filter-chip" data-category="animales">Animales & Llaveros</button>
+            <button class="sk-filter-btn filter-chip" data-category="muñecas">Muñecas</button>
+          </div>
         </div>
 
         <!-- Empty state when filter matches no products -->
