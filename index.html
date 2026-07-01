@@ -203,20 +203,21 @@
             Coleccionables únicos con vibras de anime y técnica artesanal. Cero aburrimiento.
           </p>
 
-          <div class="sk-filters av-tabs" id="av-tabs" role="group" aria-label="Filtrar por categoría">
-            <button class="sk-filter-btn av-tab active" data-av="all" data-filter="all">Todo</button>
-            <button class="sk-filter-btn av-tab" data-av="stock" data-filter="personalizado">En Stock</button>
-            <button class="sk-filter-btn av-tab" data-av="pedido" data-filter="anime">A Pedido</button>
-            <button class="sk-filter-btn" data-filter="horror">Horror</button>
+          <div class="sk-filters-center">
+            <div class="sk-filters av-tabs" id="av-tabs" role="group" aria-label="Disponibilidad">
+              <button class="sk-filter-btn av-tab active" data-av="all" data-filter="all">Todo</button>
+              <button class="sk-filter-btn av-tab" data-av="stock" data-filter="all">En Stock</button>
+              <button class="sk-filter-btn av-tab" data-av="pedido" data-filter="all">A Pedido</button>
+            </div>
+            <div class="sk-filters-divider"></div>
+            <div class="sk-filters" role="group" aria-label="Categorías">
+              <button class="sk-filter-btn filter-chip active" data-category="all">Ver Todos</button>
+              <button class="sk-filter-btn filter-chip" data-category="series">Anime & Series</button>
+              <button class="sk-filter-btn filter-chip" data-category="animales">Animales & Llaveros</button>
+              <button class="sk-filter-btn filter-chip" data-category="muñecas">Muñecas</button>
+            </div>
           </div>
-          <p class="av-info" id="av-info" style="display:none;font-size:0.8rem;color:var(--color-ink-variant);max-width:600px;margin:-16px auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega.</p>
-
-          <div class="sk-filters" style="margin-bottom:24px;" role="group" aria-label="Categorías">
-            <button class="sk-filter-btn filter-chip active" data-category="all">Ver Todos</button>
-            <button class="sk-filter-btn filter-chip" data-category="series">Anime & Series</button>
-            <button class="sk-filter-btn filter-chip" data-category="animales">Animales & Llaveros</button>
-            <button class="sk-filter-btn filter-chip" data-category="muñecas">Muñecas</button>
-          </div>
+          <p class="av-info" id="av-info" style="display:none;font-size:0.8rem;color:var(--color-ink-variant);max-width:600px;margin:-8px auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega.</p>
         </div>
 
         <!-- Empty state when filter matches no products -->
@@ -1035,6 +1036,20 @@
         applyFilters();
       });
     });
+
+    // Update button text based on data-av
+    function updateBtnText() {
+      document.querySelectorAll('.product-card').forEach(card => {
+        const btn = card.querySelector('.btn--primary[href*="wa.me"]');
+        if (!btn) return;
+        const av = card.dataset.av || 'pedido';
+        const text = av === 'stock' ? ' Pagar ahora' : ' Pagar adelanto';
+        const textNode = Array.from(btn.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
+        if (textNode) textNode.textContent = text;
+        else btn.append(text);
+      });
+    }
+    updateBtnText();
 
     // 3. Smooth scroll handling for iOS and older browsers
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

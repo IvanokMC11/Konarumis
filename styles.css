@@ -673,6 +673,26 @@ body.dark-theme .sk-hero-deco {
 }
 
 /* Filtros */
+.sk-filters-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.sk-filters-divider {
+  width: 2px;
+  height: 28px;
+  background: var(--color-ink-variant);
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .sk-filters-center { flex-direction: column; gap: 6px; }
+  .sk-filters-divider { width: 40%; height: 2px; }
+}
+
 .sk-filters {
   display: flex;
   gap: 8px;
