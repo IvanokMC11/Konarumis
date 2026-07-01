@@ -1484,8 +1484,14 @@
 
       var itemLines = items.map(function(i) {
         var isPed = (i.av || 'pedido') === 'pedido';
-        var line = '\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
+        var size = i.size || '';
+        var chipEl = document.getElementById(i.id);
+        var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
+        var line = '\u2022 ' + i.name + ' x' + i.qty;
+        if (size) line += ' (' + size + ')';
+        line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
         if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+        if (chips) line += ' \u2014 ' + chips;
         return line;
       }).join('\n');
       var payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
@@ -1523,8 +1529,14 @@
         var orderId = genOrderId();
         var itemParts = items.map(function(i) {
           var isPed = (i.av || 'pedido') === 'pedido';
-          var line = '- ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
-          if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+          var size = i.size || '';
+          var chipEl = document.getElementById(i.id);
+          var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
+          var line = '\uD83E\uDD96 ' + i.name + ' x' + i.qty;
+          if (size) line += ' (' + size + ')';
+          line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
+          if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+          if (chips) line += ' | ' + chips;
           return line;
         }).join('%0A');
         var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
@@ -1569,9 +1581,28 @@
     }
 
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
-    document.getElementById('cart-wa-link').addEventListener('click', (e) => {
+    document.getElementById('cart-wa-link').addEventListener('click', function(e) {
       e.preventDefault();
-      window.open('https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20consultar%20sobre%20un%20pedido.', '_blank');
+      var items = cart.items;
+      if (!items.length) { alert('Carrito vac\u00edo'); return; }
+      var fullTotal = cart.getTotal();
+      var advTotal = cart.getAdvanceTotal();
+      var hasPedido = cart.hasPedidoItems();
+      var parts = items.map(function(i) {
+        var isPed = (i.av || 'pedido') === 'pedido';
+        var size = i.size || '';
+        var chipEl = document.getElementById(i.id);
+        var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
+        var line = '\uD83E\uDD96 ' + i.name + ' x' + i.qty;
+        if (size) line += ' (' + size + ')';
+        line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
+        if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
+        if (chips) line += ' | ' + chips;
+        return line;
+      }).join('%0A');
+      var totalLine = hasPedido ? 'Pago hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
+      var msg = 'Hola! Quiero pedir:%0A%0A' + parts + '%0A%0A' + totalLine + '%0A%0A' + (hasPedido ? '\u26A0\uFE0F Los productos a pedido requieren 50% de adelanto.%0A%0A' : '') + '\uD83D\uDCCD Entrega: Cusco (Plaza Tupac Amaru) o env\u00edo a todo Per\u00FA';
+      window.open('https://wa.me/51922330331?text=' + msg, '_blank');
     });
 
     // Initial render
