@@ -901,6 +901,23 @@
   </main>
 
   <!-- Footer -->
+  <!-- Admin Panel -->
+  <div id="admin-panel" class="admin-panel" style="display:none;">
+    <div class="admin-panel-inner">
+      <div class="admin-header">
+        <h2>📋 Admin — Pedidos</h2>
+        <button id="admin-close" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--color-ink);">&times;</button>
+      </div>
+      <div class="admin-filters">
+        <button class="admin-filter-btn active" data-filter="all">Todos</button>
+        <button class="admin-filter-btn" data-filter="wpp">WhatsApp</button>
+        <button class="admin-filter-btn" data-filter="mp">Mercado Pago</button>
+      </div>
+      <div id="admin-order-list" class="admin-order-list"></div>
+    </div>
+  </div>
+  <div id="admin-overlay" class="admin-overlay" style="display:none;"></div>
+
   <footer class="sk-footer" id="contacto">
     <div class="sk-container">
       <div class="sk-footer-grid">
@@ -929,6 +946,7 @@
           <a href="#medidas">Guía de Tamaños</a>
           <a href="#nosotros">Sobre Nosotros</a>
           <a href="#testimonios">Testimonios</a>
+          <a href="#" id="admin-link" style="opacity:0.5;font-size:0.75rem;">Admin</a>
         </div>
 
         <div class="sk-footer-contact">
@@ -1360,47 +1378,96 @@
       return { name, phone, address, location };
     }
 
+    // Order storage
+    function getOrders() {
+      try { return JSON.parse(localStorage.getItem('konarumis_orders')) || []; } catch { return []; }
+    }
+    function saveOrders(orders) {
+      localStorage.setItem('konarumis_orders', JSON.stringify(orders));
+    }
+
     function handleCheckout() {
       const customer = getCustomerData();
-      if (customer.error) {
-        alert(customer.error);
-        return;
-      }
+      if (customer.error) { alert(customer.error); return; }
 
-      const orderId = genOrderId();
       const items = cart.items;
       const subtotal = cart.getTotal();
       const useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
+      const hasPedido = items.some(i => i.av === 'pedido');
       let total = subtotal;
-      let mpLine = '';
-      if (useMP) {
-        const fee = subtotal * MP_RATE + MP_FIXED;
-        total = subtotal + fee;
-        mpLine = `%0A(Incluye comisión MP: S/. ${fee.toFixed(2)})`;
-      }
+      let fee = 0;
+      if (useMP) { fee = +(subtotal * MP_RATE + MP_FIXED).toFixed(2); total = subtotal + fee; }
 
-      const itemLines = items.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A');
-      const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}${mpLine}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATeléfono: ${customer.phone}%0AEntrega: ${customer.address}%0A%0AMétodo de pago: ${useMP ? 'Mercado Pago' : 'WhatsApp'}`;
-      const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
+      const itemLines = items.map(i => `• ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('\n');
+      const payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
 
-      cart.clear();
-
+      // Preview modal
       const overlay = document.createElement('div');
       overlay.id = 'payment-overlay';
       overlay.innerHTML = `
-        <div class="payment-modal">
-          <div class="payment-icon ok">✓</div>
-          <h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">Pedido registrado</h2>
-          <p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">Código de pedido:</p>
-          <p style="font-size:1.5rem;font-weight:900;color:var(--color-teal);margin:0 0 12px;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>
-          <p style="font-family:var(--font-body);font-size:0.8rem;color:var(--color-ink-variant);margin:0 0 16px;">Envía los datos por WhatsApp para confirmar tu pedido.</p>
-          <a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978z"/></svg>
-            Enviar pedido por WhatsApp
-          </a>
-          <button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-weight:700;font-size:0.75rem;color:var(--color-ink-variant);display:block;margin:0 auto;" onclick="this.closest('#payment-overlay').remove()">Cerrar</button>
+        <div class="payment-modal order-preview-modal">
+          <h2 style="font-family:var(--font-headline);font-weight:800;margin:0 0 12px;color:var(--color-ink);font-size:1.1rem;">Resumen del pedido</h2>
+          <div style="background:var(--color-surface);border-radius:4px;padding:10px;margin-bottom:8px;text-align:left;font-size:0.78rem;">
+            <pre style="font-family:var(--font-body);margin:0;white-space:pre-wrap;color:var(--color-ink);line-height:1.4;">${itemLines}</pre>
+            <hr style="border:none;border-top:1px dashed var(--color-ink-variant);margin:8px 0;">
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:700;font-size:0.85rem;">
+              <span>Subtotal</span><span>S/. ${subtotal.toFixed(2)}</span>
+            </div>
+            ${useMP ? `<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-ink-variant);"><span>Comisión MP (3.49% + S/1)</span><span>S/. ${fee.toFixed(2)}</span></div>` : ''}
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:900;font-size:0.95rem;color:var(--color-teal-dark);margin-top:4px;">
+              <span>${useMP ? 'Total con MP' : 'Total'}</span><span>S/. ${total.toFixed(2)}</span>
+            </div>
+          </div>
+          <p style="font-size:0.7rem;color:var(--color-ink-variant);margin:0 0 10px;">${payNote}</p>
+          <div style="font-size:0.72rem;color:var(--color-ink-variant);margin-bottom:10px;padding:6px;background:var(--color-surface);border-radius:4px;">
+            <strong style="color:var(--color-ink);">${customer.name}</strong> · ${customer.phone}<br>
+            ${customer.address} · <strong>${useMP ? 'Mercado Pago' : 'WhatsApp'}</strong>
+          </div>
+          <button id="confirm-order-btn" class="btn btn--primary" style="width:100%;justify-content:center;text-transform:none;font-size:0.8rem;padding:10px;margin-bottom:6px;">
+            Confirmar y enviar por WhatsApp
+          </button>
+          <button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.7rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest('#payment-overlay').remove()">Cancelar</button>
         </div>`;
       document.body.appendChild(overlay);
+
+      document.getElementById('confirm-order-btn').addEventListener('click', function() {
+        const orderId = genOrderId();
+        const waMsg = `Hola! Quiero hacer un pedido en Konarumis:%0A%0A${items.map(i => `- ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('%0A')}%0A%0ATotal: S/. ${total.toFixed(2)}${useMP ? `%0A(Comisión MP: S/. ${fee.toFixed(2)})` : ''}%0A%0ACódigo: ${orderId}%0A%0ANombre: ${customer.name}%0ATel: ${customer.phone}%0AEntrega: ${customer.address}%0A%0AMétodo: ${useMP ? 'Mercado Pago' : 'WhatsApp'}`;
+        const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
+
+        // Save order
+        const orders = getOrders();
+        orders.push({
+          id: orderId,
+          date: new Date().toISOString(),
+          customer: customer,
+          items: items,
+          subtotal: subtotal,
+          fee: fee,
+          total: total,
+          payment: useMP ? 'mp' : 'wpp',
+          paid: useMP ? true : false, // MP = pago confirmado, WPP = pendiente
+          status: 'pending',
+          createdAt: Date.now()
+        });
+        saveOrders(orders);
+
+        cart.clear();
+
+        overlay.innerHTML = `
+          <div class="payment-modal">
+            <div class="payment-icon ok">✓</div>
+            <h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">Pedido registrado</h2>
+            <p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">Código de seguimiento:</p>
+            <p style="font-size:1.8rem;font-weight:900;color:var(--color-teal);margin:0 0 12px;font-family:var(--font-headline);letter-spacing:3px;">#${orderId}</p>
+            <p style="font-family:var(--font-body);font-size:0.78rem;color:var(--color-ink-variant);margin:0 0 16px;">Envía los datos por WhatsApp para confirmar tu pedido.</p>
+            <a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;width:100%;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978z"/></svg>
+              Enviar por WhatsApp
+            </a>
+            <button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.72rem;color:var(--color-ink-variant);display:block;margin:0 auto;" onclick="this.closest('#payment-overlay').remove()">Cerrar</button>
+          </div>`;
+      });
     }
 
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
@@ -1448,6 +1515,77 @@
       if (children.length) observer.observe(container);
     });
 
+    // 6. Admin panel
+    function renderAdminOrders(filter) {
+      const list = document.getElementById('admin-order-list');
+      const orders = getOrders().sort((a,b) => b.createdAt - a.createdAt);
+      const filtered = filter === 'all' ? orders : orders.filter(o => o.payment === filter);
+      if (!filtered.length) {
+        list.innerHTML = '<div class="admin-empty">No hay pedidos todavía</div>';
+        return;
+      }
+      list.innerHTML = filtered.map(o => {
+        const itemsHtml = o.items.map(i => `• ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('<br>');
+        const dateStr = new Date(o.date).toLocaleDateString('es-PE', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+        return `<div class="admin-order-card" data-id="${o.id}">
+          <div class="admin-order-header">
+            <span class="admin-order-id">#${o.id}</span>
+            <span class="admin-order-date">${dateStr}</span>
+          </div>
+          <div class="admin-order-customer">${o.customer.name} · ${o.customer.phone} · ${o.customer.address}</div>
+          <div class="admin-order-items">${itemsHtml}</div>
+          <div class="admin-order-total">S/. ${o.total.toFixed(2)}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <span class="admin-order-payment ${o.payment}">${o.payment === 'mp' ? 'Mercado Pago ✓' : 'WhatsApp'}</span>
+            ${o.payment === 'mp' ? '<span style="font-size:0.6rem;color:#2e7d32;font-weight:600;">Pagado — Listo para procesar</span>' : ''}
+          </div>
+          ${o.payment === 'wpp' ? `<div class="admin-order-actions">
+            <button class="admin-paid-btn ${o.paid ? 'paid' : 'unpaid'}" data-id="${o.id}" data-action="toggle-paid">${o.paid ? '✓ Pagado' : '☐ No pagado'}</button>
+            <button class="admin-delete-btn" data-id="${o.id}" data-action="delete">Eliminar</button>
+          </div>` : ''}
+        </div>`;
+      }).join('');
+
+      list.querySelectorAll('[data-action="toggle-paid"]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const orders = getOrders();
+          const order = orders.find(o => o.id === this.dataset.id);
+          if (order) { order.paid = !order.paid; saveOrders(orders); renderAdminOrders(filter); }
+        });
+      });
+      list.querySelectorAll('[data-action="delete"]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (!confirm('¿Eliminar pedido #' + this.dataset.id + '?')) return;
+          const orders = getOrders().filter(o => o.id !== this.dataset.id);
+          saveOrders(orders); renderAdminOrders(filter);
+        });
+      });
+    }
+
+    function openAdmin() {
+      document.getElementById('admin-panel').style.display = 'flex';
+      document.getElementById('admin-overlay').style.display = 'block';
+      renderAdminOrders('all');
+    }
+    function closeAdmin() {
+      document.getElementById('admin-panel').style.display = 'none';
+      document.getElementById('admin-overlay').style.display = 'none';
+    }
+
+    document.getElementById('admin-link').addEventListener('click', (e) => { e.preventDefault(); openAdmin(); });
+    document.getElementById('admin-close').addEventListener('click', closeAdmin);
+    document.getElementById('admin-overlay').addEventListener('click', closeAdmin);
+    document.querySelectorAll('.admin-filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderAdminOrders(this.dataset.filter);
+      });
+    });
+    // Keyboard shortcut: Ctrl+Shift+A to open admin
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); openAdmin(); }
+    });
   </script>
 
 

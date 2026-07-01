@@ -1980,6 +1980,7 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .sk-floating-btn svg { width: 14px; height: 14px; }
   .sk-floating-badge { width: 16px; height: 16px; font-size: 0.5rem; }
   .payment-modal { padding: 16px 12px; }
+  .order-preview-modal { padding: 20px; }
   .payment-modal h2 { font-size: 1rem; }
   .payment-modal p { font-size: 0.72rem !important; }
   .payment-modal .btn--primary { font-size: 0.7rem; padding: 8px 12px; }
@@ -1994,4 +1995,160 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   .sk-hero-headline { font-size: 1.2rem; }
   .products-grid { gap: 12px; }
   .sk-footer-grid { gap: 16px; }
+}
+
+/* ==========================================
+   ADMIN PANEL
+   ========================================== */
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9998;
+}
+.admin-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  background: var(--color-bg);
+  border: var(--border-width) solid var(--color-ink);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+}
+.admin-panel-inner {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.admin-header h2 {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  margin: 0;
+}
+.admin-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.admin-filter-btn {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 6px 14px;
+  border: var(--border-width) solid var(--color-ink);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.15s;
+}
+.admin-filter-btn.active {
+  background: var(--color-teal);
+  color: white;
+}
+.admin-order-card {
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-ink);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.admin-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.admin-order-id {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--color-teal);
+  letter-spacing: 1px;
+}
+.admin-order-date {
+  font-size: 0.65rem;
+  color: var(--color-ink-variant);
+}
+.admin-order-customer {
+  font-size: 0.75rem;
+  color: var(--color-ink);
+  margin: 4px 0;
+}
+.admin-order-items {
+  font-size: 0.7rem;
+  color: var(--color-ink-variant);
+  margin: 4px 0;
+  line-height: 1.4;
+}
+.admin-order-total {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--color-ink);
+  margin: 4px 0;
+}
+.admin-order-payment {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border: var(--border-width) solid var(--color-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.admin-order-payment.mp { background: #e3f2fd; color: #1565c0; }
+.admin-order-payment.wpp { background: #e8f5e9; color: #2e7d32; }
+.admin-order-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.admin-order-actions button {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.65rem;
+  padding: 4px 12px;
+  border: var(--border-width) solid var(--color-ink);
+  cursor: pointer;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  transition: all 0.15s;
+}
+.admin-order-actions button.admin-paid-btn.paid {
+  background: #4caf50;
+  color: white;
+}
+.admin-order-actions button.admin-paid-btn.unpaid {
+  background: #ff9800;
+  color: white;
+}
+.admin-order-actions button.admin-delete-btn {
+  background: #f44336;
+  color: white;
+  border-color: #f44336;
+}
+.admin-empty {
+  text-align: center;
+  padding: 40px;
+  font-size: 0.85rem;
+  color: var(--color-ink-variant);
+  font-family: var(--font-headline);
 }
