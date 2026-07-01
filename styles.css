@@ -770,6 +770,7 @@ body.dark-theme .sk-hero-deco {
   overflow: hidden;
   border-bottom: var(--border-width) solid var(--color-ink);
   background: var(--color-surface);
+  aspect-ratio: 4 / 5;
 }
 
 /* Reversible doll hover swap */
@@ -825,7 +826,7 @@ body.dark-theme .reversible-doll-toggle-indicator {
 
 .product-img {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
   filter: grayscale(20%);
   transition: filter 0.25s ease, transform 0.25s ease;
@@ -1664,7 +1665,7 @@ body.dark-theme .sk-testimonial-card,
 body.dark-theme .sk-card-face,
 body.dark-theme .sk-tracking-input { background: var(--color-surface); }
 body.dark-theme .sk-table td { background: var(--color-surface); }
-body.dark-theme .sk-footer { background: #4a6b42; }
+body.dark-theme .sk-footer { background: #76946b; }
 
 /* ==========================================
    DARK THEME
