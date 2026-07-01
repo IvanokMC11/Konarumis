@@ -2175,3 +2175,44 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   color: var(--color-ink-variant);
   font-family: var(--font-headline);
 }
+
+/* ==========================================
+   STICKERS LATERALES
+   ========================================== */
+.sticker-lateral {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.25;
+  transition: opacity 0.3s ease;
+}
+.sticker-lateral:hover {
+  opacity: 0.6;
+}
+.sticker-lateral img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.sticker-izquierdo {
+  top: 50%;
+  left: -50px;
+  transform: translateY(-50%) rotate(-8deg);
+  width: 110px;
+}
+.sticker-derecho {
+  top: 30%;
+  right: -50px;
+  transform: translateY(-50%) rotate(8deg);
+  width: 110px;
+}
+.sticker-izquierdo-inferior {
+  bottom: 60px;
+  left: -40px;
+  transform: rotate(-5deg);
+  width: 90px;
+}
+
+@media (max-width: 900px) {
+  .sticker-lateral { display: none; }
+}
