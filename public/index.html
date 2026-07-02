@@ -1319,10 +1319,9 @@
         }).join('');
 
         // Update WA link
-        var waText = this.items.map(function(i) { return '*' + i.name + '* x' + i.qty; }).join(', ');
+        var waText = this.items.map(function(i) { return i.name + ' x' + i.qty; }).join(', ');
         document.getElementById('cart-wa-link').href =
-          'https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20pedir:%20' +
-          encodeURIComponent(waText) + '%20(Pagar%20hoy:%20S/.%20' + advTotal.toFixed(2) + '%20-%20Total:%20S/.%20' + fullTotal.toFixed(2) + ')';
+          'https://wa.me/51922330331?text=' + encodeURIComponent('Hola! Quiero pedir: ' + waText + ' (Total: S/. ' + fullTotal.toFixed(2) + ')');
       },
     };
 
@@ -1648,25 +1647,42 @@
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
     document.getElementById('cart-wa-link').addEventListener('click', function(e) {
       e.preventDefault();
+      var customer = getCustomerData();
+      if (customer.error) { alert(customer.error); return; }
+
       var items = cart.items;
-      if (!items.length) { alert('Carrito vac\u00EDo'); return; }
       var fullTotal = cart.getTotal();
       var advTotal = cart.getAdvanceTotal();
       var hasPedido = cart.hasPedidoItems();
+
       var parts = items.map(function(i) {
         var isPed = (i.av || 'pedido') === 'pedido';
         var size = i.size || '';
         var chipEl = document.getElementById(i.id);
         var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-        var line = '\uD83E\uDD96 ' + i.name + ' x' + i.qty;
+        var line = '\u2714 ' + i.name + ' x' + i.qty;
         if (size) line += ' (' + size + ')';
         line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
         if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-        if (chips) line += ' | ' + chips;
+        if (chips) line += ' (' + chips + ')';
         return line;
       }).join('%0A');
-      var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
-      var waMsg = 'Hola! Quiero hacer un pedido:%0A%0A' + parts + '%0A%0A' + totalLine + '%0A%0A' + (hasPedido ? '\u26A0\uFE0F Los productos a pedido requieren 50% de adelanto.%0A%0A' : '') + '\uD83D\uDCCD Entrega: Cusco (Plaza Tupac Amaru) o env\u00EDo a todo Per\u00FA';
+
+      var totalLine = '';
+      if (hasPedido) {
+        totalLine = 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2);
+      } else {
+        totalLine = 'Total: S/. ' + fullTotal.toFixed(2);
+      }
+
+      var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A';
+      waMsg += parts + '%0A%0A';
+      waMsg += totalLine + '%0A%0A';
+      waMsg += 'Datos de entrega:%0A';
+      waMsg += 'Nombre: ' + customer.name + '%0A';
+      waMsg += 'WhatsApp: ' + customer.phone + '%0A';
+      waMsg += 'Direcci\u00F3n: ' + customer.address;
+
       window.open('https://wa.me/51922330331?text=' + encodeURIComponent(waMsg), '_blank');
     });
 
