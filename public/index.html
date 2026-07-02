@@ -1433,25 +1433,71 @@
       var code = document.getElementById('tracking-input').value.trim().toUpperCase();
       var resultEl = document.getElementById('tracking-result');
       if (!code) { resultEl.innerHTML = '<p style="color:var(--color-ink-variant);font-size:0.85rem;">Ingresa un c\u00f3digo de pedido</p>'; return; }
-      var orders = getOrders();
-      var order = orders.find(function(o) { return o.id === code; });
-      if (!order) {
-        resultEl.innerHTML = '<p style="color:#f44336;font-size:0.85rem;">No se encontr\u00f3 el c\u00f3digo <strong>' + code + '</strong></p>';
-        return;
+
+      var tryLocal = function() {
+        var orders = getOrders();
+        var order = orders.find(function(o) { return o.id === code; });
+        if (order) return showTrackResult(order, 'local');
+        // Not in localStorage, try worker API
+        fetch('/api/order/' + code).then(function(r) {
+          if (!r.ok) throw new Error();
+          return r.json();
+        }).then(function(remote) {
+          var mapped = {
+            id: remote.id,
+            customer: remote.customer,
+            items: (remote.items || []).map(function(x) { return { name: x.title, qty: x.qty, price: x.unit_price }; }),
+            advTotal: remote.total,
+            fullTotal: remote.total,
+            payment: 'mp',
+            paid: remote.paid,
+            status: remote.status || 'pending'
+          };
+          showTrackResult(mapped, 'remote');
+        }).catch(function() {
+          resultEl.innerHTML = '<p style="color:#f44336;font-size:0.85rem;">No se encontr\u00f3 el c\u00f3digo <strong>' + code + '</strong></p>';
+        });
+      };
+
+      function showTrackResult(order, source) {
+        var itemsHtml = order.items.map(function(i) {
+          return '<div style="font-size:0.75rem;color:var(--color-ink);">\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2) + '</div>';
+        }).join('');
+
+        var paidClass = (order.paid || order.payment === 'mp') ? 'pagado' : 'pendiente';
+        var paidLabel = order.payment === 'mp' ? 'Pagado (Mercado Pago)' : (order.paid ? 'Pagado' : 'Pendiente de pago');
+        var paidColor = (order.paid || order.payment === 'mp') ? '#2e7d32' : '#ff9800';
+
+        var statusOrder = ['pending', 'started', 'halfway', 'finished', 'ready'];
+        var statusLabels = { pending: 'Pago procesado', started: 'Pedido iniciado', halfway: 'Pedido a la mitad', finished: 'Pedido terminado', ready: 'Listo para entrega' };
+        var curIdx = statusOrder.indexOf(order.status || 'pending');
+        if (curIdx === -1) curIdx = 0;
+
+        var stepsHtml = statusOrder.map(function(s, i) {
+          var done = i <= curIdx;
+          var curr = i === curIdx;
+          return '<div class="trk-step ' + (done ? 'done' : '') + ' ' + (curr ? 'current' : '') + '">' +
+            '<div class="trk-dot"></div>' +
+            '<div class="trk-label">' + statusLabels[s] + '</div>' +
+            '</div>' +
+            (i < statusOrder.length - 1 ? '<div class="trk-line ' + (done ? 'done' : '') + '"></div>' : '');
+        }).join('');
+
+        resultEl.innerHTML = '' +
+          '<div class="trk-card">' +
+          '<div class="trk-header">' +
+          '<div class="trk-id">#' + order.id + '</div>' +
+          '<div class="trk-payment ' + paidClass + '">' + paidLabel + '</div>' +
+          '</div>' +
+          (order.customer ? '<div class="trk-customer"><strong>' + order.customer.name + '</strong> \u00b7 ' + order.customer.phone + (order.customer.address ? '<br>' + order.customer.address : '') + '</div>' : '') +
+          '<div class="trk-items">' + itemsHtml + '</div>' +
+          '<div class="trk-total">S/. ' + order.advTotal.toFixed(2) + (order.fullTotal !== order.advTotal ? ' <span style="font-size:0.7rem;color:var(--color-ink-variant);">(Total: S/. ' + order.fullTotal.toFixed(2) + ')</span>' : '') + '</div>' +
+          '<div class="trk-progress">' + stepsHtml + '</div>' +
+          '<div class="trk-status">Estado actual: <strong>' + (statusLabels[order.status] || 'Pago procesado') + '</strong></div>' +
+          '</div>';
       }
-      var itemsHtml = order.items.map(function(i) {
-        return '<div style="font-size:0.75rem;color:var(--color-ink);">\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2) + '</div>';
-      }).join('');
-      var paidStatus = order.payment === 'mp' ? 'Pagado (Mercado Pago)' : (order.paid ? 'Pagado' : 'Pendiente de pago');
-      resultEl.innerHTML = '' +
-        '<div style="background:var(--color-surface);border:var(--border-width) solid var(--color-ink);padding:16px;max-width:400px;margin:0 auto;text-align:left;">' +
-        '<div style="font-family:var(--font-headline);font-weight:800;font-size:1rem;color:var(--color-teal);letter-spacing:2px;margin-bottom:8px;">#' + order.id + '</div>' +
-        '<div style="font-size:0.75rem;color:var(--color-ink);margin-bottom:8px;"><strong>' + order.customer.name + '</strong> \u00b7 ' + order.customer.phone + '<br>' + order.customer.address + '</div>' +
-        itemsHtml +
-        '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--color-ink-variant);font-size:0.8rem;color:var(--color-ink);">Pagar: S/. ' + order.advTotal.toFixed(2) +
-        (order.fullTotal !== order.advTotal ? ' \u00b7 Total: S/. ' + order.fullTotal.toFixed(2) : '') + '</div>' +
-        '<div style="margin-top:6px;font-size:0.7rem;font-weight:700;color:' + (order.paid || order.payment === 'mp' ? '#2e7d32' : '#ff9800') + ';">' + paidStatus + '</div>' +
-        '</div>';
+
+      tryLocal();
     });
     document.getElementById('tracking-input').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') document.getElementById('tracking-btn').click();

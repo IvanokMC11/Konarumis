@@ -2216,3 +2216,109 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 @media (max-width: 700px) {
   .sticker { display: none; }
 }
+
+/* ==========================================
+   TRACKING RESULT
+   ========================================== */
+.trk-card {
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-ink);
+  padding: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: left;
+}
+.trk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.trk-id {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--color-teal);
+  letter-spacing: 2px;
+}
+.trk-payment {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+.trk-payment.pagado { background: #e8f5e9; color: #2e7d32; }
+.trk-payment.pendiente { background: #fff3e0; color: #e65100; }
+.trk-customer {
+  font-size: 0.75rem;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+}
+.trk-items {
+  font-size: 0.75rem;
+  color: var(--color-ink);
+  margin-bottom: 6px;
+}
+.trk-total {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--color-teal-dark);
+  margin: 8px 0 16px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-ink-variant);
+}
+.trk-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.trk-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+.trk-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ddd;
+  border: 3px solid #ddd;
+  transition: all 0.3s;
+}
+.trk-step.done .trk-dot { background: var(--color-teal); border-color: var(--color-teal); }
+.trk-step.current .trk-dot { background: #fff; border-color: var(--color-teal); box-shadow: 0 0 0 3px rgba(118,148,107,.3); }
+.trk-label {
+  font-size: 0.6rem;
+  color: #999;
+  max-width: 70px;
+  text-align: center;
+  line-height: 1.2;
+}
+.trk-step.done .trk-label { color: var(--color-teal); font-weight: 600; }
+.trk-step.current .trk-label { color: var(--color-ink); font-weight: 700; }
+.trk-line {
+  width: 24px;
+  height: 3px;
+  background: #ddd;
+  margin-bottom: 20px;
+}
+.trk-line.done { background: var(--color-teal); }
+.trk-status {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-ink-variant);
+  margin-top: 8px;
+  padding: 8px;
+  background: #f0f7ee;
+  border-radius: 4px;
+  color: #4a7c59;
+}
