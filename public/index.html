@@ -1559,8 +1559,12 @@
           var mpItems = items.map(function(i) {
             var label = i.name;
             if (i.size) label += ' ' + i.size;
-            return { title: label, quantity: i.qty, unit_price: i.price };
+            var isPed = (i.av || 'pedido') === 'pedido';
+            return { title: label, quantity: i.qty, unit_price: isPed ? (i.price / 2) : i.price };
           });
+          if (fee > 0) {
+            mpItems.push({ title: 'Comisi\u00F3n Mercado Pago', quantity: 1, unit_price: fee });
+          }
           fetch('/api/create-preference', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
