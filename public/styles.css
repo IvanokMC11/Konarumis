@@ -2200,16 +2200,16 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 .sticker:hover {
   transform: scale(1.12) rotate(0deg) !important;
 }
-.s-left-top    { top: 5%;  left: -30px; width: 110px; animation: floatA 6.5s ease-in-out infinite; }
-.s-left-bottom { bottom: 8%; left: -10px; width: 75px;  animation: floatC 7.2s ease-in-out infinite; animation-delay: -3s; }
-.s-right-top    { top: 8%;  right: -20px; width: 90px;  animation: floatB 8s ease-in-out infinite; animation-delay: -2s; }
-.s-right-bottom { bottom: 5%; right: -30px; width: 120px; animation: floatA 5.8s ease-in-out infinite; animation-delay: -1s; }
+.s-left-top    { top: 5%;  left: 0; width: 150px; animation: floatA 6.5s ease-in-out infinite; }
+.s-left-bottom { bottom: 8%; left: 0; width: 120px; animation: floatC 7.2s ease-in-out infinite; animation-delay: -3s; }
+.s-right-top    { top: 8%;  right: 0; width: 130px; animation: floatB 8s ease-in-out infinite; animation-delay: -2s; }
+.s-right-bottom { bottom: 5%; right: 0; width: 160px; animation: floatA 5.8s ease-in-out infinite; animation-delay: -1s; }
 
 @keyframes floatA { 0%,100% { transform: translate(0,0) rotate(-4deg); } 50% { transform: translate(6px,-16px) rotate(4deg); } }
 @keyframes floatB { 0%,100% { transform: translate(0,0) rotate(3deg); }  50% { transform: translate(-8px,-12px) rotate(-5deg); } }
 @keyframes floatC { 0%,100% { transform: translate(0,0) rotate(-2deg) scale(1); } 50% { transform: translate(8px,-10px) rotate(3deg) scale(1.03); } }
 
 @media (max-width: 700px) {
-  .s-left-top, .s-right-top       { width: 55px; }
-  .s-left-bottom, .s-right-bottom { width: 45px; }
+  .s-left-top, .s-right-top       { width: 80px; }
+  .s-left-bottom, .s-right-bottom { width: 65px; }
 }
