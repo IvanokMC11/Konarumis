@@ -1599,15 +1599,15 @@
           var size = i.size || '';
           var chipEl = document.getElementById(i.id);
           var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-          var line = '\uD83E\uDD96 ' + i.name + ' x' + i.qty;
+          var line = '\u2714 ' + i.name + ' x' + i.qty;
           if (size) line += ' (' + size + ')';
           line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
           if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-          if (chips) line += ' | ' + chips;
+          if (chips) line += ' (' + chips + ')';
           return line;
-        }).join('%0A');
-        var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
-        var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A' + itemParts + '%0A%0A' + totalLine + '%0A%0AC\u00F3digo: ' + orderId + '%0A%0ANombre: ' + customer.name + '%0ATel: ' + customer.phone + '%0AEntrega: ' + customer.address + '%0A%0AM\u00E9todo: WhatsApp';
+        }).join('\n');
+        var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '\nTotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
+        var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:\n\n' + itemParts + '\n\n' + totalLine + '\n\nC\u00F3digo: ' + orderId + '\n\nNombre: ' + customer.name + '\nWhatsApp: ' + customer.phone + '\nDirecci\u00F3n: ' + customer.address + '\n\nM\u00E9todo: WhatsApp';
         var waUrl = 'https://wa.me/51922330331?text=' + encodeURIComponent(waMsg);
 
         var orders = getOrders();
@@ -1666,21 +1666,21 @@
         if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
         if (chips) line += ' (' + chips + ')';
         return line;
-      }).join('%0A');
+      }).join('\n');
 
       var totalLine = '';
       if (hasPedido) {
-        totalLine = 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '%0ATotal: S/. ' + fullTotal.toFixed(2);
+        totalLine = 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '\nTotal: S/. ' + fullTotal.toFixed(2);
       } else {
         totalLine = 'Total: S/. ' + fullTotal.toFixed(2);
       }
 
-      var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:%0A%0A';
-      waMsg += parts + '%0A%0A';
-      waMsg += totalLine + '%0A%0A';
-      waMsg += 'Datos de entrega:%0A';
-      waMsg += 'Nombre: ' + customer.name + '%0A';
-      waMsg += 'WhatsApp: ' + customer.phone + '%0A';
+      var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:\n\n';
+      waMsg += parts + '\n\n';
+      waMsg += totalLine + '\n\n';
+      waMsg += 'Datos de entrega:\n';
+      waMsg += 'Nombre: ' + customer.name + '\n';
+      waMsg += 'WhatsApp: ' + customer.phone + '\n';
       waMsg += 'Direcci\u00F3n: ' + customer.address;
 
       window.open('https://wa.me/51922330331?text=' + encodeURIComponent(waMsg), '_blank');
