@@ -1599,7 +1599,7 @@
           var size = i.size || '';
           var chipEl = document.getElementById(i.id);
           var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-          var line = '\u2714 ' + i.name + ' x' + i.qty;
+        var line = '\u2022 ' + i.name + ' x' + i.qty;
           if (size) line += ' (' + size + ')';
           line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
           if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
