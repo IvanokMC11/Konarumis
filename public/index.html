@@ -931,15 +931,28 @@
   <div id="admin-panel" class="admin-panel" style="display:none;">
     <div class="admin-panel-inner">
       <div class="admin-header">
-        <h2>📋 Admin — Pedidos</h2>
-        <button id="admin-close" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--color-ink);">&times;</button>
+        <h2>Admin — Pedidos</h2>
+        <button id="admin-close">&times;</button>
       </div>
-      <div class="admin-filters">
-        <button class="admin-filter-btn active" data-filter="all">Todos</button>
-        <button class="admin-filter-btn" data-filter="wpp">WhatsApp</button>
-        <button class="admin-filter-btn" data-filter="mp">Mercado Pago</button>
+      <!-- Login form -->
+      <div id="admin-login-form" class="admin-login-form">
+        <p style="font-size:0.8rem;color:var(--color-ink-variant);margin:0 0 12px;">Ingresa la contrase\u00F1a de administrador</p>
+        <div style="display:flex;gap:8px;">
+          <input type="password" id="admin-password-input" class="sk-input" placeholder="Contrase\u00F1a" style="flex:1;">
+          <button id="admin-login-btn" class="btn btn--primary" style="white-space:nowrap;font-size:0.75rem;padding:8px 16px;">Ingresar</button>
+        </div>
+        <p id="admin-login-error" style="color:#f44336;font-size:0.7rem;margin:6px 0 0;display:none;">Contrase\u00F1a incorrecta</p>
       </div>
-      <div id="admin-order-list" class="admin-order-list"></div>
+      <!-- Orders area (hidden until login) -->
+      <div id="admin-orders-area" style="display:none;">
+        <div class="admin-filters">
+          <button class="admin-filter-btn active" data-filter="all">Todos</button>
+          <button class="admin-filter-btn" data-filter="wpp">WhatsApp</button>
+          <button class="admin-filter-btn" data-filter="mp">Mercado Pago</button>
+        </div>
+        <div class="admin-sync-status" id="admin-sync-status">Sincronizando...</div>
+        <div id="admin-order-list" class="admin-order-list"></div>
+      </div>
     </div>
   </div>
   <div id="admin-overlay" class="admin-overlay" style="display:none;"></div>
@@ -1833,58 +1846,86 @@
     });
 
     // 6. Admin panel
+    var adminKey = null;
+
     function renderAdminOrders(filter) {
       const list = document.getElementById('admin-order-list');
-      const orders = getOrders().sort((a,b) => b.createdAt - a.createdAt);
-      const filtered = filter === 'all' ? orders : orders.filter(o => o.payment === filter);
+      const orders = getOrders().sort(function(a,b) { return b.createdAt - a.createdAt; });
+      const filtered = filter === 'all' ? orders : orders.filter(function(o) { return o.payment === filter; });
       if (!filtered.length) {
-        list.innerHTML = '<div class="admin-empty">No hay pedidos todavía</div>';
+        list.innerHTML = '<div class="admin-empty">No hay pedidos todav\u00EDa</div>';
         return;
       }
-      list.innerHTML = filtered.map(o => {
-        const itemsHtml = o.items.map(i => `• ${i.name} x${i.qty} — S/. ${(i.price * i.qty).toFixed(2)}`).join('<br>');
+      list.innerHTML = filtered.map(function(o) {
+        const itemsHtml = o.items.map(function(i) { return '\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2); }).join('<br>');
         const dateStr = new Date(o.date).toLocaleDateString('es-PE', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-        return `<div class="admin-order-card" data-id="${o.id}">
-          <div class="admin-order-header">
-            <span class="admin-order-id">#${o.id}</span>
-            <span class="admin-order-date">${dateStr}</span>
-          </div>
-          <div class="admin-order-customer">${o.customer.name} · ${o.customer.phone} · ${o.customer.address}</div>
-          <div class="admin-order-items">${itemsHtml}</div>
-          <div class="admin-order-total">Pagar: S/. ${o.advTotal.toFixed(2)}${o.fullTotal !== o.advTotal ? ' \u00B7 Total: S/. ' + o.fullTotal.toFixed(2) : ''}${o.fee > 0 ? ' (MP: +S/. ' + o.fee.toFixed(2) + ')' : ''}</div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <span class="admin-order-payment ${o.payment}">${o.payment === 'mp' ? 'Mercado Pago ✓' : 'WhatsApp'}</span>
-            ${o.payment === 'mp' ? '<span style="font-size:0.6rem;color:#2e7d32;font-weight:600;">Pagado — Listo para procesar</span>' : ''}
-          </div>
-          ${o.payment === 'wpp' ? `<div class="admin-order-actions">
-            <button class="admin-paid-btn ${o.paid ? 'paid' : 'unpaid'}" data-id="${o.id}" data-action="toggle-paid">${o.paid ? '✓ Pagado' : '☐ No pagado'}</button>
-            <button class="admin-delete-btn" data-id="${o.id}" data-action="delete">Eliminar</button>
-          </div>` : ''}
-        </div>`;
+        const statusOrder = ['pending', 'started', 'halfway', 'finished', 'ready'];
+        const statusLabels = { pending: 'Pago procesado', started: 'Iniciado', halfway: 'Mitad', finished: 'Terminado', ready: 'Listo' };
+        const curIdx = statusOrder.indexOf(o.status || 'pending');
+        const statusBtns = statusOrder.map(function(s, i) {
+          var cls = i <= curIdx ? 'active' : '';
+          if (i === curIdx) cls += ' current';
+          return '<button class="admin-status-btn ' + cls + '" data-id="' + o.id + '" data-status="' + s + '">' + statusLabels[s] + '</button>';
+        }).join('');
+
+        return '<div class="admin-order-card" data-id="' + o.id + '">' +
+          '<div class="admin-order-header">' +
+          '<span class="admin-order-id">#' + o.id + '</span>' +
+          '<span class="admin-order-date">' + dateStr + '</span>' +
+          '</div>' +
+          '<div class="admin-order-customer"><strong>' + (o.customer ? o.customer.name : '') + '</strong> \u00B7 ' + (o.customer ? o.customer.phone : '') + (o.customer && o.customer.address ? '<br>' + o.customer.address : '') + '</div>' +
+          '<div class="admin-order-items">' + itemsHtml + '</div>' +
+          '<div class="admin-order-total">S/. ' + o.advTotal.toFixed(2) + (o.fullTotal !== o.advTotal ? ' <span style="font-size:0.65rem;color:var(--color-ink-variant);">(Total: S/. ' + o.fullTotal.toFixed(2) + ')</span>' : '') + '</div>' +
+          '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0;">' +
+          '<span class="admin-order-payment ' + o.payment + '">' + (o.payment === 'mp' ? 'Mercado Pago' : 'WhatsApp') + '</span>' +
+          (o.paid || o.payment === 'mp' ? '<span class="admin-paid-badge">Pagado</span>' : '<span class="admin-unpaid-badge">Pendiente</span>') +
+          '</div>' +
+          '<div class="admin-status-bar">' + statusBtns + '</div>' +
+          (o.payment === 'wpp' ? '<div class="admin-order-actions"><button class="admin-delete-btn" data-id="' + o.id + '" data-action="delete">Eliminar pedido</button></div>' : '') +
+          '</div>';
       }).join('');
 
-      list.querySelectorAll('[data-action="toggle-paid"]').forEach(btn => {
+      list.querySelectorAll('[data-action="delete"]').forEach(function(btn) {
         btn.addEventListener('click', function() {
-          const orders = getOrders();
-          const order = orders.find(o => o.id === this.dataset.id);
-          if (order) { order.paid = !order.paid; saveOrders(orders); renderAdminOrders(filter); }
+          if (!confirm('\u00BFEliminar pedido #' + this.dataset.id + '?')) return;
+          const orders = getOrders().filter(function(o) { return o.id !== this.dataset.id; }.bind(this));
+          saveOrders(orders);
+          renderAdminOrders(filter);
         });
       });
-      list.querySelectorAll('[data-action="delete"]').forEach(btn => {
+
+      list.querySelectorAll('.admin-status-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
-          if (!confirm('¿Eliminar pedido #' + this.dataset.id + '?')) return;
-          const orders = getOrders().filter(o => o.id !== this.dataset.id);
-          saveOrders(orders); renderAdminOrders(filter);
+          var id = this.dataset.id;
+          var status = this.dataset.status;
+          // Update local
+          var orders = getOrders();
+          var order = orders.find(function(o) { return o.id === id; });
+          if (order) {
+            order.status = status;
+            saveOrders(orders);
+          }
+          // Update remote via worker
+          if (adminKey) {
+            fetch('/api/order/' + id + '/status', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+              body: JSON.stringify({ status: status })
+            }).catch(function() {});
+          }
+          renderAdminOrders(filter);
         });
       });
     }
 
-    function openAdmin() {
-      document.getElementById('admin-panel').style.display = 'flex';
-      document.getElementById('admin-overlay').style.display = 'block';
-      // Try to sync orders from worker
-      fetch('/api/orders').then(function(r) {
-        if (!r.ok) return;
+    function syncOrders(callback) {
+      var syncStatus = document.getElementById('admin-sync-status');
+      if (syncStatus) syncStatus.textContent = 'Sincronizando...';
+      fetch('/api/orders', {
+        headers: adminKey ? { 'X-Admin-Key': adminKey } : {}
+      }).then(function(r) {
+        if (r.status === 401) { if (syncStatus) syncStatus.textContent = 'No autorizado'; callback(); return; }
+        if (!r.ok) { if (syncStatus) syncStatus.textContent = 'Error de conexi\u00F3n'; callback(); return; }
         return r.json();
       }).then(function(remoteOrders) {
         if (!remoteOrders) return;
@@ -1896,7 +1937,7 @@
               id: ro.id,
               date: ro.createdAt,
               customer: ro.customer,
-              items: (ro.items || []).map(function(x) { return { id: x.title, name: x.title, price: x.unit_price, qty: x.qty, img: '', av: '', size: '' }; }),
+              items: (ro.items || []).map(function(x) { return { name: x.title || x.name, qty: x.qty, price: x.unit_price || x.price }; }),
               fullTotal: ro.total,
               advTotal: ro.total,
               fee: 0,
@@ -1906,32 +1947,80 @@
               status: ro.status || 'pending',
               createdAt: new Date(ro.createdAt).getTime()
             });
+          } else {
+            // Update status from remote
+            var existing = local.find(function(lo) { return lo.id === ro.id; });
+            if (existing && ro.status) existing.status = ro.status;
           }
         });
         saveOrders(local);
-        renderAdminOrders('all');
+        if (syncStatus) syncStatus.textContent = '';
+        callback();
       }).catch(function() {
-        renderAdminOrders('all');
+        if (syncStatus) syncStatus.textContent = 'Sin conexi\u00F3n al servidor';
+        callback();
       });
-      renderAdminOrders('all');
     }
+
+    function openAdmin() {
+      document.getElementById('admin-panel').style.display = 'flex';
+      document.getElementById('admin-overlay').style.display = 'block';
+      document.getElementById('admin-login-form').style.display = 'block';
+      document.getElementById('admin-orders-area').style.display = 'none';
+      document.getElementById('admin-password-input').value = '';
+      document.getElementById('admin-login-error').style.display = 'none';
+      document.getElementById('admin-password-input').focus();
+    }
+
     function closeAdmin() {
       document.getElementById('admin-panel').style.display = 'none';
       document.getElementById('admin-overlay').style.display = 'none';
     }
 
-    document.getElementById('admin-link').addEventListener('click', (e) => { e.preventDefault(); openAdmin(); });
+    document.getElementById('admin-link').addEventListener('click', function(e) { e.preventDefault(); openAdmin(); });
     document.getElementById('admin-close').addEventListener('click', closeAdmin);
     document.getElementById('admin-overlay').addEventListener('click', closeAdmin);
-    document.querySelectorAll('.admin-filter-btn').forEach(btn => {
+
+    document.getElementById('admin-login-btn').addEventListener('click', function() {
+      var pass = document.getElementById('admin-password-input').value;
+      fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass })
+      }).then(function(r) {
+        if (!r.ok) {
+          document.getElementById('admin-login-error').style.display = 'block';
+          return;
+        }
+        document.getElementById('admin-login-error').style.display = 'none';
+        adminKey = pass;
+        document.getElementById('admin-login-form').style.display = 'none';
+        document.getElementById('admin-orders-area').style.display = 'block';
+        syncOrders(function() {
+          renderAdminOrders('all');
+          document.querySelectorAll('.admin-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+          document.querySelector('.admin-filter-btn[data-filter="all"]').classList.add('active');
+        });
+      }).catch(function() {
+        document.getElementById('admin-login-error').textContent = 'Error de conexi\u00F3n';
+        document.getElementById('admin-login-error').style.display = 'block';
+      });
+    });
+
+    document.getElementById('admin-password-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('admin-login-btn').click();
+    });
+
+    document.querySelectorAll('.admin-filter-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.admin-filter-btn').forEach(function(b) { b.classList.remove('active'); });
         this.classList.add('active');
         renderAdminOrders(this.dataset.filter);
       });
     });
+
     // Keyboard shortcut: Ctrl+Shift+A to open admin
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); openAdmin(); }
     });
   </script>

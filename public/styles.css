@@ -2038,16 +2038,15 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  width: 90%;
-  max-width: 700px;
+  width: 92%;
+  max-width: 720px;
   max-height: 85vh;
-  background: var(--color-bg);
+  background: var(--color-paper);
   border: var(--border-width) solid var(--color-ink);
   box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink);
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
 }
 .admin-panel-inner {
   padding: 20px;
@@ -2066,34 +2065,75 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
   font-size: 1.1rem;
   color: var(--color-ink);
   margin: 0;
+  letter-spacing: 1px;
+}
+.admin-header button {
+  background: none;
+  border: var(--border-width) solid var(--color-ink);
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--color-ink);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headline);
+  font-weight: 800;
+  transition: all 0.15s;
+}
+.admin-header button:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.admin-login-form {
+  max-width: 380px;
+  margin: 40px auto;
+}
+.admin-login-form input {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 10px 12px;
+  border: var(--border-width) solid var(--color-ink);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+.admin-login-form input:focus {
+  outline: none;
+  box-shadow: 2px 2px 0 var(--color-ink);
 }
 .admin-filters {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
 .admin-filter-btn {
   font-family: var(--font-headline);
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   padding: 6px 14px;
   border: var(--border-width) solid var(--color-ink);
-  background: var(--color-bg);
+  background: var(--color-surface);
   color: var(--color-ink);
   cursor: pointer;
-  border-radius: 0;
   transition: all 0.15s;
 }
 .admin-filter-btn.active {
   background: var(--color-teal);
   color: white;
 }
+.admin-sync-status {
+  font-size: 0.65rem;
+  color: var(--color-ink-variant);
+  margin-bottom: 8px;
+}
 .admin-order-card {
   background: var(--color-surface);
   border: var(--border-width) solid var(--color-ink);
-  padding: 12px;
-  margin-bottom: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 2px 2px 0 var(--shadow-ink);
 }
 .admin-order-header {
   display: flex;
@@ -2105,21 +2145,22 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 .admin-order-id {
   font-family: var(--font-headline);
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--color-teal);
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 .admin-order-date {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--color-ink-variant);
 }
 .admin-order-customer {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--color-ink);
   margin: 4px 0;
+  line-height: 1.4;
 }
 .admin-order-items {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--color-ink-variant);
   margin: 4px 0;
   line-height: 1.4;
@@ -2127,50 +2168,88 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 .admin-order-total {
   font-family: var(--font-headline);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--color-ink);
   margin: 4px 0;
 }
 .admin-order-payment {
   display: inline-block;
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 700;
   padding: 2px 8px;
   border: var(--border-width) solid var(--color-ink);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.admin-order-payment.mp { background: #e3f2fd; color: #1565c0; }
-.admin-order-payment.wpp { background: #e8f5e9; color: #2e7d32; }
+.admin-order-payment.mp { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+.admin-order-payment.wpp { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+.admin-paid-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: #4caf50;
+  color: white;
+  letter-spacing: 0.5px;
+}
+.admin-unpaid-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: #ff9800;
+  color: white;
+  letter-spacing: 0.5px;
+}
+.admin-status-bar {
+  display: flex;
+  gap: 4px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+.admin-status-btn {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.55rem;
+  padding: 3px 8px;
+  border: var(--border-width) solid var(--color-ink);
+  background: var(--color-surface);
+  color: var(--color-ink-variant);
+  cursor: pointer;
+  transition: all 0.12s;
+  opacity: 0.5;
+}
+.admin-status-btn.active {
+  background: var(--color-teal);
+  color: white;
+  border-color: var(--color-teal);
+  opacity: 1;
+}
+.admin-status-btn.active.current {
+  box-shadow: 0 0 0 2px var(--color-teal-dark);
+}
+.admin-status-btn:hover {
+  opacity: 0.8;
+}
 .admin-order-actions {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
-  flex-wrap: wrap;
+  margin-top: 6px;
 }
 .admin-order-actions button {
   font-family: var(--font-headline);
   font-weight: 700;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   padding: 4px 12px;
   border: var(--border-width) solid var(--color-ink);
   cursor: pointer;
-  background: var(--color-bg);
-  color: var(--color-ink);
   transition: all 0.15s;
 }
-.admin-order-actions button.admin-paid-btn.paid {
-  background: #4caf50;
-  color: white;
-}
-.admin-order-actions button.admin-paid-btn.unpaid {
-  background: #ff9800;
-  color: white;
-}
-.admin-order-actions button.admin-delete-btn {
+.admin-delete-btn {
   background: #f44336;
   color: white;
   border-color: #f44336;
+}
+.admin-delete-btn:hover {
+  background: #d32f2f;
 }
 .admin-empty {
   text-align: center;
