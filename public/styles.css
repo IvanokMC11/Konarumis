@@ -2200,16 +2200,19 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 .sticker:hover {
   transform: scale(1.12) rotate(0deg) !important;
 }
-.s-left-top    { top: 5%;  left: 0; width: 150px; animation: floatA 6.5s ease-in-out infinite; }
-.s-left-bottom { bottom: 8%; left: 0; width: 120px; animation: floatC 7.2s ease-in-out infinite; animation-delay: -3s; }
-.s-right-top    { top: 8%;  right: 0; width: 130px; animation: floatB 8s ease-in-out infinite; animation-delay: -2s; }
-.s-right-bottom { bottom: 5%; right: 0; width: 160px; animation: floatA 5.8s ease-in-out infinite; animation-delay: -1s; }
+.s-left-top      { top: 3%;  left: 0; width: 200px; animation: floatA 6.5s ease-in-out infinite; }
+.s-left-mid-top  { top: 22%; left: 0; width: 170px; animation: floatB 7.5s ease-in-out infinite; animation-delay: -2s; }
+.s-left-mid-bot  { top: 52%; left: 0; width: 160px; animation: floatC 6s ease-in-out infinite; animation-delay: -4s; }
+.s-left-bottom   { bottom: 5%; left: 0; width: 190px; animation: floatA 7s ease-in-out infinite; animation-delay: -1s; }
+.s-right-top     { top: 3%;  right: 0; width: 220px; animation: floatB 7s ease-in-out infinite; animation-delay: -3s; }
+.s-right-mid-top { top: 24%; right: 0; width: 180px; animation: floatC 6.5s ease-in-out infinite; animation-delay: -1s; }
+.s-right-mid-bot { top: 54%; right: 0; width: 150px; animation: floatA 8s ease-in-out infinite; animation-delay: -5s; }
+.s-right-bottom  { bottom: 5%; right: 0; width: 210px; animation: floatB 6s ease-in-out infinite; animation-delay: -2s; }
 
 @keyframes floatA { 0%,100% { transform: translate(0,0) rotate(-4deg); } 50% { transform: translate(6px,-16px) rotate(4deg); } }
 @keyframes floatB { 0%,100% { transform: translate(0,0) rotate(3deg); }  50% { transform: translate(-8px,-12px) rotate(-5deg); } }
 @keyframes floatC { 0%,100% { transform: translate(0,0) rotate(-2deg) scale(1); } 50% { transform: translate(8px,-10px) rotate(3deg) scale(1.03); } }
 
 @media (max-width: 700px) {
-  .s-left-top, .s-right-top       { width: 80px; }
-  .s-left-bottom, .s-right-bottom { width: 65px; }
+  .sticker { display: none; }
 }
