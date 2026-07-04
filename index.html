@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,700,0,0">
-  <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="stylesheet" href="styles.css">
   <script type="application/ld+json">
   {
@@ -30,6 +29,7 @@
     ]
   }
   </script>
+  <link rel="icon" href="logo.png" type="image/x-icon">x
 </head>
 <body>
 
@@ -40,14 +40,7 @@
     <div class="sk-container sk-nav-wrap">
       <a href="#" class="sk-logo" aria-label="Konarumis Home">
         <img src="images/logo.png" alt="Konarumis" class="sk-logo-img">
-        <span class="sk-logo-wordmark">
-          <span class="sk-logo-line">
-            <span class="sk-logo-char" style="--i:0">K</span><span class="sk-logo-char" style="--i:1">O</span><span class="sk-logo-char" style="--i:2">N</span><span class="sk-logo-char" style="--i:3">A</span>
-          </span>
-          <span class="sk-logo-line sk-logo-accent">
-            <span class="sk-logo-char" style="--i:4">R</span><span class="sk-logo-char" style="--i:5">U</span><span class="sk-logo-char" style="--i:6">M</span><span class="sk-logo-char" style="--i:7">I</span><span class="sk-logo-char" style="--i:8">S</span>
-          </span>
-        </span>
+        <span class="sk-logo-wordmark">KONARUMIS</span>
       </a>
       <nav aria-label="Navegación principal">
         <ul class="sk-nav-links">
@@ -55,7 +48,6 @@
           <li><a href="#catalogo" class="sk-nav-link">Catálogo</a></li>
           <li><a href="#medidas" class="sk-nav-link">Personalizados</a></li>
           <li><a href="#nosotros" class="sk-nav-link">Nosotros</a></li>
-          <li><a href="#rastreo" class="sk-nav-link">Rastreo</a></li>
           <li><a href="#contacto" class="sk-nav-link">Contacto</a></li>
         </ul>
       </nav>
@@ -92,26 +84,7 @@
         <span class="cart-total-label" id="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">S/. 0</span>
       </div>
-      <div class="cart-total-row" id="cart-advance" style="display:none;font-size:0.78rem;color:var(--color-teal-dark);">
-        <span>Adelanto hoy (50%)</span>
-        <span style="font-weight:800;" id="cart-advance-amount">S/. 0</span>
-      </div>
-      <div id="cart-mp-fee" style="display:none;font-size:0.7rem;color:var(--color-ink-variant);margin-bottom:2px;">
-        <span>Comisión MP (3.49% + S/1.00):</span>
-        <span id="cart-mp-fee-amount">S/. 0</span>
-      </div>
-      <div id="cart-total-mp" style="display:none;font-family:var(--font-headline);font-weight:800;font-size:0.9rem;color:var(--color-ink);margin-bottom:4px;">
-        <span>Total con MP:</span>
-        <span id="cart-total-mp-amount">S/. 0</span>
-      </div>
       <p class="cart-pay-note" id="cart-pay-note" style="display:none;font-size:0.75rem;color:var(--color-ink-variant);text-align:center;">Los productos a pedido pagan 50% de adelanto. El resto al recibir el pedido.</p>
-      <div class="cart-payment-method">
-        <p class="checkout-form-title">Método de pago</p>
-        <div class="cf-location">
-          <label class="cf-radio"><input type="radio" name="cf-payment" value="cash" checked> Pago por WhatsApp</label>
-          <label class="cf-radio"><input type="radio" name="cf-payment" value="mp"> Mercado Pago</label>
-        </div>
-      </div>
       <div id="checkout-form" class="checkout-form">
         <p class="checkout-form-title">Tus datos para el pedido</p>
         <label class="cf-label">Nombre completo</label>
@@ -134,10 +107,11 @@
         <p id="cf-cusco-info" class="cf-cusco-info">Entrega en Plaza Tupac Amaru (Cusco) — sin costo</p>
       </div>
       <div class="cart-btns">
-        <button class="btn btn--primary" id="checkout-trigger" style="display:none;">Pagar en la página</button>
-        <a href="#" class="btn btn--primary" id="cart-wa-link">Pagar por WhatsApp</a>
+        <button class="btn btn--primary" id="checkout-trigger">Pagar con MP</button>
+        <a href="#" class="btn btn--secondary" id="cart-wa-link">Pedir por WhatsApp</a>
       </div>
-      <div id="post-payment-info" style="display:none;"></div>
+      <div id="checkout-brick" style="margin-top:8px;"></div>
+      <div id="post-payment-info" style="display:none;margin-top:8px;"></div>
     </div>
   </aside>
 
@@ -162,7 +136,7 @@
           </h1>
           <p class="sk-hero-body sk-fade-in-up">
             No son solo juguetes. Son piezas de arte tejidas con<br>
-            técnica de Cusco. Anime,<br>
+            técnica de Cusco y vibras de sketchbook. Anime,<br>
             música y crochet en un solo lugar.
           </p>
           <div class="sk-hero-actions sk-fade-in-up">
@@ -200,16 +174,6 @@
 
     <!-- Catalog -->
     <section class="sk-catalog" id="catalogo">
-      <div class="stickers-layer">
-        <img src="images/stickers/svg_crochet.svg" class="sticker s-left-top" alt="">
-        <img src="images/stickers/svg_lana.svg" class="sticker s-left-mid-top" alt="">
-        <img src="images/stickers/svg_saskelana.svg" class="sticker s-left-mid-bot" alt="">
-        <img src="images/stickers/svg_sakelana.svg" class="sticker s-left-bottom" alt="">
-        <img src="images/stickers/svg_estrella.svg" class="sticker s-right-top" alt="">
-        <img src="images/stickers/svg_saskeenredado.svg" class="sticker s-right-mid-top" alt="">
-        <img src="images/stickers/svg_saskelogo.svg" class="sticker s-right-mid-bot" alt="">
-        <img src="images/stickers/svg_crochet.svg" class="sticker s-right-bottom" alt="">
-      </div>
       <div class="sk-container">
 
         <div class="sk-section-header">
@@ -218,21 +182,20 @@
             Coleccionables únicos con vibras de anime y técnica artesanal. Cero aburrimiento.
           </p>
 
-          <div class="sk-filters-center">
-            <div class="sk-filters av-tabs" id="av-tabs" role="group" aria-label="Disponibilidad">
-              <button class="sk-filter-btn av-tab active" data-av="all" data-filter="all">Todo</button>
-              <button class="sk-filter-btn av-tab" data-av="stock" data-filter="all">En Stock</button>
-              <button class="sk-filter-btn av-tab" data-av="pedido" data-filter="all">A Pedido</button>
-            </div>
-            <div class="sk-filters-divider"></div>
-            <div class="sk-filters" role="group" aria-label="Categorías">
-              <button class="sk-filter-btn filter-chip active" data-category="all">Ver Todos</button>
-              <button class="sk-filter-btn filter-chip" data-category="series">Anime & Series</button>
-              <button class="sk-filter-btn filter-chip" data-category="animales">Animales & Llaveros</button>
-              <button class="sk-filter-btn filter-chip" data-category="muñecas">Muñecas</button>
-            </div>
+          <div class="sk-filters av-tabs" id="av-tabs" role="group" aria-label="Filtrar por categoría">
+            <button class="sk-filter-btn av-tab active" data-av="all" data-filter="all">Todo</button>
+            <button class="sk-filter-btn av-tab" data-av="stock" data-filter="personalizado">En Stock</button>
+            <button class="sk-filter-btn av-tab" data-av="pedido" data-filter="anime">A Pedido</button>
+            <button class="sk-filter-btn" data-filter="horror">Horror</button>
           </div>
-          <p class="av-info" id="av-info" style="display:none;font-size:0.8rem;color:var(--color-ink-variant);max-width:600px;margin:-8px auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega.</p>
+          <p class="av-info" id="av-info" style="display:none;font-size:0.8rem;color:var(--color-ink-variant);max-width:600px;margin:-16px auto 32px;">Todo amigurumi a pedido se separa con un adelanto del 50% y el resto se cancela el dia de entrega.</p>
+
+          <div class="sk-filters" style="margin-bottom:24px;" role="group" aria-label="Categorías">
+            <button class="sk-filter-btn filter-chip active" data-category="all">Ver Todos</button>
+            <button class="sk-filter-btn filter-chip" data-category="series">Anime & Series</button>
+            <button class="sk-filter-btn filter-chip" data-category="animales">Animales & Llaveros</button>
+            <button class="sk-filter-btn filter-chip" data-category="muñecas">Muñecas</button>
+          </div>
         </div>
 
         <!-- Empty state when filter matches no products -->
@@ -261,7 +224,7 @@
             
             <div class="products-grid">
               <!-- Luffy -->
-              <article class="product-card" id="prod-luffy" data-name="Luffy" data-price="S/. 30" data-img="images/luffy.png" data-desc="El capitán pirata Luffy luciendo su icónico sombrero de paja de crochet, sandalias tradicionales y su típica cicatriz bordada." data-wa="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Luffy*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." data-meta="Hilo de Algodón|Relleno de Primera|15 cm|⏱ 3-5 días">
+              <article class="product-card" id="prod-luffy" data-name="Luffy" data-price="S/. 32" data-img="images/luffy.png" data-desc="El capitán pirata Luffy luciendo su icónico sombrero de paja de crochet, sandalias tradicionales y su típica cicatriz bordada." data-wa="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20el%20amigurumi%20*Luffy*%20(S/.%2030)%20que%20vi%20en%20el%20cat%C3%A1logo." data-meta="Hilo de Algodón|Relleno de Primera|15 cm|⏱ 3-5 días">
                 <span class="badge badge--popular">Más vendido</span>
                 <span class="product-tag">One Piece</span>
                 <div class="product-img-wrapper">
@@ -270,7 +233,7 @@
                 <div class="product-info">
                   <div class="product-header">
 <h4 class="product-title">Luffy</h4>
-                    <span class="product-price">S/. 30</span>
+                    <span class="product-price">S/. 32</span>
                   </div>
                   <p class="body-md product-desc">
                     El capitán pirata Luffy luciendo su icónico sombrero de paja de crochet, sandalias tradicionales y su típica cicatriz bordada.
@@ -297,7 +260,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Zoro</h4>
-                    <span class="product-price">S/. 30</span>
+                    <span class="product-price">S/. 32</span>
                   </div>
                   <p class="body-md product-desc">
                     El hábil espadachín Roronoa Zoro con su atuendo verde característico, aretes tradicionales y su inconfundible cabello verde.
@@ -323,7 +286,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Chopper</h4>
-                    <span class="product-price">S/. 25</span>
+                    <span class="product-price">S/. 27</span>
                   </div>
                   <p class="body-md product-desc">
                     El dulce médico reno de los Sombreros de Paja en su versión mini. Completo con su clásico sombrero rosa y detalles de costura.
@@ -349,7 +312,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Finn el Humano</h4>
-                    <span class="product-price">S/. 25</span>
+                    <span class="product-price">S/. 27</span>
                   </div>
                   <p class="body-md product-desc">
                     El gran héroe de Ooo con su inconfundible gorro blanco y mochila verde. Un tejido firme y resistente perfecto para cualquier colección.
@@ -375,7 +338,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Jake el Perro</h4>
-                    <span class="product-price">S/. 25</span>
+                    <span class="product-price">S/. 27</span>
                   </div>
                   <p class="body-md product-desc">
                     El fiel e ingenioso compañero de aventuras. Tejido con un color amarillo brillante, ojos expresivos y finas texturas de lana.
@@ -401,7 +364,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Freddy</h4>
-                    <span class="product-price">S/. 15</span>
+                    <span class="product-price">S/. 17</span>
                   </div>
                   <p class="body-md product-desc">
                     Una simpática y no tan terrorífica versión de Freddy Krueger. Incluye su clásica camiseta a rayas rojas y verdes, sombrero marrón y garras tejidas.
@@ -427,7 +390,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Chuky</h4>
-                    <span class="product-price">S/. 15</span>
+                    <span class="product-price">S/. 17</span>
                   </div>
                   <p class="body-md product-desc">
                     El famoso muñeco diabólico en una versión artesanal única. Cuenta con su clásico suéter a rayas, overol azul de mezclilla y cabello naranja.
@@ -453,7 +416,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Jason</h4>
-                    <span class="product-price">S/. 15</span>
+                    <span class="product-price">S/. 17</span>
                   </div>
                   <p class="body-md product-desc">
                     El icónico Jason Voorhees de Viernes 13 con su máscara de hockey tejida detalladamente y su clásica casaca azul marino.
@@ -479,7 +442,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">South Park: Stan</h4>
-                    <span class="product-price">S/. 30</span>
+                    <span class="product-price">S/. 32</span>
                   </div>
                   <p class="body-md product-desc">
                     El reflexivo Stan Marsh tejido en crochet con su característica chaqueta marrón, guantes rojos y gorro azul con pompón.
@@ -506,7 +469,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">South Park: Kyle</h4>
-                    <span class="product-price">S/. 30</span>
+                    <span class="product-price">S/. 32</span>
                   </div>
                   <p class="body-md product-desc">
                     Kyle Broflovski tejido a crochet luciendo su característica chaqueta naranja brillante y su icónica ushanka (gorro) verde.
@@ -533,7 +496,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">South Park: Cartman</h4>
-                    <span class="product-price">S/. 30</span>
+                    <span class="product-price">S/. 32</span>
                   </div>
                   <p class="body-md product-desc">
                     El regordete y travieso Eric Cartman en versión tejida. Detallado con su abrigo rojo, guantes amarillos y gorro celeste.
@@ -560,7 +523,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">South Park: Kenny</h4>
-                    <span class="product-price">S/. 30</span>
+                    <span class="product-price">S/. 32</span>
                   </div>
                   <p class="body-md product-desc">
                     El silencioso Kenny McCormick completamente envuelto en su clásica parka naranja con su capucha ajustada de crochet.
@@ -593,7 +556,7 @@
             <div class="products-grid">
               <!-- Llama -->
               <article class="product-card" id="prod-llama">
-                
+                <span class="badge badge--new">Nuevo</span>
                 <span class="product-tag">Artesanal</span>
                 <div class="product-img-wrapper">
                   <img src="images/llama.png" alt="Amigurumi llama de crochet" class="product-img" loading="lazy" decoding="async">
@@ -601,7 +564,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Llama Andina</h4>
-                    <span class="product-price">S/. 35</span>
+                    <span class="product-price">S/. 37</span>
                   </div>
                   <p class="body-md product-desc">
                     Colorida llamita tejida con lana rizada esponjosa. Lleva decoraciones típicas y coloridas en su lomo, ideales para regalar o decorar.
@@ -628,7 +591,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Snoopy</h4>
-                    <span class="product-price">S/. 35</span>
+                    <span class="product-price">S/. 37</span>
                   </div>
                   <p class="body-md product-desc">
                     El clásico perrito de la tira cómica Peanuts tejido a mano en hilo de algodón suave de colores blanco y negro. Perfecto para coleccionistas.
@@ -654,7 +617,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Conejo Llavero</h4>
-                    <span class="product-price">S/. 20</span>
+                    <span class="product-price">S/. 22</span>
                   </div>
                   <p class="body-md product-desc">
                     Un tierno y compacto conejito ideal para llevar en tus llaves o colgar en tu mochila. Muy suave y resistente.
@@ -693,7 +656,7 @@
                 <div class="product-info">
                   <div class="product-header">
                     <h4 class="product-title">Muñeca Anne</h4>
-                    <span class="product-price">S/. 80</span>
+                    <span class="product-price">S/. 84</span>
                   </div>
                   <p class="body-md product-desc">
                     Inspirada en Anne Shirley de Green Gables. Un diseño de alta costura artesanal con su clásico vestido, delantal blanco y trenzas color zanahoria.
@@ -723,9 +686,9 @@
                 <div class="product-header reversible-header">
                     <h4 class="product-title">Muñeca Reversible</h4>
                     <div class="reversible-prices">
-                      <span class="product-price reversible-price reversible-price--small">S/. 90</span>
+                      <span class="product-price reversible-price reversible-price--small">S/. 94</span>
                       <span class="reversible-price-sep">|</span>
-                      <span class="product-price reversible-price reversible-price--large">S/. 160</span>
+                      <span class="product-price reversible-price reversible-price--large">S/. 167</span>
                     </div>
                   </div>
                   <p class="body-md product-desc">
@@ -733,8 +696,8 @@
                   </p>
                   <div class="product-meta reversible-meta">
                     <span class="meta-chip">Hilo de Algodón</span>
-                    <span class="meta-chip chip-small">35 cm · S/. 90</span>
-                    <span class="meta-chip chip-large">55 cm · S/. 160</span>
+                    <span class="meta-chip chip-small">35 cm · S/. 94</span>
+                    <span class="meta-chip chip-large">55 cm · S/. 167</span>
                   </div>
                   <a href="https://wa.me/51922330331?text=Hola%20Konarumis!%20Me%20gustar%C3%ADa%20pedir%20la%20*Mu%C3%B1eca%20Reversible*%20que%20vi%20en%20el%20cat%C3%A1logo." target="_blank" class="btn btn--primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 12px; width: 100%; border-radius: 0.5rem; text-transform: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
@@ -751,11 +714,6 @@
 
     <!-- Size Guide & Custom Orders Section -->
     <section class="sk-medidas" id="medidas">
-      <div class="stickers-layer">
-        <img src="images/stickers/svg_saskeenredado.svg" class="sticker s-left-top" alt="">
-        <img src="images/stickers/svg_saskelogo.svg" class="sticker s-right-mid-top" alt="">
-        <img src="images/stickers/svg_saskelana.svg" class="sticker s-left-bottom" alt="">
-      </div>
       <div class="sk-container">
         
         <div class="sk-section-header sk-reveal">
@@ -791,7 +749,7 @@
                   <tr><td><strong>12 cm</strong></td><td>S/. 39</td><td>Escritorios, llaveros grandes y pequeños detalles de regalo.</td></tr>
                   <tr><td><strong>18 cm</strong></td><td>S/. 58</td><td>El tamaño ideal y versátil para coleccionables y estantes.</td></tr>
                   <tr><td><strong>27 cm</strong></td><td>S/. 89</td><td>Un modelo grande con alto nivel de detalle y gran volumen.</td></tr>
-                  <tr><td><strong>Tipo Llavero</strong></td><td>S/. 30</td><td>Amigurumi compacto con argolla, ideal para llevar en mochilas o llaves.</td></tr>
+                  <tr><td><strong>Tipo Llavero</strong></td><td>S/. 32</td><td>Amigurumi compacto con argolla, ideal para llevar en mochilas o llaves.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -809,10 +767,6 @@
 
     <!-- About Section -->
     <section class="sk-about" id="nosotros">
-      <div class="stickers-layer">
-        <img src="images/stickers/svg_estrella.svg" class="sticker s-left-top" alt="">
-        <img src="images/stickers/svg_crochet.svg" class="sticker s-right-bottom" alt="">
-      </div>
       <div class="sk-container sk-about-grid">
         <div class="sk-about-images sk-reveal">
           <div class="sk-about-img-card sk-about-img-card--1">
@@ -910,7 +864,7 @@
     </section>
 
     <!-- Tracking -->
-    <section class="sk-tracking" id="rastreo">
+    <section class="sk-tracking">
       <div class="sk-container" style="text-align:center;padding:48px 24px;">
         <div class="sk-section-header sk-reveal" style="text-align:center;">
           <span class="sk-section-label">SEGUIMIENTO</span>
@@ -918,52 +872,14 @@
         </div>
         <p class="sk-tracking-desc sk-reveal">Ingresa tu código de pedido para ver el estado actual.</p>
         <div class="sk-tracking-form sk-reveal">
-          <input type="text" id="tracking-input" placeholder="Ej: KMR31K77KXE80" class="sk-tracking-input">
-          <button id="tracking-btn" class="sk-btn sk-btn-teal">Buscar</button>
+          <input type="text" id="tracking-input" placeholder="Ej: KAB12C" class="sk-tracking-input">
+          <button onclick="var id=document.getElementById('tracking-input').value.trim();if(id)window.location.href='/pedido?id='+id" class="sk-btn sk-btn-teal">Buscar</button>
         </div>
-        <div id="tracking-result" style="margin-top:16px;"></div>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <!-- Admin Panel -->
-  <div id="admin-panel" class="admin-panel" style="display:none;">
-    <div class="admin-panel-inner">
-      <div class="admin-header">
-        <h2>Admin — Pedidos</h2>
-        <button id="admin-close">&times;</button>
-      </div>
-      <!-- Login form -->
-      <div id="admin-login-form" class="admin-login-form">
-        <p style="font-size:0.8rem;color:var(--color-ink-variant);margin:0 0 12px;">Ingresa la contrase\u00F1a de administrador</p>
-        <div style="display:flex;gap:8px;">
-          <input type="password" id="admin-password-input" class="sk-input" placeholder="Contrase\u00F1a" style="flex:1;">
-          <button id="admin-login-btn" class="btn btn--primary" style="white-space:nowrap;font-size:0.75rem;padding:8px 16px;">Ingresar</button>
-        </div>
-        <p id="admin-login-error" style="color:#f44336;font-size:0.7rem;margin:6px 0 0;display:none;">Contrase\u00F1a incorrecta</p>
-      </div>
-      <!-- Orders area (hidden until login) -->
-      <div id="admin-orders-area" style="display:none;">
-        <div class="admin-stats" id="admin-stats"></div>
-        <div class="admin-toolbar">
-          <div class="admin-filters">
-            <button class="admin-filter-btn active" data-filter="all">Todos</button>
-            <button class="admin-filter-btn" data-filter="wpp">WhatsApp</button>
-            <button class="admin-filter-btn" data-filter="mp">Mercado Pago</button>
-          </div>
-          <div class="admin-toolbar-actions">
-            <button id="admin-sync-btn" class="admin-toolbar-btn">Sincronizar <span id="admin-sync-icon">&#x21BB;</span></button>
-            <button id="admin-logout-btn" class="admin-toolbar-btn admin-logout-btn">Cerrar sesi\u00F3n</button>
-          </div>
-        </div>
-        <div class="admin-sync-status" id="admin-sync-status"></div>
-        <div id="admin-order-list" class="admin-order-list"></div>
-      </div>
-    </div>
-  </div>
-  <div id="admin-overlay" class="admin-overlay" style="display:none;"></div>
-
   <footer class="sk-footer" id="contacto">
     <div class="sk-container">
       <div class="sk-footer-grid">
@@ -992,7 +908,6 @@
           <a href="#medidas">Guía de Tamaños</a>
           <a href="#nosotros">Sobre Nosotros</a>
           <a href="#testimonios">Testimonios</a>
-          <a href="#" id="admin-link" style="opacity:0.5;font-size:0.75rem;">Admin</a>
         </div>
 
         <div class="sk-footer-contact">
@@ -1081,20 +996,6 @@
         applyFilters();
       });
     });
-
-    // Update button text based on data-av
-    function updateBtnText() {
-      document.querySelectorAll('.product-card').forEach(card => {
-        const btn = card.querySelector('.btn--primary[href*="wa.me"]');
-        if (!btn) return;
-        const av = card.dataset.av || 'pedido';
-        const text = av === 'stock' ? ' Pagar ahora' : ' Pagar adelanto';
-        const textNode = Array.from(btn.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
-        if (textNode) textNode.textContent = text;
-        else btn.append(text);
-      });
-    }
-    updateBtnText();
 
     // 3. Smooth scroll handling for iOS and older browsers
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1250,18 +1151,7 @@
       },
 
       getTotal() {
-        return this.items.reduce(function(sum, i) { return sum + i.price * i.qty; }, 0);
-      },
-
-      getAdvanceTotal: function() {
-        return this.items.reduce(function(sum, i) {
-          var isPedido = (i.av || 'pedido') === 'pedido';
-          return sum + (isPedido ? (i.price * i.qty) / 2 : i.price * i.qty);
-        }, 0);
-      },
-
-      hasPedidoItems: function() {
-        return this.items.some(function(i) { return (i.av || 'pedido') === 'pedido'; });
+        return this.items.reduce((sum, i) => sum + i.price * i.qty, 0);
       },
 
       getCount() {
@@ -1283,8 +1173,6 @@
         const count = this.getCount();
         document.getElementById('cart-count').textContent = count;
         document.getElementById('cart-count').style.display = count ? 'flex' : 'none';
-        const fc = document.getElementById('floating-cart-count');
-        if (fc) { fc.textContent = count; fc.style.display = count ? 'flex' : 'none'; }
 
         const container = document.getElementById('cart-items');
         const footer = document.getElementById('cart-footer');
@@ -1297,51 +1185,31 @@
         }
 
         footer.style.display = '';
-        var fullTotal = this.getTotal();
-        var advTotal = this.getAdvanceTotal();
-        var hasPedido = this.hasPedidoItems();
+        totalEl.textContent = 'S/. ' + this.getTotal().toFixed(2);
 
-        totalEl.textContent = 'S/. ' + fullTotal.toFixed(2);
-        var advEl = document.getElementById('cart-advance');
-        var advTotalEl = document.getElementById('cart-advance-amount');
-        if (advEl && advTotalEl) {
-          advEl.style.display = hasPedido ? 'flex' : 'none';
-          advTotalEl.textContent = 'S/. ' + advTotal.toFixed(2);
-        }
-
-        var payNote = document.getElementById('cart-pay-note');
-        if (payNote) payNote.style.display = hasPedido ? 'block' : 'none';
-
-        container.innerHTML = this.items.map(function(item) {
-          var isPed = (item.av || 'pedido') === 'pedido';
-          var detail = item.size || 'Único';
-          detail += isPed ? ' · Adelanto 50%' : ' · Pago completo';
-          var priceHtml = 'S/. ' + item.price.toFixed(2);
-          if (isPed) {
-            priceHtml += ' <span style="font-size:0.6rem;color:var(--color-ink-variant);font-weight:400;">(hoy: S/. ' + (item.price / 2).toFixed(2) + ')</span>';
-          }
-          return '<div class="cart-item" data-id="' + item.id + '">' +
-            '<img src="' + item.img + '" alt="' + item.name + '" class="cart-item-img" loading="lazy">' +
-            '<div class="cart-item-info">' +
-            '<p class="cart-item-name">' + item.name + '</p>' +
-            '<p class="cart-item-detail">' + detail + '</p>' +
-            '<p class="cart-item-price">' + priceHtml + '</p>' +
-            '<div class="cart-item-qty">' +
-            '<button class="cart-qty-btn" data-action="dec">\u2212</button>' +
-            '<span class="cart-qty-val">' + item.qty + '</span>' +
-            '<button class="cart-qty-btn" data-action="inc">+</button>' +
-            '</div>' +
-            '</div>' +
-            '<button class="cart-item-remove" data-action="remove" aria-label="Eliminar">' +
-            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>' +
-            '</button>' +
-            '</div>';
-        }).join('');
+        container.innerHTML = this.items.map(item => `
+          <div class="cart-item" data-id="${item.id}">
+            <img src="${item.img}" alt="${item.name}" class="cart-item-img" loading="lazy">
+            <div class="cart-item-info">
+              <p class="cart-item-name">${item.name}</p>
+              <p class="cart-item-price">S/. ${item.price.toFixed(2)}</p>
+              <div class="cart-item-qty">
+                <button class="cart-qty-btn" data-action="dec">−</button>
+                <span class="cart-qty-val">${item.qty}</span>
+                <button class="cart-qty-btn" data-action="inc">+</button>
+              </div>
+            </div>
+            <button class="cart-item-remove" data-action="remove" aria-label="Eliminar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+          </div>
+        `).join('');
 
         // Update WA link
-        var waText = this.items.map(function(i) { return i.name + ' x' + i.qty; }).join(', ');
+        const waText = this.items.map(i => `*${i.name}* x${i.qty}`).join(', ');
         document.getElementById('cart-wa-link').href =
-          'https://wa.me/51922330331?text=' + encodeURIComponent('Hola! Quiero pedir: ' + waText + ' (Total: S/. ' + fullTotal.toFixed(2) + ')');
+          'https://wa.me/51922330331?text=Hola%20Konarumis!%20Quiero%20pedir:%20' +
+          encodeURIComponent(waText) + '%20(Total:%20S/.%20' + this.getTotal().toFixed(2) + ')';
       },
     };
 
@@ -1358,13 +1226,7 @@
       const img = card.querySelector('.product-img')?.src || '';
       const wa = btn.getAttribute('href');
       const av = card.dataset.av || 'pedido';
-      var sizeChips = card.querySelectorAll('.meta-chip');
-      var size = '';
-      for (var si = 0; si < sizeChips.length; si++) {
-        var txt = sizeChips[si].textContent.trim();
-        if (/\d+\s*cm/i.test(txt)) { size = txt; break; }
-      }
-      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa, av, size: size });
+      cart.add({ id: card.id, name, price: isNaN(price) ? 0 : price, img, wa, av });
       openCart();
     });
 
@@ -1377,7 +1239,6 @@
     document.getElementById('cart-btn').addEventListener('click', openCart);
     document.getElementById('cart-close').addEventListener('click', closeCart);
     cartOverlay.addEventListener('click', closeCart);
-    document.addEventListener('click', (e) => { if (e.target.closest('#floating-cart-btn')) openCart(); });
 
     // Cart item interactions (event delegation)
     document.getElementById('cart-items').addEventListener('click', (e) => {
@@ -1410,126 +1271,46 @@
     // Init required state
     document.querySelectorAll('input[name="cf-location"]:checked').forEach(r => r.dispatchEvent(new Event('change')));
 
-    // Payment method — MP commission
-    const MP_RATE = 0.0349;
-    const MP_FIXED = 1.00;
+    // Mercado Pago Bricks
+    const MERCADO_PAGO_PUBLIC_KEY = 'TEST-77a7d14b-edd8-4d4e-901a-ffe99401c4fc';
+    let mpInstance = null;
+    let currentPreferenceId = null;
 
-    function updateTotalWithMP() {
-      var useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      var base = cart.getAdvanceTotal();
-      var feeEl = document.getElementById('cart-mp-fee');
-      var feeAmtEl = document.getElementById('cart-mp-fee-amount');
-      var totalMPEl = document.getElementById('cart-total-mp');
-      var totalMPAmtEl = document.getElementById('cart-total-mp-amount');
-
-      document.getElementById('checkout-trigger').style.display = (useMP && cart.getCount() > 0) ? '' : 'none';
-      document.getElementById('cart-wa-link').style.display = (!useMP && cart.getCount() > 0) ? '' : 'none';
-
-      if (useMP && base > 0) {
-        var fee = base * MP_RATE + MP_FIXED;
-        var totalMP = base + fee;
-        feeAmtEl.textContent = 'S/. ' + fee.toFixed(2);
-        totalMPAmtEl.textContent = 'S/. ' + totalMP.toFixed(2);
-        feeEl.style.display = 'flex';
-        feeEl.style.justifyContent = 'space-between';
-        totalMPEl.style.display = 'flex';
-        totalMPEl.style.justifyContent = 'space-between';
-      } else {
-        feeEl.style.display = 'none';
-        totalMPEl.style.display = 'none';
+    // Update button texts based on availability
+    document.querySelectorAll('.product-card').forEach(card => {
+      const btn = card.querySelector('.btn--primary');
+      if (!btn) return;
+      const isStock = (card.dataset.av || 'pedido') === 'stock';
+      btn.innerHTML = isStock ? 'Pedir amigurumi' : 'Encargar (50% adelanto)';
+      if (!isStock) {
+        const svg = btn.querySelector('svg');
+        if (svg) svg.remove();
       }
+    });
+
+    // Calculate what to pay per item
+    function getCheckoutItems() {
+      return cart.items.map(i => {
+        if (i.av === 'pedido') {
+          return { ...i, payPrice: +(i.price * 0.5).toFixed(2), label: 'Adelanto: ' + i.name };
+        }
+        return { ...i, payPrice: i.price, label: i.name };
+      });
     }
 
-    document.querySelectorAll('input[name="cf-payment"]').forEach(r => {
-      r.addEventListener('change', updateTotalWithMP);
-    });
-
-    // Override cart.render to also update MP display and button visibility
-    var origRender2 = cart.render.bind(cart);
-    cart.render = function() { origRender2(); updateTotalWithMP(); };
-
-    // Tracking
-    document.getElementById('tracking-btn').addEventListener('click', function() {
-      var code = document.getElementById('tracking-input').value.trim().replace(/^#+/, '').toUpperCase();
-      var resultEl = document.getElementById('tracking-result');
-      if (!code) { resultEl.innerHTML = '<p style="color:var(--color-ink-variant);font-size:0.85rem;">Ingresa un c\u00f3digo de pedido</p>'; return; }
-
-      var tryLocal = function() {
-        var orders = getOrders();
-        var order = orders.find(function(o) { return o.id === code; });
-        if (order) return showTrackResult(order, 'local');
-        // Not in localStorage, try worker API
-        fetch('/api/order/' + code).then(function(r) {
-          if (!r.ok) throw new Error();
-          return r.json();
-        }).then(function(remote) {
-          var mapped = {
-            id: remote.id,
-            customer: remote.customer,
-            items: (remote.items || []).map(function(x) { return { name: x.title, qty: x.qty, price: x.unit_price }; }),
-            advTotal: remote.total,
-            fullTotal: remote.total,
-            payment: 'mp',
-            paid: remote.paid,
-            status: remote.status || 'pending'
-          };
-          showTrackResult(mapped, 'remote');
-        }).catch(function() {
-          resultEl.innerHTML = '<p style="color:#f44336;font-size:0.85rem;">No se encontr\u00f3 el c\u00f3digo <strong>' + code + '</strong></p>';
-        });
-      };
-
-      function showTrackResult(order, source) {
-        var itemsHtml = order.items.map(function(i) {
-          return '<div style="font-size:0.75rem;color:var(--color-ink);">\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2) + '</div>';
-        }).join('');
-
-        var paidClass = (order.paid || order.payment === 'mp') ? 'pagado' : 'pendiente';
-        var paidLabel = order.payment === 'mp' ? 'Pagado (Mercado Pago)' : (order.paid ? 'Pagado' : 'Pendiente de pago');
-        var paidColor = (order.paid || order.payment === 'mp') ? '#2e7d32' : '#ff9800';
-
-        var statusOrder = ['pending', 'started', 'halfway', 'finished', 'ready'];
-        var statusLabels = { pending: 'Pago procesado', started: 'Pedido iniciado', halfway: 'Pedido a la mitad', finished: 'Pedido terminado', ready: 'Listo para entrega' };
-        var curIdx = statusOrder.indexOf(order.status || 'pending');
-        if (curIdx === -1) curIdx = 0;
-
-        var stepsHtml = statusOrder.map(function(s, i) {
-          var done = i <= curIdx;
-          var curr = i === curIdx;
-          return '<div class="trk-step ' + (done ? 'done' : '') + ' ' + (curr ? 'current' : '') + '">' +
-            '<div class="trk-dot"></div>' +
-            '<div class="trk-label">' + statusLabels[s] + '</div>' +
-            '</div>' +
-            (i < statusOrder.length - 1 ? '<div class="trk-line ' + (done ? 'done' : '') + '"></div>' : '');
-        }).join('');
-
-        resultEl.innerHTML = '' +
-          '<div class="trk-card">' +
-          '<div class="trk-header">' +
-          '<div class="trk-id">#' + order.id + '</div>' +
-          '<div class="trk-payment ' + paidClass + '">' + paidLabel + '</div>' +
-          '</div>' +
-          (order.customer ? '<div class="trk-customer"><strong>' + order.customer.name + '</strong> \u00b7 ' + order.customer.phone + (order.customer.address ? '<br>' + order.customer.address : '') + '</div>' : '') +
-          '<div class="trk-items">' + itemsHtml + '</div>' +
-          '<div class="trk-total">S/. ' + order.advTotal.toFixed(2) + (order.fullTotal !== order.advTotal ? ' <span style="font-size:0.7rem;color:var(--color-ink-variant);">(Total: S/. ' + order.fullTotal.toFixed(2) + ')</span>' : '') + '</div>' +
-          '<div class="trk-progress">' + stepsHtml + '</div>' +
-          '<div class="trk-status">Estado actual: <strong>' + (statusLabels[order.status] || 'Pago procesado') + '</strong></div>' +
-          '</div>';
-      }
-
-      tryLocal();
-    });
-    document.getElementById('tracking-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') document.getElementById('tracking-btn').click();
-    });
-
-    // Generate order ID
-    function genOrderId() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let id = '';
-      for (let i = 0; i < 6; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
-      return 'K' + id;
+    function updateCartDisplay() {
+      const items = getCheckoutItems();
+      const hasPedido = items.some(i => i.av === 'pedido');
+      const fullTotal = cart.getTotal();
+      const payTotal = items.reduce((s, i) => s + i.payPrice * i.qty, 0);
+      document.getElementById('cart-total-label').textContent = hasPedido ? 'A pagar ahora' : 'Total';
+      document.getElementById('cart-pay-note').style.display = hasPedido ? 'block' : 'none';
+      document.getElementById('cart-total').textContent = 'S/. ' + payTotal.toFixed(2);
     }
+
+    // Override cart.render to also call updateCartDisplay
+    const origRender = cart.render.bind(cart);
+    cart.render = function() { origRender(); updateCartDisplay(); };
 
     function getCustomerData() {
       const name = document.getElementById('cf-name').value.trim();
@@ -1552,280 +1333,154 @@
       return { name, phone, address, location };
     }
 
-    function showMPSuccess(orderId) {
-      var overlay = document.createElement('div');
-      overlay.id = 'payment-overlay';
-      overlay.innerHTML = '' +
-        '<div class="payment-modal">' +
-        '<div class="payment-icon ok">\u2713</div>' +
-        '<h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">\u00A1Pago confirmado!</h2>' +
-        '<p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">Tu pago por Mercado Pago fue procesado exitosamente.</p>' +
-        '<p style="font-family:var(--font-body);font-size:0.78rem;color:var(--color-ink-variant);margin:12px 0 4px;">C\u00F3digo de seguimiento:</p>' +
-        '<p style="font-size:1.8rem;font-weight:900;color:var(--color-teal);margin:0 0 12px;font-family:var(--font-headline);letter-spacing:3px;">#' + orderId + '</p>' +
-        '<p style="font-family:var(--font-body);font-size:0.72rem;color:var(--color-ink-variant);margin:0 0 14px;">Usa este c\u00F3digo en la secci\u00F3n <strong>Rastreo</strong> para ver el estado de tu pedido.</p>' +
-        '<a href="#rastreo" class="btn btn--primary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px;width:100%;font-size:0.8rem;" onclick="setTimeout(function(){var i=document.getElementById(\'tracking-input\');if(i){i.value=\'' + orderId + '\';document.getElementById(\'tracking-btn\')?.click();}},300);this.closest(\'#payment-overlay\').remove()">Rastrear pedido</a>' +
-        '<button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.72rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest(\'#payment-overlay\').remove()">Cerrar</button>' +
-        '</div>';
-      document.body.appendChild(overlay);
-      document.getElementById('cart-drawer').classList.remove('open');
-    }
+    async function handleCheckout() {
+      const trigger = document.getElementById('checkout-trigger');
+      const brickContainer = document.getElementById('checkout-brick');
 
-    // Order storage
-    function getOrders() {
-      try { return JSON.parse(localStorage.getItem('konarumis_orders')) || []; } catch { return []; }
-    }
-    function saveOrders(orders) {
-      localStorage.setItem('konarumis_orders', JSON.stringify(orders));
-    }
+      const customer = getCustomerData();
+      if (customer.error) {
+        trigger.disabled = false;
+        trigger.textContent = 'Pagar con Mercado Pago';
+        brickContainer.innerHTML = '<p class="cart-error">' + customer.error + '</p>';
+        return;
+      }
 
-    function handleCheckout() {
-      var customer = getCustomerData();
-      if (customer.error) { alert(customer.error); return; }
+      trigger.disabled = true;
+      trigger.textContent = 'Preparando...';
+      brickContainer.innerHTML = '';
 
-      var items = cart.items;
-      var fullTotal = cart.getTotal();
-      var advTotal = cart.getAdvanceTotal();
-      var useMP = document.querySelector('input[name="cf-payment"]:checked').value === 'mp';
-      var hasPedido = cart.hasPedidoItems();
-      var payable = advTotal;
-      var fee = 0;
-      if (useMP) { fee = +(payable * MP_RATE + MP_FIXED).toFixed(2); payable = advTotal + fee; }
+      const items = getCheckoutItems();
 
-      var itemLines = items.map(function(i) {
-        var isPed = (i.av || 'pedido') === 'pedido';
-        var size = i.size || '';
-        var chipEl = document.getElementById(i.id);
-        var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-        var line = '\u2022 ' + i.name + ' x' + i.qty;
-        if (size) line += ' (' + size + ')';
-        line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
-        if (isPed) line += ' (adelanto: S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-        if (chips) line += ' \u2014 ' + chips;
-        return line;
-      }).join('\n');
-      var payNote = hasPedido ? 'Los productos a pedido requieren 50% de adelanto. El resto al recibir.' : 'Pago completo al realizar el pedido.';
+      try {
+        const res = await fetch('/api/create-preference', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: items.map(i => ({
+              title: i.label,
+              unit_price: i.payPrice,
+              quantity: i.qty,
+            })),
+            customer: { name: customer.name, phone: customer.phone, address: customer.address, location: customer.location },
+          }),
+        });
 
-      // Preview modal
-      var overlay = document.createElement('div');
-      overlay.id = 'payment-overlay';
-      var mpFeeHtml = useMP ? '<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-ink-variant);"><span>Comisi\u00F3n MP (3.49% + S/1)</span><span>S/. ' + fee.toFixed(2) + '</span></div>' : '';
-      var mpTotalHtml = useMP ? '<div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:900;font-size:0.95rem;color:var(--color-teal-dark);margin-top:2px;"><span>Total con MP</span><span>S/. ' + payable.toFixed(2) + '</span></div>' : '';
-      var totalHeaderHtml = hasPedido ? '<div style="display:flex;justify-content:space-between;font-size:0.72rem;"><span>Total productos</span><span>S/. ' + fullTotal.toFixed(2) + '</span></div>' : '';
-
-      overlay.innerHTML = '' +
-        '<div class="payment-modal order-preview-modal">' +
-        '<h2 style="font-family:var(--font-headline);font-weight:800;margin:0 0 12px;color:var(--color-ink);font-size:1.1rem;">Resumen del pedido</h2>' +
-        '<div style="background:var(--color-surface);border-radius:4px;padding:10px;margin-bottom:8px;text-align:left;font-size:0.78rem;">' +
-        '<pre style="font-family:var(--font-body);margin:0;white-space:pre-wrap;color:var(--color-ink);line-height:1.4;">' + itemLines + '</pre>' +
-        '<hr style="border:none;border-top:1px dashed var(--color-ink-variant);margin:8px 0;">' +
-        totalHeaderHtml +
-        '<div style="display:flex;justify-content:space-between;font-family:var(--font-headline);font-weight:800;font-size:0.9rem;color:var(--color-teal-dark);">' +
-        '<span>' + (hasPedido ? 'Adelanto hoy' : 'Total a pagar') + '</span><span>S/. ' + advTotal.toFixed(2) + '</span>' +
-        '</div>' +
-        mpFeeHtml + mpTotalHtml +
-        '</div>' +
-        '<p style="font-size:0.7rem;color:var(--color-ink-variant);margin:0 0 10px;">' + payNote + '</p>' +
-        '<div style="font-size:0.72rem;color:var(--color-ink-variant);margin-bottom:10px;padding:6px;background:var(--color-surface);border-radius:4px;">' +
-        '<strong style="color:var(--color-ink);">' + customer.name + '</strong> \u00B7 ' + customer.phone + '<br>' +
-        customer.address + ' \u00B7 <strong>' + (useMP ? 'Mercado Pago' : 'WhatsApp') + '</strong>' +
-        '</div>' +
-        '<button id="confirm-order-btn" class="btn btn--primary" style="width:100%;justify-content:center;text-transform:none;font-size:0.8rem;padding:10px;margin-bottom:6px;">' + (useMP ? 'Confirmar y pagar' : 'Confirmar y enviar por WhatsApp') + '</button>' +
-        '<button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.7rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest(\'#payment-overlay\').remove()">Cancelar</button>' +
-        '</div>';
-      document.body.appendChild(overlay);
-
-      document.getElementById('confirm-order-btn').addEventListener('click', function() {
-        var btn = document.getElementById('confirm-order-btn');
-        btn.disabled = true;
-        btn.textContent = useMP ? 'Redirigiendo a Mercado Pago...' : 'Procesando...';
-
-        if (useMP) {
-          var mpItems = items.map(function(i) {
-            var label = i.name;
-            if (i.size) label += ' ' + i.size;
-            var isPed = (i.av || 'pedido') === 'pedido';
-            return { title: label, quantity: i.qty, unit_price: isPed ? (i.price / 2) : i.price };
-          });
-          if (fee > 0) {
-            mpItems.push({ title: 'Comisi\u00F3n Mercado Pago', quantity: 1, unit_price: fee });
-          }
-          fetch('/api/create-preference', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              items: mpItems,
-              customer: {
-                name: customer.name,
-                phone: customer.phone,
-                address: customer.address,
-                location: document.querySelector('input[name="cf-location"]:checked')?.value || 'cusco'
-              }
-            })
-          }).then(function(r) {
-            if (!r.ok) { alert('Error al crear pago: ' + r.status); btn.disabled = false; btn.textContent = 'Confirmar y pagar'; return; }
-            return r.json();
-          }).then(function(data) {
-            if (!data) return;
-            if (data.preferenceId) {
-              window.location.href = 'https://www.mercadopago.com.pe/checkout/v1/redirect?pref_id=' + data.preferenceId;
-            } else {
-              alert('Error: ' + (data.error || 'sin respuesta de MP'));
-              btn.disabled = false;
-              btn.textContent = 'Confirmar y pagar';
-            }
-          }).catch(function(err) {
-            alert('Error de conexi\u00F3n: ' + err.message);
-            btn.disabled = false;
-            btn.textContent = 'Confirmar y pagar';
-          });
-          return;
+        let errorMsg = '';
+        let data;
+        try {
+          data = await res.json();
+        } catch (_) {
+          errorMsg = 'El servidor no respondió correctamente (código ' + res.status + ')';
         }
 
-        var orderId = genOrderId();
-        var itemParts = items.map(function(i) {
-          var isPed = (i.av || 'pedido') === 'pedido';
-          var size = i.size || '';
-          var chipEl = document.getElementById(i.id);
-          var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-        var line = '\u2022 ' + i.name + ' x' + i.qty;
-          if (size) line += ' (' + size + ')';
-          line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
-          if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-          if (chips) line += ' (' + chips + ')';
-          return line;
-        }).join('\n');
-        var totalLine = hasPedido ? 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '\nTotal: S/. ' + fullTotal.toFixed(2) : 'Total: S/. ' + fullTotal.toFixed(2);
-        var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:\n\n' + itemParts + '\n\n' + totalLine + '\n\nC\u00F3digo: ' + orderId + '\n\nNombre: ' + customer.name + '\nWhatsApp: ' + customer.phone + '\nDirecci\u00F3n: ' + customer.address + '\n\nM\u00E9todo: WhatsApp';
-        var waUrl = 'https://wa.me/51922330331?text=' + encodeURIComponent(waMsg);
+        if (errorMsg) throw new Error(errorMsg);
+        if (!res.ok) throw new Error(data?.error || 'Error al crear pago');
 
-        var orders = getOrders();
-        orders.push({
-          id: orderId,
-          date: new Date().toISOString(),
-          customer: customer,
-          items: items.map(function(x) { return { id: x.id, name: x.name, price: x.price, qty: x.qty, img: x.img, av: x.av, size: x.size }; }),
-          fullTotal: fullTotal,
-          advTotal: advTotal,
-          fee: 0,
-          payable: advTotal,
-          payment: 'wpp',
-          paid: false,
-          status: 'pending',
-          createdAt: Date.now()
+        currentPreferenceId = data.preferenceId;
+        trigger.style.display = 'none';
+
+        if (!mpInstance) {
+          mpInstance = new MercadoPago(MERCADO_PAGO_PUBLIC_KEY, { locale: 'es-PE' });
+        }
+
+        mpInstance.bricks().create('wallet', 'checkout-brick', {
+          initialization: { preferenceId: currentPreferenceId },
+          customization: { texts: { action: 'pay', value: 'Pagar' } },
         });
-        saveOrders(orders);
 
-        cart.clear();
-        overlay.innerHTML = '' +
-          '<div class="payment-modal">' +
-          '<div class="payment-icon ok">\u2713</div>' +
-          '<h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">Pedido registrado</h2>' +
-          '<p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">C\u00F3digo de seguimiento:</p>' +
-          '<p style="font-size:1.8rem;font-weight:900;color:var(--color-teal);margin:0 0 12px;font-family:var(--font-headline);letter-spacing:3px;">#' + orderId + '</p>' +
-          '<p style="font-family:var(--font-body);font-size:0.78rem;color:var(--color-ink-variant);margin:0 0 16px;">Env\u00EDa los datos por WhatsApp para confirmar tu pedido.</p>' +
-          '<a href="' + waUrl + '" target="_blank" class="btn btn--primary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;width:100%;">' +
-          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>' +
-          'Enviar por WhatsApp' +
-          '</a>' +
-          '<button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.72rem;color:var(--color-ink-variant);display:block;margin:0 auto;" onclick="this.closest(\'#payment-overlay\').remove()">Cerrar</button>' +
-          '</div>';
-      });
+      } catch (e) {
+        trigger.disabled = false;
+        trigger.textContent = 'Pagar con Mercado Pago';
+        brickContainer.innerHTML = '<p class="cart-error" style="margin-top:8px;color:var(--warm-accent);font-size:0.85rem;">' + e.message + '</p>';
+      }
     }
 
     document.getElementById('checkout-trigger').addEventListener('click', handleCheckout);
-    document.getElementById('cart-wa-link').addEventListener('click', function(e) {
+    document.getElementById('cart-wa-link').addEventListener('click', (e) => {
       e.preventDefault();
-      var customer = getCustomerData();
-      if (customer.error) { alert(customer.error); return; }
-
-      var items = cart.items;
-      var fullTotal = cart.getTotal();
-      var advTotal = cart.getAdvanceTotal();
-      var hasPedido = cart.hasPedidoItems();
-
-      var parts = items.map(function(i) {
-        var isPed = (i.av || 'pedido') === 'pedido';
-        var size = i.size || '';
-        var chipEl = document.getElementById(i.id);
-        var chips = chipEl ? Array.from(chipEl.querySelectorAll('.meta-chip')).map(function(c) { return c.textContent.trim(); }).join(', ') : '';
-        var line = '\u2714 ' + i.name + ' x' + i.qty;
-        if (size) line += ' (' + size + ')';
-        line += ' \u2014 S/. ' + (i.price * i.qty).toFixed(2);
-        if (isPed) line += ' (adelanto S/. ' + ((i.price * i.qty) / 2).toFixed(2) + ')';
-        if (chips) line += ' (' + chips + ')';
-        return line;
-      }).join('\n');
-
-      var totalLine = '';
-      if (hasPedido) {
-        totalLine = 'Adelanto hoy: S/. ' + advTotal.toFixed(2) + '\nTotal: S/. ' + fullTotal.toFixed(2);
-      } else {
-        totalLine = 'Total: S/. ' + fullTotal.toFixed(2);
-      }
-
-      var waMsg = 'Hola! Quiero hacer un pedido en Konarumis:\n\n';
-      waMsg += parts + '\n\n';
-      waMsg += totalLine + '\n\n';
-      waMsg += 'Datos de entrega:\n';
-      waMsg += 'Nombre: ' + customer.name + '\n';
-      waMsg += 'WhatsApp: ' + customer.phone + '\n';
-      waMsg += 'Direcci\u00F3n: ' + customer.address;
-
-      window.open('https://wa.me/51922330331?text=' + encodeURIComponent(waMsg), '_blank');
+      window.open(e.currentTarget.href, '_blank');
     });
 
     // Initial render
     cart.render();
 
-    // Check MP return
-    var urlParams = new URLSearchParams(window.location.search);
-    var mpStatus = urlParams.get('status');
-    var mpOrder = urlParams.get('order');
-    if (mpStatus === 'success' && mpOrder) {
-      fetch('/api/order/' + mpOrder).then(function(r) {
-        if (!r.ok) throw new Error('No se encontr\u00F3 la orden');
-        return r.json();
-      }).then(function(order) {
-        // Also save in localStorage for admin panel
-        var localOrders = getOrders();
-        var exists = localOrders.some(function(o) { return o.id === order.id; });
-        if (!exists) {
-          var mapped = {
-            id: order.id,
-            date: order.createdAt,
-            customer: order.customer,
-            items: (order.items || []).map(function(x) { return { id: x.title, name: x.title, price: x.unit_price, qty: x.qty, img: '', av: '', size: '' }; }),
-            fullTotal: order.total,
-            advTotal: order.total,
-            fee: 0,
-            payable: order.total,
-            payment: 'mp',
-            paid: true,
-            status: order.status || 'pending',
-            createdAt: new Date(order.createdAt).getTime()
-          };
-          localOrders.push(mapped);
-          saveOrders(localOrders);
-        }
-        showMPSuccess(order.id);
-        // Auto-refresh admin panel if open
-        var adminPanel = document.getElementById('admin-panel');
-        if (adminPanel && adminPanel.style.display !== 'none' && adminKey) {
-          syncOrders(function() { renderAdminOrders(document.querySelector('.admin-filter-btn.active')?.dataset?.filter || 'all'); });
-        }
-      }).catch(function(err) {
-        var overlay = document.getElementById('payment-overlay');
-        if (overlay) overlay.remove();
-        var el = document.createElement('div');
-        el.id = 'payment-overlay';
-        el.innerHTML = '<div class="payment-modal"><div class="payment-icon" style="color:#f44336;">\u2717</div><h2 style="font-family:var(--font-headline);font-weight:800;margin:8px 0;color:var(--color-ink);">Error al verificar pago</h2><p style="font-family:var(--font-body);font-size:0.85rem;color:var(--color-ink-variant);margin:0 0 4px;">' + (err && err.message || 'No se pudo obtener los datos de la orden.') + '</p><p style="font-family:var(--font-body);font-size:0.78rem;color:var(--color-ink-variant);margin:12px 0 4px;">C\u00F3digo: <strong>' + mpOrder + '</strong></p><p style="font-family:var(--font-body);font-size:0.75rem;color:var(--color-ink-variant);margin:0 0 14px;">Puedes rastrear tu pedido manualmente en la secci\u00F3n <strong>Rastreo</strong>.</p><button style="background:none;border:none;cursor:pointer;font-family:var(--font-headline);font-size:0.72rem;color:var(--color-ink-variant);display:block;margin:0 auto;padding:4px;" onclick="this.closest(\'#payment-overlay\').remove()">Cerrar</button></div>';
-        document.body.appendChild(el);
-      });
-      // Clean URL
-      if (window.history.replaceState) {
-        window.history.replaceState({}, document.title, window.location.pathname);
+    // Post-pago: mostrar mensaje al volver de Mercado Pago
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const orderId = params.get('order');
+
+    async function showPaymentResult() {
+      if (!status) return;
+
+      // Confirm order if success
+      if (status === 'success' && orderId) {
+        try { await fetch('/api/order/' + orderId + '/confirm', { method: 'POST' }); } catch (_) {}
       }
+
+      // Fetch order data from API (works across tabs)
+      let savedItems = [];
+      let total = 0;
+      if (orderId) {
+        try {
+          const r = await fetch('/api/order/' + orderId);
+          if (r.ok) {
+            const o = await r.json();
+            savedItems = o.items || [];
+            total = o.total || 0;
+          }
+        } catch (_) {}
+      }
+
+      // Fallback to localStorage if API failed
+      if (!savedItems.length) {
+        savedItems = cart.items;
+        total = cart.getTotal();
+      }
+
+      if (status === 'success') cart.clear();
+
+      const itemLines = savedItems.map(i => `- ${i.title || i.name} x${i.qty} — S/. ${((i.unit_price || i.price || 0) * i.qty).toFixed(2)}`).join('%0A');
+      const waMsg = `Hola! Acabo de hacer un pedido en Konarumis:%0A%0A${itemLines}%0A%0ATotal: S/. ${total.toFixed(2)}%0A%0ACodigo de pedido: ${orderId || '---'}%0A(completar datos)`;
+      const waUrl = `https://wa.me/51922330331?text=${waMsg}`;
+
+      const trackLink = orderId ? `<a href="/pedido?id=${orderId}" class="btn btn--secondary" style="text-decoration:none;">Ver seguimiento</a>` : '';
+      const codeTag = orderId ? `<p style="font-size:1.5rem;font-weight:700;color:var(--color-teal);margin:8px 0;font-family:var(--font-headline);letter-spacing:2px;">#${orderId}</p>` : '';
+
+      const msgs = {
+        success: {
+          title: 'Pago exitoso',
+          text: 'Gracias por tu compra. Guarda tu codigo de pedido para hacer seguimiento.',
+          type: 'ok',
+          html: codeTag + `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;"><a href="${waUrl}" target="_blank" class="btn btn--primary" style="text-decoration:none;">Enviar por WhatsApp</a>${trackLink}</div>`,
+        },
+        failure: {
+          title: 'Pago no completado',
+          text: 'El pago no se proceso. Podés intentar de nuevo o escribirme por WhatsApp.',
+          type: 'error',
+          html: '',
+        },
+        pending: {
+          title: 'Pago pendiente',
+          text: 'El pago esta en revision. Te avisare cuando se confirme.',
+          type: 'info',
+          html: '',
+        },
+      };
+      const msg = msgs[status] || msgs.failure;
+      const overlay = document.createElement('div');
+      overlay.id = 'payment-overlay';
+      overlay.innerHTML = `
+        <div class="payment-modal">
+          <div class="payment-icon ${msg.type}">${status === 'success' ? '✓' : status === 'failure' ? '✗' : '…'}</div>
+          <h2>${msg.title}</h2>
+          <p>${msg.text}</p>
+          ${msg.html}
+          <button class="btn-ghost" onclick="document.getElementById('payment-overlay').remove();history.replaceState({},'','/');">Cerrar</button>
+        </div>`;
+      document.body.appendChild(overlay);
+      history.replaceState({}, '', '/');
     }
+    showPaymentResult();
 
     // 4. Scroll reveal animation
     const revealEls = document.querySelectorAll('.sk-reveal');
@@ -1863,239 +1518,8 @@
       if (children.length) observer.observe(container);
     });
 
-    // 6. Admin panel
-    var adminKey = null;
-
-    function renderAdminStats(orders) {
-      var el = document.getElementById('admin-stats');
-      var total = orders.length;
-      var mp = orders.filter(function(o) { return o.payment === 'mp'; }).length;
-      var wpp = orders.filter(function(o) { return o.payment === 'wpp'; }).length;
-      var paid = orders.filter(function(o) { return o.paid; }).length;
-      var pending = orders.filter(function(o) { return !o.paid; }).length;
-      var revenue = orders.filter(function(o) { return o.paid; }).reduce(function(s, o) { return s + (o.advTotal || 0); }, 0);
-      el.innerHTML = '<div class="admin-stat-card"><span class="admin-stat-num">' + total + '</span><span class="admin-stat-label">Total</span></div>' +
-        '<div class="admin-stat-card"><span class="admin-stat-num">' + paid + '</span><span class="admin-stat-label">Pagados</span></div>' +
-        '<div class="admin-stat-card"><span class="admin-stat-num">' + pending + '</span><span class="admin-stat-label">Pendientes</span></div>' +
-        '<div class="admin-stat-card"><span class="admin-stat-num">S/. ' + revenue.toFixed(2) + '</span><span class="admin-stat-label">Ingresos</span></div>' +
-        '<div class="admin-stat-card"><span class="admin-stat-num">' + mp + '</span><span class="admin-stat-label">MP</span></div>' +
-        '<div class="admin-stat-card"><span class="admin-stat-num">' + wpp + '</span><span class="admin-stat-label">WPP</span></div>';
-    }
-
-    function renderAdminOrders(filter) {
-      const list = document.getElementById('admin-order-list');
-      const orders = getOrders().sort(function(a,b) { return b.createdAt - a.createdAt; });
-      const filtered = filter === 'all' ? orders : orders.filter(function(o) { return o.payment === filter; });
-      renderAdminStats(orders);
-      if (!filtered.length) {
-        list.innerHTML = '<div class="admin-empty">No hay pedidos todav\u00EDa</div>';
-        return;
-      }
-      list.innerHTML = filtered.map(function(o) {
-        const itemsHtml = o.items.map(function(i) { return '\u2022 ' + i.name + ' x' + i.qty + ' \u2014 S/. ' + (i.price * i.qty).toFixed(2); }).join('<br>');
-        const dateStr = new Date(o.date).toLocaleDateString('es-PE', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-        const statusOrder = ['pending', 'started', 'halfway', 'finished', 'ready'];
-        const statusLabels = { pending: 'Pago procesado', started: 'Iniciado', halfway: 'Mitad', finished: 'Terminado', ready: 'Listo' };
-        const curIdx = statusOrder.indexOf(o.status || 'pending');
-        const statusBtns = statusOrder.map(function(s, i) {
-          var cls = i <= curIdx ? 'active' : '';
-          if (i === curIdx) cls += ' current';
-          return '<button class="admin-status-btn ' + cls + '" data-id="' + o.id + '" data-status="' + s + '">' + statusLabels[s] + '</button>';
-        }).join('');
-
-        return '<div class="admin-order-card ' + o.payment + '" data-id="' + o.id + '">' +
-          '<div class="admin-order-header">' +
-          '<span class="admin-order-id">#' + o.id + '</span>' +
-          '<span class="admin-order-date">' + dateStr + '</span>' +
-          '</div>' +
-          '<div class="admin-order-customer"><strong>' + (o.customer ? o.customer.name : '') + '</strong> \u00B7 ' + (o.customer ? o.customer.phone : '') + (o.customer && o.customer.address ? '<br>' + o.customer.address : '') + '</div>' +
-          '<div class="admin-order-items">' + itemsHtml + '</div>' +
-          '<div class="admin-order-total">S/. ' + o.advTotal.toFixed(2) + (o.fullTotal !== o.advTotal ? ' <span style="font-size:0.65rem;color:var(--color-ink-variant);">(Total: S/. ' + o.fullTotal.toFixed(2) + ')</span>' : '') + '</div>' +
-          '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0;">' +
-          '<span class="admin-order-payment ' + o.payment + '">' + (o.payment === 'mp' ? 'Mercado Pago' : 'WhatsApp') + '</span>' +
-          (o.paid ? '<span class="admin-paid-badge">Pagado</span>' : '<span class="admin-unpaid-badge">' + (o.payment === 'mp' ? 'Esperando pago' : 'Pendiente') + '</span>') +
-          '</div>' +
-          '<div class="admin-status-bar">' + statusBtns + '</div>' +
-          (o.payment === 'wpp' ? '<div class="admin-order-actions"><button class="admin-delete-btn" data-id="' + o.id + '" data-action="delete">Eliminar pedido</button></div>' : '') +
-          '</div>';
-      }).join('');
-
-      list.querySelectorAll('[data-action="delete"]').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          if (!confirm('\u00BFEliminar pedido #' + this.dataset.id + '?')) return;
-          const orders = getOrders().filter(function(o) { return o.id !== this.dataset.id; }.bind(this));
-          saveOrders(orders);
-          renderAdminOrders(filter);
-        });
-      });
-
-      list.querySelectorAll('.admin-status-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var id = this.dataset.id;
-          var status = this.dataset.status;
-          // Update local
-          var orders = getOrders();
-          var order = orders.find(function(o) { return o.id === id; });
-          if (order) {
-            order.status = status;
-            saveOrders(orders);
-          }
-          // Update remote via worker
-          if (adminKey) {
-            fetch('/api/order/' + id + '/status', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
-              body: JSON.stringify({ status: status })
-            }).catch(function() {});
-          }
-          renderAdminOrders(filter);
-        });
-      });
-    }
-
-    function syncOrders(callback) {
-      var syncIcon = document.getElementById('admin-sync-icon');
-      var syncStatus = document.getElementById('admin-sync-status');
-      if (syncIcon) { syncIcon.innerHTML = '&#x21BB;'; syncIcon.classList.add('spinning'); }
-      if (syncStatus) syncStatus.textContent = 'Sincronizando...';
-      fetch('/api/orders?all=1', {
-        headers: adminKey ? { 'X-Admin-Key': adminKey } : {}
-      }).then(function(r) {
-        if (r.status === 401) { if (syncStatus) syncStatus.textContent = 'No autorizado'; if (syncIcon) { syncIcon.innerHTML = '&#x2717;'; syncIcon.classList.remove('spinning'); } callback(); return; }
-        if (!r.ok) { if (syncStatus) syncStatus.textContent = 'Error de conexi\u00F3n'; if (syncIcon) { syncIcon.innerHTML = '&#x2717;'; syncIcon.classList.remove('spinning'); } callback(); return; }
-        return r.json();
-      }).then(function(remoteOrders) {
-        if (!remoteOrders) return;
-        var local = getOrders();
-        var nuevo = 0;
-        remoteOrders.forEach(function(ro) {
-          var exists = local.some(function(lo) { return lo.id === ro.id; });
-          if (!exists) {
-            local.push({
-              id: ro.id,
-              date: ro.createdAt,
-              customer: ro.customer,
-              items: (ro.items || []).map(function(x) { return { name: x.title || x.name, qty: x.qty, price: x.unit_price || x.price }; }),
-              fullTotal: ro.total,
-              advTotal: ro.total,
-              fee: 0,
-              payable: ro.total,
-              payment: 'mp',
-              paid: ro.paid || false,
-              status: ro.status || 'pending',
-              createdAt: new Date(ro.createdAt).getTime()
-            });
-            nuevo++;
-          } else {
-            // Update status and paid from remote
-            var existing = local.find(function(lo) { return lo.id === ro.id; });
-            if (existing) {
-              if (ro.status) existing.status = ro.status;
-              if (typeof ro.paid !== 'undefined') existing.paid = ro.paid;
-            }
-          }
-        });
-        saveOrders(local);
-        if (syncStatus) syncStatus.textContent = nuevo > 0 ? 'Sincronizado (' + nuevo + ' nuevo' + (nuevo > 1 ? 's' : '') + ')' : 'Actualizado';
-        if (syncIcon) { syncIcon.innerHTML = '&#x2713;'; syncIcon.classList.remove('spinning'); }
-        callback();
-      }).catch(function() {
-        if (syncStatus) syncStatus.textContent = 'Sin conexi\u00F3n al servidor';
-        if (syncIcon) { syncIcon.innerHTML = '&#x2717;'; syncIcon.classList.remove('spinning'); }
-        callback();
-      });
-    }
-
-    function openAdmin() {
-      document.getElementById('admin-panel').style.display = 'flex';
-      document.getElementById('admin-overlay').style.display = 'block';
-      document.getElementById('admin-login-form').style.display = 'block';
-      document.getElementById('admin-orders-area').style.display = 'none';
-      document.getElementById('admin-password-input').value = '';
-      document.getElementById('admin-login-error').style.display = 'none';
-      document.getElementById('admin-password-input').focus();
-    }
-
-    function closeAdmin() {
-      document.getElementById('admin-panel').style.display = 'none';
-      document.getElementById('admin-overlay').style.display = 'none';
-    }
-
-    document.getElementById('admin-link').addEventListener('click', function(e) { e.preventDefault(); openAdmin(); });
-    document.getElementById('admin-close').addEventListener('click', closeAdmin);
-    document.getElementById('admin-overlay').addEventListener('click', closeAdmin);
-
-    document.getElementById('admin-login-btn').addEventListener('click', function() {
-      var pass = document.getElementById('admin-password-input').value;
-      fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pass })
-      }).then(function(r) {
-        if (!r.ok) {
-          document.getElementById('admin-login-error').style.display = 'block';
-          return;
-        }
-        document.getElementById('admin-login-error').style.display = 'none';
-        adminKey = pass;
-        document.getElementById('admin-login-form').style.display = 'none';
-        document.getElementById('admin-orders-area').style.display = 'block';
-        syncOrders(function() {
-          renderAdminOrders('all');
-          document.querySelectorAll('.admin-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-          document.querySelector('.admin-filter-btn[data-filter="all"]').classList.add('active');
-        });
-      }).catch(function() {
-        document.getElementById('admin-login-error').textContent = 'Error de conexi\u00F3n';
-        document.getElementById('admin-login-error').style.display = 'block';
-      });
-    });
-
-    document.getElementById('admin-sync-btn').addEventListener('click', function() {
-      var filter = document.querySelector('.admin-filter-btn.active')?.dataset?.filter || 'all';
-      syncOrders(function() { renderAdminOrders(filter); });
-    });
-
-    document.getElementById('admin-logout-btn').addEventListener('click', function() {
-      adminKey = null;
-      document.getElementById('admin-login-form').style.display = 'block';
-      document.getElementById('admin-orders-area').style.display = 'none';
-      document.getElementById('admin-password-input').value = '';
-      var stats = document.getElementById('admin-stats');
-      if (stats) stats.innerHTML = '';
-    });
-
-    document.getElementById('admin-password-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') document.getElementById('admin-login-btn').click();
-    });
-
-    document.querySelectorAll('.admin-filter-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.admin-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-        this.classList.add('active');
-        renderAdminOrders(this.dataset.filter);
-      });
-    });
-
-    // Keyboard shortcut: Ctrl+Shift+A to open admin
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); openAdmin(); }
-    });
   </script>
-
-
-  <!-- Floating actions: cart + WhatsApp -->
-  <div class="sk-floating-actions">
-    <button id="floating-cart-btn" class="sk-floating-btn sk-floating-cart" aria-label="Carrito">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-      <span id="floating-cart-count" class="sk-floating-badge">0</span>
-    </button>
-    <a href="https://wa.me/51922330331" target="_blank" class="sk-floating-btn sk-floating-whatsapp" aria-label="WhatsApp">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.879c-5.443 0-9.87 4.373-9.875 9.804-.002 1.772.485 3.5 1.411 5.013l-.995 3.634 3.735-.978zm11.516-7.393c-.307-.154-1.82-.9-2.102-1.002-.281-.102-.486-.154-.69.154-.204.307-.791.997-.97 1.202-.178.205-.357.23-.664.077-1.385-.694-2.42-1.222-3.414-2.924-.262-.449.262-.417.75-1.394.082-.166.04-.31-.02-.464-.06-.154-.486-1.18-.664-1.614-.175-.422-.35-.364-.486-.371-.125-.006-.269-.007-.41-.007-.14 0-.368.052-.56.262-.193.208-.736.72-.736 1.757 0 1.037.75 2.039.855 2.181.104.143 1.476 2.262 3.576 3.167 1.545.666 2.456.702 3.328.574.96-.143 1.82-.743 2.076-1.428.25-.683.25-1.266.175-1.392-.075-.127-.27-.205-.577-.36z"/></svg>
-    </a>
-  </div>
-
-  </div>
+  <script src="https://sdk.mercadopago.com/js/v2" async defer></script>
 </body>
 </html>
 
