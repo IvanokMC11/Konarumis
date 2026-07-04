@@ -105,6 +105,19 @@ body{font-family:var(--font-body);background:var(--color-surface);color:var(--co
 .sctl select:focus{outline:none;box-shadow:2px 2px 0 var(--shadow-ink)}
 .emp{text-align:center;padding:60px 24px}
 .emp p{color:var(--color-ink-variant);font-size:.85rem;font-family:var(--font-body)}
+.cf-inp{width:100%;padding:8px;border:var(--border-width) solid var(--color-ink);background:#2a2a2a;color:var(--color-ink);margin-bottom:6px;font-family:var(--font-body);font-size:.78rem}
+.cf-inp:focus{outline:none;box-shadow:2px 2px 0 var(--shadow-ink)}
+.cf-ib{display:flex;gap:4px;margin-bottom:4px}
+.cf-ib .n{flex:2}.cf-ib .q{flex:0 0 60px}.cf-ib .p{flex:0 0 80px}
+.cf-btn{padding:6px 14px;border:var(--border-width) solid var(--color-ink);background:var(--color-surface);color:var(--color-ink);cursor:pointer;font-family:var(--font-headline);font-weight:700;font-size:.65rem;transition:all .12s}
+.cf-btn:hover{transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--shadow-ink)}
+.cf-btn-p{flex:1;padding:8px;background:var(--color-teal);color:var(--color-paper);border:var(--border-width) solid var(--color-teal);font-family:var(--font-headline);font-weight:800;cursor:pointer;font-size:.75rem}
+.cf-btn-p:hover{background:var(--color-teal-dark)}
+.cf-err{color:#f44336;font-size:.7rem;margin-top:4px}
+.cf-ok{text-align:center;padding:10px;border:var(--border-width) solid var(--color-teal);margin-top:6px}
+.cf-ok .c{font-size:1.2rem;font-weight:800;color:var(--color-teal);font-family:var(--font-headline);letter-spacing:1px}
+.cf-ok .s{font-size:.6rem;color:var(--color-ink-variant);margin:0 0 4px}
+.cf-ok a{font-size:.65rem;color:var(--color-ink-variant)}
 @media(max-width:500px){.wrap{padding:12px}.top{padding:12px 16px}.top h1{font-size:.95rem}.och{padding:10px 12px}.cl{padding:10px 12px}}`;
   const statusData = JSON.stringify(Object.entries(STATUS_LABELS).map(([k,v]) => [k,v]));
   const statusesJson = JSON.stringify(STATUSES);
@@ -117,6 +130,46 @@ async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(k
 async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);sessionStorage.removeItem(SK+'_attempts');document.getElementById("err").style.display="none";await render()}else{loginAttempts++;sessionStorage.setItem(SK+'_attempts',loginAttempts);document.getElementById("err").style.display="block";document.getElementById("rem").textContent=Math.max(0,5-loginAttempts)+" intento(s) restante(s)";if(loginAttempts>=5){document.getElementById("pwd").disabled=true;document.getElementById("loginbtn").disabled=true;document.getElementById("rem").textContent="Demasiados intentos. Cierra y vuelve a abrir la pagina."}}}catch(e){alert("Error: "+e.message)}}
 async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}
 async function togglePaid(id){var r=await api("/api/order/"+id+"/paid",{method:"POST"});if(r.ok)render()}
+function showCreateForm(){
+  if(document.getElementById("cf"))return;
+  var h='<div id="cf" style="background:var(--color-surface);border:var(--border-width) solid var(--color-ink);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink)">'+
+    '<h3 style="font-family:var(--font-headline);font-size:.8rem;margin-bottom:10px">Nuevo Pedido (WhatsApp)</h3>'+
+    '<input class="cf-inp" id="cf-name" placeholder="Nombre">'+
+    '<input class="cf-inp" id="cf-phone" placeholder="WhatsApp">'+
+    '<input class="cf-inp" id="cf-addr" placeholder="Direcci\u00F3n">'+
+    '<div id="cf-items"><div class="cf-ib"><input class="cf-inp n cf-ip-name" placeholder="Producto"><input class="cf-inp q cf-ip-qty" type=number placeholder="Cant" value=1><input class="cf-inp p cf-ip-price" type=number step=.01 placeholder="Precio S/."></div></div>'+
+    '<button class="cf-btn" onclick="addItemRow()" style="margin:0 0 10px">+ Agregar item</button>'+
+    '<div style="display:flex;gap:6px">'+
+    '<button class="cf-btn-p" onclick="submitCreateOrder()">Generar c\u00F3digo</button>'+
+    '<button class="cf-btn" onclick="document.getElementById(\'cf\').remove()">Cancelar</button></div>'+
+    '<div id="cf-result"></div></div>';
+  document.getElementById("app").insertAdjacentHTML("afterbegin",h);
+  document.getElementById("cf-name").focus();
+}
+function addItemRow(){
+  var d=document.createElement("div");d.className="cf-ib";
+  d.innerHTML='<input class="cf-inp n cf-ip-name" placeholder="Producto"><input class="cf-inp q cf-ip-qty" type=number placeholder="Cant" value=1><input class="cf-inp p cf-ip-price" type=number step=.01 placeholder="Precio S/.">';
+  document.getElementById("cf-items").appendChild(d);
+}
+async function submitCreateOrder(){
+  var name=document.getElementById("cf-name").value.trim();
+  var phone=document.getElementById("cf-phone").value.trim();
+  var addr=document.getElementById("cf-addr").value.trim();
+  if(!name||!phone){document.getElementById("cf-result").innerHTML='<p class="cf-err">Nombre y WhatsApp son obligatorios</p>';return}
+  var items=[],err=false;
+  document.querySelectorAll("#cf-items .cf-ib").forEach(function(r){
+    var n=r.querySelector(".cf-ip-name"),q=r.querySelector(".cf-ip-qty"),p=r.querySelector(".cf-ip-price");
+    if(n&&n.value.trim())items.push({title:n.value.trim(),qty:parseInt(q.value)||1,unit_price:parseFloat(p.value)||0});
+  });
+  if(!items.length){document.getElementById("cf-result").innerHTML='<p class="cf-err">Agrega al menos un producto</p>';return}
+  var total=items.reduce(function(s,i){return s+i.qty*i.unit_price},0);
+  document.getElementById("cf-result").innerHTML='<p style="color:var(--color-ink-variant);font-size:.7rem">Creando pedido...</p>';
+  var r=await api("/api/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,phone:phone,address:addr,items:items,total:total})});
+  if(!r.ok){document.getElementById("cf-result").innerHTML='<p class="cf-err">Error al crear pedido</p>';return}
+  var o=await r.json();
+  document.getElementById("cf-result").innerHTML='<div class="cf-ok"><p class="s">Pedido creado</p><p class="c">#'+o.id+'</p><a href="/pedido?id='+o.id+'" target="_blank">Ver seguimiento</a></div>';
+  render();
+}
 function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
 function payLabel(o){var p=o.payment||(o.preferenceId?'mp':'wpp');return p==='mp'?'Mercado Pago':'WhatsApp'}
 function payCls(o){var p=o.payment||(o.preferenceId?'mp':'wpp');return p==='mp'?'mp':'wpp'}
@@ -161,6 +214,7 @@ async function render(){
     '<button class="fb'+(FILTER==='all'?' act':'')+'" onclick="FILTER=\\'all\\';render()">Todos</button>'+
     '<button class="fb'+(FILTER==='mp'?' act':'')+'" onclick="FILTER=\\'mp\\';render()">MP</button>'+
     '<button class="fb'+(FILTER==='wpp'?' act':'')+'" onclick="FILTER=\\'wpp\\';render()">WhatsApp</button>'+
+    '<button class="fb" onclick="showCreateForm()" style="margin-left:0">+ Nuevo</button>'+
     '<button class="fb sync" onclick="render()">&#x21BB; Sincronizar</button></div>';
   h+='<div class=stats><div class=sc><div class=n>'+total+'</div><div class=l>Pedidos</div></div><div class=sc><div class=n>'+paid+'</div><div class=l>Pagados</div></div><div class=sc><div class=n>'+pend+'</div><div class=l>Pendientes</div></div><div class=sc><div class=n>S/. '+rev.toFixed(2)+'</div><div class=l>Ingresos</div></div><div class=sc><div class=n>'+mpCount+'</div><div class=l>MP</div></div><div class=sc><div class=n>'+wppCount+'</div><div class=l>WPP</div></div></div>';
   h+='<div class=stats style="grid-template-columns:repeat(5,1fr)">'+ORDERED.map(function(s){return'<div class=sc><div class=n>'+(sm[s]||0)+'</div><div class=l>'+STATUS_LABELS[s].replace(/Pedido /g,'')+'</div></div>'}).join('')+'</div>';
@@ -356,6 +410,35 @@ async function listOrders(env, all = false) {
   return json(orders);
 }
 
+async function createOrder(request, env) {
+  const body = await request.json();
+  let id = body.id;
+  if (!id) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    id = 'KMR';
+    for (let i = 0; i < 5; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+    while (await env.ORDERS.get(id)) {
+      id = 'KMR';
+      for (let i = 0; i < 5; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+  } else if (await env.ORDERS.get(id)) {
+    return json({ error: 'El pedido ya existe', id }, 409);
+  }
+  const now = new Date().toISOString();
+  const order = {
+    id,
+    customer: { name: body.name || '', phone: body.phone || '', address: body.address || '', location: body.location || '' },
+    items: Array.isArray(body.items) ? body.items : [],
+    total: Number(body.total) || 0,
+    payment: 'wpp',
+    paid: false,
+    status: 'pending',
+    createdAt: now
+  };
+  await env.ORDERS.put(id, JSON.stringify(order));
+  return json(order, 201);
+}
+
 // ─── Router ───
 
 export default {
@@ -398,6 +481,18 @@ export default {
         if (!apiRl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, apiRl.headers);
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return listOrders(env, url.searchParams.get('all') === '1');
+      }
+
+      // ── Create order (admin or client) ──
+      if (path === '/api/order' && request.method === 'POST') {
+        if (isAdmin(request, env)) {
+          const apiRl = checkApiRate();
+          if (!apiRl.allowed) return json({ error: 'Demasiadas solicitudes.' }, 429, apiRl.headers);
+        } else {
+          const pubRl = checkRateLimit(ip + ':create', 5, 60000);
+          if (!pubRl.allowed) return json({ error: 'Demasiadas solicitudes.' }, 429);
+        }
+        return createOrder(request, env);
       }
 
       // ── Admin: update status ──
