@@ -5,7 +5,7 @@ function json(data, status = 200, extraHeaders) {
 }
 
 function html(body, status = 200) {
-  return new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+  return new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' } });
 }
 
 function genId() {
@@ -371,15 +371,22 @@ export default {
     }
 
     try {
-      // Rate limiting by IP
       const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
-      const rl = checkRateLimit(ip);
-      const rlHeaders = { 'X-RateLimit-Remaining': String(rl.remaining), 'X-RateLimit-Reset': String(rl.resetAt) };
+
+      function rlHeaders() {
+        const rl = checkRateLimit(ip);
+        return { 'X-RateLimit-Remaining': String(rl.remaining), 'X-RateLimit-Reset': String(rl.resetAt) };
+      }
+
+      function checkApiRate(max = 10) {
+        const rl = checkRateLimit(ip, max);
+        return { allowed: rl.allowed, headers: { 'X-RateLimit-Remaining': String(rl.remaining), 'X-RateLimit-Reset': String(rl.resetAt) } };
+      }
 
       // ── Admin login (rate limited: 5/min) ──
       if (path === '/api/admin/login' && request.method === 'POST') {
         const loginRl = checkRateLimit(ip + ':login', 5, 60000);
-        if (!loginRl.allowed) return json({ error: 'Demasiados intentos. Espera un minuto.' }, 429, rlHeaders);
+        if (!loginRl.allowed) return json({ error: 'Demasiados intentos. Espera un minuto.' }, 429, rlHeaders());
         const body = await request.json();
         if (body?.password === (env.ADMIN_PASSWORD || '')) return json({ ok: true });
         return json({ error: 'Contraseña incorrecta' }, 401);
@@ -387,7 +394,8 @@ export default {
 
       // ── Admin: list orders ──
       if (path === '/api/orders' && request.method === 'GET') {
-        if (!rl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, rlHeaders);
+        const apiRl = checkApiRate();
+        if (!apiRl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, apiRl.headers);
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return listOrders(env, url.searchParams.get('all') === '1');
       }
@@ -395,7 +403,8 @@ export default {
       // ── Admin: update status ──
       const statusMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)\/status$/);
       if (statusMatch && request.method === 'POST') {
-        if (!rl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, rlHeaders);
+        const apiRl = checkApiRate();
+        if (!apiRl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, apiRl.headers);
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return updateOrderStatus(request, env, statusMatch[1]);
       }
@@ -403,7 +412,8 @@ export default {
       // ── Toggle paid status (admin) ──
       const paidMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)\/paid$/);
       if (paidMatch && request.method === 'POST') {
-        if (!rl.allowed) return json({ error: 'Demasiadas solicitudes.' }, 429, rlHeaders);
+        const apiRl = checkApiRate();
+        if (!apiRl.allowed) return json({ error: 'Demasiadas solicitudes.' }, 429, apiRl.headers);
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return toggleOrderPaid(env, paidMatch[1]);
       }
