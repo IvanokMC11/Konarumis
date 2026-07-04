@@ -377,8 +377,8 @@ export default {
 
     // Serve static assets (no-cache for html/css/js)
     const asset = await env.ASSETS.fetch(request);
-    const url = new URL(request.url);
-    const ext = url.pathname.split('.').pop().toLowerCase();
+    const reqUrl = new URL(request.url);
+    const ext = reqUrl.pathname.split('.').pop().toLowerCase();
     if (['html', 'css', 'js'].includes(ext) || url.pathname === '/' || url.pathname === '') {
       return new Response(asset.body, {
         status: asset.status,
