@@ -1,7 +1,7 @@
-function json(data, status = 200) {
+function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Key' },
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Key', ...extraHeaders },
   });
 }
 
@@ -21,79 +21,111 @@ function isAdmin(req, env) {
   return key === (env.ADMIN_PASSWORD || '');
 }
 
-// ─── Admin Panel HTML ───
+// ─── Rate limiter ───
+const rateLimitMap = new Map();
+function checkRateLimit(ip, maxAttempts = 10, windowMs = 60000) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip) || { count: 0, resetAt: now + windowMs };
+  if (now > entry.resetAt) {
+    entry.count = 0;
+    entry.resetAt = now + windowMs;
+  }
+  entry.count++;
+  rateLimitMap.set(ip, entry);
+  // Cleanup old entries every 100 requests
+  if (rateLimitMap.size > 1000) {
+    const cutoff = now - 120000;
+    for (const [key, val] of rateLimitMap) {
+      if (val.resetAt < cutoff) rateLimitMap.delete(key);
+    }
+  }
+  return {
+    allowed: entry.count <= maxAttempts,
+    remaining: Math.max(0, maxAttempts - entry.count),
+    resetAt: entry.resetAt,
+  };
+}
+
+// ─── Admin Panel HTML (sketchbook aesthetic) ───
 function adminHtml() {
   const css = `
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap");
+:root{--font-headline:'Bricolage Grotesque',system-ui,sans-serif;--font-body:'Literata',Georgia,serif;--color-teal:#76946b;--color-teal-dark:#5d7a53;--color-ink:#2c2c2c;--color-paper:#fcf9f8;--color-surface:#f5f2ef;--color-ink-variant:#6b6b6b;--border-width:3px;--shadow-offset:4px;--shadow-ink:rgba(0,0,0,0.15)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:#f5f2ef;color:#2c2c2c;min-height:100vh}
+body{font-family:var(--font-body);background:var(--color-surface);color:var(--color-ink);min-height:100vh}
 .wrap{max-width:1000px;margin:0 auto;padding:24px}
-.top{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#2c2c2c;color:#fcf9f8;position:sticky;top:0;z-index:10}
-.top h1{font-family:"Source Serif 4",serif;font-size:1.2rem;font-weight:600;color:#fcf9f8}
-.top h1 span{color:#76946b}
-.top a{color:#e0dbd7;text-decoration:none;font-size:0.8rem;padding:6px 14px;border:1px solid #555;border-radius:6px;transition:all .2s}
-.top a:hover{border-color:#c17f59;color:#c17f59}
-.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
-.sc{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.sc .n{font-size:1.5rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}
-.sc .l{font-size:.7rem;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
-.lb{max-width:340px;margin:120px auto;text-align:center;background:#fff;padding:40px 32px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
-.lb .ic{width:48px;height:48px;background:#f5f2ef;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.2rem}
-.lb h2{font-family:"Source Serif 4",serif;font-size:1.2rem;color:#6b4f3c;margin-bottom:4px}
-.lb p{font-size:.8rem;color:#999;margin-bottom:20px}
-.lb input{width:100%;padding:12px;border:2px solid #e0dbd7;border-radius:8px;font-size:.9rem;margin-bottom:12px;transition:border .2s;font-family:inherit}
-.lb input:focus{border-color:#76946b;outline:none}
-.lb button{width:100%;padding:12px;background:#76946b;color:#fff;border:none;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:700;transition:background .2s}
-.lb button:hover{background:#5d7a53}
-.oc{background:#fff;border-radius:12px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden}
-.och{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fcf9f8;border-bottom:1px solid #f0eeec;flex-wrap:wrap;gap:8px}
-.oi{display:flex;align-items:center;gap:12px}
-.oid{font-size:.9rem;font-weight:700;color:#6b4f3c;font-family:"Source Serif 4",serif}
-.od{font-size:.7rem;color:#aaa}
-.sb{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.65rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px}
-.sp{background:#d4a373}.ss{background:#6b9ac4}.sh{background:#b088c4}.sf{background:#76946b}.sr{background:#4a7c59}
-.ocb{display:grid;grid-template-columns:1fr 1fr;gap:0}@media(max-width:700px){.ocb{grid-template-columns:1fr}}
-.cl{padding:16px 20px}
-.cl+.cl{border-left:1px solid #f0eeec}@media(max-width:700px){.cl+.cl{border-left:none;border-top:1px solid #f0eeec}}
-.cl h3{font-size:.65rem;text-transform:uppercase;letter-spacing:.8px;color:#bbb;margin-bottom:10px;font-weight:700}
-.pr{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem;color:#555;border-bottom:1px solid #f5f2ef}
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--color-ink);color:var(--color-paper);position:sticky;top:0;z-index:10;border-bottom:var(--border-width) solid var(--color-teal)}
+.top h1{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;color:var(--color-paper);letter-spacing:1px}
+.top h1 span{color:var(--color-teal)}
+.top a{color:#ccc;text-decoration:none;font-size:0.75rem;padding:6px 14px;border:var(--border-width) solid #555;font-family:var(--font-headline);font-weight:700;transition:all .15s}
+.top a:hover{border-color:var(--color-teal);color:var(--color-teal)}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.fb{font-family:var(--font-headline);font-size:.7rem;font-weight:700;padding:6px 14px;border:var(--border-width) solid var(--color-ink);background:var(--color-paper);color:var(--color-ink);cursor:pointer;transition:all .12s;box-shadow:2px 2px 0 var(--shadow-ink)}
+.fb.act{background:var(--color-teal);color:#fff;border-color:var(--color-teal);box-shadow:none}
+.fb:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--shadow-ink)}.fb.act:hover{transform:none;box-shadow:none;background:var(--color-teal-dark)}
+.fb.sync{margin-left:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:16px}
+.sc{background:var(--color-paper);border:var(--border-width) solid var(--color-ink);padding:12px;text-align:center;box-shadow:var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink)}
+.sc .n{font-family:var(--font-headline);font-size:1.3rem;font-weight:800;color:var(--color-ink)}
+.sc .l{font-size:.55rem;color:var(--color-ink-variant);text-transform:uppercase;letter-spacing:.5px;margin-top:3px;font-family:var(--font-headline);font-weight:700}
+.lb{max-width:360px;margin:80px auto;text-align:center;background:var(--color-paper);padding:40px 32px;border:var(--border-width) solid var(--color-ink);box-shadow:var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink)}
+.lb h2{font-family:var(--font-headline);font-size:1.2rem;font-weight:800;color:var(--color-ink);margin-bottom:4px}
+.lb p{font-size:.78rem;color:var(--color-ink-variant);margin-bottom:16px;font-family:var(--font-body)}
+.lb input{width:100%;padding:10px 12px;border:var(--border-width) solid var(--color-ink);font-size:.85rem;margin-bottom:10px;font-family:var(--font-body);background:var(--color-surface);color:var(--color-ink);transition:box-shadow .15s}
+.lb input:focus{outline:none;box-shadow:3px 3px 0 var(--shadow-ink)}
+.lb button{width:100%;padding:10px;background:var(--color-teal);color:#fff;border:var(--border-width) solid var(--color-teal);font-size:.85rem;cursor:pointer;font-family:var(--font-headline);font-weight:800;transition:background .15s;letter-spacing:.5px}
+.lb button:hover{background:var(--color-teal-dark)}
+.lb .err{color:#f44336;font-size:.7rem;margin-top:6px;display:none;font-family:var(--font-body)}
+.lb .attempts{font-size:.6rem;color:var(--color-ink-variant);margin-top:8px;font-family:var(--font-body)}
+.oc{background:var(--color-paper);border:var(--border-width) solid var(--color-ink);margin-bottom:14px;box-shadow:var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink);overflow:hidden}
+.oc.mp{border-left-color:#1565c0}.oc.wpp{border-left-color:#2e7d32}
+.och{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--color-surface);border-bottom:var(--border-width) solid var(--color-ink);flex-wrap:wrap;gap:6px}
+.oi{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.oid{font-family:var(--font-headline);font-size:.85rem;font-weight:800;color:var(--color-teal);letter-spacing:1px}
+.od{font-size:.6rem;color:var(--color-ink-variant);font-family:var(--font-body)}
+.bdg{display:inline-block;font-size:.5rem;font-weight:700;padding:2px 7px;border:2px solid;text-transform:uppercase;letter-spacing:.5px;font-family:var(--font-headline)}
+.bdg.mp{background:#e3f2fd;color:#1565c0;border-color:#1565c0}
+.bdg.wpp{background:#e8f5e9;color:#2e7d32;border-color:#2e7d32}
+.bdg.paid{background:#4caf50;color:#fff;border-color:#4caf50}
+.bdg.unpaid{background:#ff9800;color:#fff;border-color:#ff9800}
+.sb{display:inline-block;padding:3px 10px;font-size:.55rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;border:2px solid transparent;font-family:var(--font-headline)}
+.sb.sp{background:#d4a373;border-color:#d4a373}.sb.ss{background:#6b9ac4;border-color:#6b9ac4}.sb.sh{background:#b088c4;border-color:#b088c4}.sb.sf{background:var(--color-teal);border-color:var(--color-teal)}.sb.sr{background:#4a7c59;border-color:#4a7c59}
+.ocb{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.cl{padding:14px 16px}
+.cl+.cl{border-left:var(--border-width) solid var(--color-ink)}@media(max-width:700px){.ocb{grid-template-columns:1fr}.cl+.cl{border-left:none;border-top:var(--border-width) solid var(--color-ink)}}
+.cl h3{font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--color-ink-variant);margin-bottom:8px;font-weight:700;font-family:var(--font-headline)}
+.pr{display:flex;justify-content:space-between;padding:4px 0;font-size:.75rem;color:var(--color-ink);border-bottom:1px solid var(--color-surface);font-family:var(--font-body)}
 .pr:last-child{border:none}
-.pr .prc{color:#6b4f3c;font-weight:600}
-.otr{display:flex;justify-content:space-between;font-size:.9rem;font-weight:700;color:#6b4f3c;padding-top:8px;margin-top:4px;border-top:2px solid #e8e3df}
-.cd{display:grid;gap:6px}
-.cd div{font-size:.8rem;color:#555;display:flex;gap:6px}
-.cd .tg{color:#999;min-width:50px}
-.sctl{margin-top:12px}
-.sctl select{width:100%;padding:8px 10px;border:2px solid #e8e3df;border-radius:8px;font-size:.8rem;background:#fff;cursor:pointer;font-family:inherit;transition:border .2s}
-.sctl select:focus{border-color:#76946b;outline:none}
-.emp{text-align:center;padding:80px 24px}
-.emp .ei{font-size:2.5rem;opacity:.3;margin-bottom:16px}
-.emp p{color:#bbb;font-size:.9rem}
-.emp .sub{color:#ddd;font-size:.8rem;margin-top:8px}
-.fb{font-family:inherit;font-size:.7rem;font-weight:700;padding:6px 14px;border:2px solid #e0dbd7;border-radius:8px;background:#fff;color:#555;cursor:pointer;transition:all .15s}
-.fb.act{background:#76946b;border-color:#76946b;color:#fff}
-.fb:hover{background:#f0eeec}.fb.act:hover{background:#5d7a53}
-@media(max-width:480px){.wrap{padding:12px}.top{padding:12px 16px}.top h1{font-size:1rem}.och{padding:12px 16px}.cl{padding:12px 16px}}`;
+.pr .prc{color:var(--color-ink);font-weight:600}
+.otr{display:flex;justify-content:space-between;font-size:.85rem;font-weight:800;color:var(--color-ink);padding-top:6px;margin-top:4px;border-top:var(--border-width) solid var(--color-ink);font-family:var(--font-headline)}
+.cd{display:grid;gap:5px}
+.cd div{font-size:.75rem;color:var(--color-ink);display:flex;gap:6px;font-family:var(--font-body)}
+.cd .tg{color:var(--color-ink-variant);min-width:50px;font-family:var(--font-headline);font-weight:700;font-size:.65rem;text-transform:uppercase;letter-spacing:.5px}
+.sctl{margin-top:10px}
+.sctl select{width:100%;padding:6px 8px;border:var(--border-width) solid var(--color-ink);font-size:.72rem;background:var(--color-surface);color:var(--color-ink);cursor:pointer;font-family:var(--font-body);transition:box-shadow .15s}
+.sctl select:focus{outline:none;box-shadow:2px 2px 0 var(--shadow-ink)}
+.emp{text-align:center;padding:60px 24px}
+.emp p{color:var(--color-ink-variant);font-size:.85rem;font-family:var(--font-body)}
+@media(max-width:500px){.wrap{padding:12px}.top{padding:12px 16px}.top h1{font-size:.95rem}.och{padding:10px 12px}.cl{padding:10px 12px}}`;
   const statusData = JSON.stringify(Object.entries(STATUS_LABELS).map(([k,v]) => [k,v]));
   const statusesJson = JSON.stringify(STATUSES);
   const renderJs = `
 const SK="__ak",SD=${statusData},ORDERED=${statusesJson};
 var STATUS_LABELS={},FILTER='all';SD.forEach(function(a){STATUS_LABELS[a[0]]=a[1]});
+var loginAttempts=parseInt(sessionStorage.getItem(SK+'_attempts')||'0');
 function k(){return sessionStorage.getItem(SK)||""}
-async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(kk)o.headers["X-Admin-Key"]=kk;var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);render()}return r}
-async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);await render()}else alert("Contrasena incorrecta")}catch(e){alert("Error: "+e.message)}}
+async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(kk)o.headers["X-Admin-Key"]=kk;var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);sessionStorage.removeItem(SK+'_attempts');render()}return r}
+async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);sessionStorage.removeItem(SK+'_attempts');document.getElementById("err").style.display="none";await render()}else{loginAttempts++;sessionStorage.setItem(SK+'_attempts',loginAttempts);document.getElementById("err").style.display="block";document.getElementById("rem").textContent=Math.max(0,5-loginAttempts)+" intento(s) restante(s)";if(loginAttempts>=5){document.getElementById("pwd").disabled=true;document.getElementById("loginbtn").disabled=true;document.getElementById("rem").textContent="Demasiados intentos. Cierra y vuelve a abrir la pagina."}}}catch(e){alert("Error: "+e.message)}}
 async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}
 function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
+function payLabel(o){return o.payment==='mp'?'Mercado Pago':'WhatsApp'}
+function payCls(o){return o.payment==='mp'?'mp':'wpp'}
 function card(o){
   var c=o.customer||{},it=o.items||[];
-  var payLabel=o.payment==='mp'?'Mercado Pago':'MP';
-  var payCls=o.payment==='mp'?'mp':'wpp';
-  var paidCls=o.paid?'paid':'unpaid';
-  var paidLabel=o.paid?'Pagado':'Esperando pago';
-  return '<div class=oc '+(o.payment?'data-payment="'+o.payment+'"':'')+'>'+
-    '<div class=och><div class=oi><div><div class=oid>#'+o.id+'</div><div class=od>'+fmt(o.createdAt)+'</div></div>'+
-    '<span style="font-size:.6rem;padding:2px 8px;border-radius:4px;background:'+(o.payment==='mp'?'#e3f2fd':'#e8f5e9')+';color:'+(o.payment==='mp'?'#1565c0':'#2e7d32')+'">'+payLabel+'</span>'+
-    '<span style="font-size:.6rem;padding:2px 8px;border-radius:4px;background:'+(o.paid?'#4caf50':'#ff9800')+';color:#fff">'+paidLabel+'</span>'+
+  return '<div class="oc '+payCls(o)+'">'+
+    '<div class=och><div class=oi><div><span class=oid>#'+o.id+'</span><span class=od> '+fmt(o.createdAt)+'</span></div>'+
+    '<span class="bdg '+payCls(o)+'">'+payLabel(o)+'</span>'+
+    '<span class="bdg '+(o.paid?'paid':'unpaid')+'">'+(o.paid?'Pagado':'Pendiente')+'</span>'+
     '</div><span class="sb s'+o.status.charAt(0)+'">'+(STATUS_LABELS[o.status]||o.status)+'</span></div>'+
     '<div class=ocb><div class=cl><h3>Productos</h3>'+
     it.map(function(i){return'<div class=pr><span>'+i.title+' x'+i.qty+'</span><span class=prc>S/. '+(i.unit_price*i.qty).toFixed(2)+'</span></div>'}).join('')+
@@ -102,7 +134,7 @@ function card(o){
     '<div class=cd>'+
     '<div><span class=tg>Nombre</span><span>'+(c.name||'-')+'</span></div>'+
     '<div><span class=tg>WhatsApp</span><span>'+(c.phone||'-')+'</span></div>'+
-    '<div><span class=tg>Direccion</span><span>'+(c.address||'-')+'</span></div>'+
+    '<div><span class=tg>Dir.</span><span>'+(c.address||'-')+'</span></div>'+
     '</div>'+
     '<div class=sctl><h3>Estado</h3><select onchange="setStatus(' + "'" + o.id + "'" + ',this.value)">'+
     ORDERED.map(function(s){return'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+STATUS_LABELS[s]+'</option>'}).join('')+
@@ -111,10 +143,10 @@ function card(o){
 }
 async function render(){
   var kk=k();
-  if(!kk){document.getElementById("app").innerHTML='<div class=lb><div class=ic>&#128274;</div><h2>Acceso restringido</h2><p>Ingresa la contrasena de administrador</p><input id=pwd type=password placeholder=Contrasena onkeydown="if(event.key===\\'Enter\\')login()" autofocus><button onclick=login()>Ingresar</button></div>';return}
-  document.getElementById("app").innerHTML='<div style="text-align:center;padding:40px;color:#bbb">Cargando...</div>';
+  if(!kk){document.getElementById("app").innerHTML='<div class=lb><h2>Acceso restringido</h2><p>Ingresa la contrase\u00F1a de administrador</p><input id=pwd type=password placeholder="Contrase\u00F1a" onkeydown="if(event.key===\\"Enter\\")login()" autofocus><button id=loginbtn onclick=login()>Ingresar</button><div class=err id=err>Contrase\u00F1a incorrecta</div><div class=attempts id=rem>'+(loginAttempts>=5?'Demasiados intentos. Cierra la pagina.':(5-loginAttempts)+' intento(s) restante(s)')+'</div></div>';if(loginAttempts>=5){document.getElementById("pwd").disabled=true;document.getElementById("loginbtn").disabled=true}return}
+  document.getElementById("app").innerHTML='<div style="text-align:center;padding:60px;color:var(--color-ink-variant);font-family:var(--font-body)">Cargando...</div>';
   var r=await api("/api/orders?all=1");
-  if(!r.ok){document.getElementById("app").innerHTML='<div class=lb><p>Error al cargar pedidos</p><button onclick=render()>Reintentar</button></div>';return}
+  if(!r.ok){document.getElementById("app").innerHTML='<div class=lb><p>Error al cargar pedidos</p><button onclick=render() style="margin-top:12px">Reintentar</button></div>';return}
   var allOrders=await r.json();
   var orders=FILTER==='all'?allOrders:allOrders.filter(function(o){return (o.payment||'mp')===FILTER});
   var sm={};ORDERED.forEach(function(s){sm[s]=0});
@@ -122,20 +154,20 @@ async function render(){
   var total=allOrders.length,paid=allOrders.filter(function(o){return o.paid}).length,pend=allOrders.filter(function(o){return !o.paid}).length,
       mpCount=allOrders.filter(function(o){return o.payment==='mp'}).length,wppCount=allOrders.filter(function(o){return o.payment!=='mp'}).length,
       rev=allOrders.filter(function(o){return o.paid}).reduce(function(s,o){return s+(o.total||0)},0);
-  var h='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'+
+  var h='<div class=toolbar>'+
     '<button class="fb'+(FILTER==='all'?' act':'')+'" onclick="FILTER=\\'all\\';render()">Todos</button>'+
     '<button class="fb'+(FILTER==='mp'?' act':'')+'" onclick="FILTER=\\'mp\\';render()">MP</button>'+
-    '<button class="fb'+(FILTER==='wpp'?' act':'')+'" onclick="FILTER=\\'wpp\\';render()">WPP</button>'+
-    '<button class="fb" onclick="render()" style="margin-left:auto">&#x21BB; Sincronizar</button></div>';
-  h+='<div class=st><div class=sc><div class=n>'+total+'</div><div class=l>Total</div></div><div class=sc><div class=n>'+paid+'</div><div class=l>Pagados</div></div><div class=sc><div class=n>'+pend+'</div><div class=l>Pendientes</div></div><div class=sc><div class=n>S/. '+rev.toFixed(2)+'</div><div class=l>Ingresos</div></div><div class=sc><div class=n>'+mpCount+'</div><div class=l>MP</div></div><div class=sc><div class=n>'+wppCount+'</div><div class=l>WPP</div></div></div>';
-  h+='<div class=st>'+ORDERED.map(function(s){return'<div class=sc><div class=n>'+(sm[s]||0)+'</div><div class=l>'+STATUS_LABELS[s]+'</div></div>'}).join('')+'</div>';
-  if(!orders.length){document.getElementById("app").innerHTML=h+'<div class=emp><div class=ei>&#128230;</div><p>No hay pedidos'+(FILTER!=='all'?' con este filtro':'')+'</p></div>';return}
+    '<button class="fb'+(FILTER==='wpp'?' act':'')+'" onclick="FILTER=\\'wpp\\';render()">WhatsApp</button>'+
+    '<button class="fb sync" onclick="render()">&#x21BB; Sincronizar</button></div>';
+  h+='<div class=stats><div class=sc><div class=n>'+total+'</div><div class=l>Pedidos</div></div><div class=sc><div class=n>'+paid+'</div><div class=l>Pagados</div></div><div class=sc><div class=n>'+pend+'</div><div class=l>Pendientes</div></div><div class=sc><div class=n>S/. '+rev.toFixed(2)+'</div><div class=l>Ingresos</div></div><div class=sc><div class=n>'+mpCount+'</div><div class=l>MP</div></div><div class=sc><div class=n>'+wppCount+'</div><div class=l>WPP</div></div></div>';
+  h+='<div class=stats style="grid-template-columns:repeat(5,1fr)">'+ORDERED.map(function(s){return'<div class=sc><div class=n>'+(sm[s]||0)+'</div><div class=l>'+STATUS_LABELS[s].replace(/Pedido /g,'')+'</div></div>'}).join('')+'</div>';
+  if(!orders.length){document.getElementById("app").innerHTML=h+'<div class=emp><p>No hay pedidos'+(FILTER!=='all'?' con este filtro':'')+'</p></div>';return}
   h+=orders.map(card).join('');
   document.getElementById("app").innerHTML=h;
 }
 render();`;
-  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Konarumis</title><style>' + css + '</style></head><body>' +
-    '<div class="top"><h1>Konarumis <span>Admin</span></h1><a href="#" onclick="sessionStorage.removeItem(\'__ak\');render();return false">Cerrar sesion</a></div>' +
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — Konarumis</title><style>' + css + '</style></head><body>' +
+    '<div class="top"><h1>KONA<span>RUMIS</span> <span style="font-size:.65rem;opacity:.6;font-weight:400">Admin</span></h1><a href="#" onclick="sessionStorage.removeItem(\'__ak\');sessionStorage.removeItem(\'__ak_attempts\');render();return false">Cerrar sesi\u00F3n</a></div>' +
     '<div class="wrap"><div id="app"></div></div>' +
     '<script>' + renderJs + '</script></body></html>';
 }
@@ -325,8 +357,15 @@ export default {
     }
 
     try {
-      // ── Admin login ──
+      // Rate limiting by IP
+      const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
+      const rl = checkRateLimit(ip);
+      const rlHeaders = { 'X-RateLimit-Remaining': String(rl.remaining), 'X-RateLimit-Reset': String(rl.resetAt) };
+
+      // ── Admin login (rate limited: 5/min) ──
       if (path === '/api/admin/login' && request.method === 'POST') {
+        const loginRl = checkRateLimit(ip + ':login', 5, 60000);
+        if (!loginRl.allowed) return json({ error: 'Demasiados intentos. Espera un minuto.' }, 429, rlHeaders);
         const body = await request.json();
         if (body?.password === (env.ADMIN_PASSWORD || '')) return json({ ok: true });
         return json({ error: 'Contraseña incorrecta' }, 401);
@@ -334,6 +373,7 @@ export default {
 
       // ── Admin: list orders ──
       if (path === '/api/orders' && request.method === 'GET') {
+        if (!rl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, rlHeaders);
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return listOrders(env, url.searchParams.get('all') === '1');
       }
@@ -341,6 +381,7 @@ export default {
       // ── Admin: update status ──
       const statusMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)\/status$/);
       if (statusMatch && request.method === 'POST') {
+        if (!rl.allowed) return json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' }, 429, rlHeaders);
         if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
         return updateOrderStatus(request, env, statusMatch[1]);
       }
