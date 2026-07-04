@@ -439,6 +439,28 @@ async function createOrder(request, env) {
   return json(order, 201);
 }
 
+// ─── Product Catalog ───
+const PRODUCTS = [
+  { id: 'prod-luffy', name: 'Luffy', price: 30, av: 'pedido', size: '15 cm', tag: 'One Piece' },
+  { id: 'prod-zoro', name: 'Zoro', price: 30, av: 'pedido', size: '15 cm', tag: 'One Piece' },
+  { id: 'prod-chopper', name: 'Chopper', price: 25, av: 'pedido', size: '15 cm', tag: 'One Piece' },
+  { id: 'prod-finn', name: 'Finn el Humano', price: 25, av: 'pedido', size: '15 cm', tag: 'Hora de Aventura' },
+  { id: 'prod-jake', name: 'Jake el Perro', price: 25, av: 'pedido', size: '15 cm', tag: 'Hora de Aventura' },
+  { id: 'prod-freddy', name: 'Freddy', price: 15, av: 'stock', size: '10 cm', tag: 'Terror' },
+  { id: 'prod-chuky', name: 'Chuky', price: 15, av: 'stock', size: '10 cm', tag: 'Terror' },
+  { id: 'prod-jason', name: 'Jason', price: 15, av: 'stock', size: '10 cm', tag: 'Terror' },
+  { id: 'prod-sp-stan', name: 'South Park: Stan', price: 30, av: 'pedido', size: '17 cm', tag: 'South Park' },
+  { id: 'prod-sp-kyle', name: 'South Park: Kyle', price: 30, av: 'pedido', size: '17 cm', tag: 'South Park' },
+  { id: 'prod-sp-cartman', name: 'South Park: Cartman', price: 30, av: 'pedido', size: '17 cm', tag: 'South Park' },
+  { id: 'prod-sp-kenny', name: 'South Park: Kenny', price: 30, av: 'pedido', size: '17 cm', tag: 'South Park' },
+  { id: 'prod-llama', name: 'Llama Andina', price: 35, av: 'pedido', size: '20 cm', tag: 'Artesanal' },
+  { id: 'prod-snoopy', name: 'Snoopy', price: 35, av: 'pedido', size: '17 cm', tag: 'Peanuts' },
+  { id: 'prod-conejo-llavero', name: 'Conejo Llavero', price: 20, av: 'stock', size: '10 cm', tag: 'Llavero' },
+  { id: 'prod-anne', name: 'Muñeca Anne', price: 80, av: 'pedido', size: '28 cm', tag: 'Colección' },
+  { id: 'prod-reversible-35', name: 'Muñeca Reversible 35 cm', price: 90, av: 'pedido', size: '35 cm', tag: '2 en 1' },
+  { id: 'prod-reversible-55', name: 'Muñeca Reversible 55 cm', price: 160, av: 'pedido', size: '55 cm', tag: '2 en 1' },
+];
+
 // ─── Router ───
 
 export default {
@@ -523,6 +545,11 @@ export default {
       const orderMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)$/);
       if (orderMatch && request.method === 'GET') {
         return getOrder(request, env, orderMatch[1]);
+      }
+
+      // ── Get products catalog ──
+      if (path === '/api/products' && request.method === 'GET') {
+        return json(PRODUCTS);
       }
 
       // ── Create preference ──
