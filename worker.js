@@ -141,7 +141,7 @@ function showCreateForm(){
     '<button class="cf-btn" onclick="addItemRow()" style="margin:0 0 10px">+ Agregar item</button>'+
     '<div style="display:flex;gap:6px">'+
     '<button class="cf-btn-p" onclick="submitCreateOrder()">Generar c\u00F3digo</button>'+
-    '<button class="cf-btn" onclick="document.getElementById(\'cf\').remove()">Cancelar</button></div>'+
+    '<button class="cf-btn" onclick="this.parentElement.parentElement.remove()">Cancelar</button></div>'+
     '<div id="cf-result"></div></div>';
   document.getElementById("app").insertAdjacentHTML("afterbegin",h);
   document.getElementById("cf-name").focus();
