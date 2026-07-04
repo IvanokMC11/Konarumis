@@ -2260,6 +2260,28 @@ body.dark-theme .product-card .btn--primary svg { fill: white; }
 .admin-delete-btn:hover {
   background: #d32f2f;
 }
+.admin-paid-toggle-btn {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.6rem;
+  padding: 4px 12px;
+  border: var(--border-width) solid var(--color-ink);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.admin-paid-toggle-btn.paid {
+  background: #2e7d32;
+  color: #c8e6c9;
+  border-color: #4caf50;
+}
+.admin-paid-toggle-btn.unpaid {
+  background: transparent;
+  color: var(--color-ink-variant);
+  border-color: var(--color-ink-variant);
+}
+.admin-paid-toggle-btn:hover {
+  opacity: 0.8;
+}
 .admin-empty {
   text-align: center;
   padding: 40px;

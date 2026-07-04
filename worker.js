@@ -49,12 +49,12 @@ function checkRateLimit(ip, maxAttempts = 10, windowMs = 60000) {
 function adminHtml() {
   const css = `
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap");
-:root{--font-headline:'Bricolage Grotesque',system-ui,sans-serif;--font-body:'Literata',Georgia,serif;--color-teal:#76946b;--color-teal-dark:#5d7a53;--color-ink:#fcf9f8;--color-paper:#2c2c2c;--color-surface:#3a3a3a;--color-ink-variant:#b0b0b0;--border-width:3px;--shadow-offset:4px;--shadow-ink:rgba(0,0,0,0.4)}
+:root{--font-headline:'Bricolage Grotesque',system-ui,sans-serif;--font-body:'Literata',Georgia,serif;--color-teal:#76946b;--color-teal-dark:#8fb887;--color-ink:#E8E6E1;--color-paper:#1A1D1E;--color-surface:#232728;--color-surface-high:#2A2F31;--color-ink-variant:#A5ADB0;--border-width:3px;--shadow-offset:4px;--shadow-ink:#111}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font-body);background:var(--color-surface);color:var(--color-ink);min-height:100vh}
 .wrap{max-width:1000px;margin:0 auto;padding:24px}
-.top{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--color-ink);color:var(--color-paper);position:sticky;top:0;z-index:10;border-bottom:var(--border-width) solid var(--color-teal)}
-.top h1{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;color:var(--color-paper);letter-spacing:1px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--color-surface);color:var(--color-ink);position:sticky;top:0;z-index:10;border-bottom:var(--border-width) solid var(--color-teal)}
+.top h1{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;color:var(--color-ink);letter-spacing:1px}
 .top h1 span{color:var(--color-teal)}
 .top a{color:var(--color-ink-variant);text-decoration:none;font-size:0.75rem;padding:6px 14px;border:var(--border-width) solid var(--color-ink-variant);font-family:var(--font-headline);font-weight:700;transition:all .15s}
 .top a:hover{border-color:var(--color-teal);color:var(--color-teal)}
@@ -116,6 +116,7 @@ function k(){return sessionStorage.getItem(SK)||""}
 async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(kk)o.headers["X-Admin-Key"]=kk;var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);sessionStorage.removeItem(SK+'_attempts');render()}return r}
 async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);sessionStorage.removeItem(SK+'_attempts');document.getElementById("err").style.display="none";await render()}else{loginAttempts++;sessionStorage.setItem(SK+'_attempts',loginAttempts);document.getElementById("err").style.display="block";document.getElementById("rem").textContent=Math.max(0,5-loginAttempts)+" intento(s) restante(s)";if(loginAttempts>=5){document.getElementById("pwd").disabled=true;document.getElementById("loginbtn").disabled=true;document.getElementById("rem").textContent="Demasiados intentos. Cierra y vuelve a abrir la pagina."}}}catch(e){alert("Error: "+e.message)}}
 async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:s})});render()}
+async function togglePaid(id){var r=await api("/api/order/"+id+"/paid",{method:"POST"});if(r.ok)render()}
 function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
 function payLabel(o){var p=o.payment||(o.preferenceId?'mp':'wpp');return p==='mp'?'Mercado Pago':'WhatsApp'}
 function payCls(o){var p=o.payment||(o.preferenceId?'mp':'wpp');return p==='mp'?'mp':'wpp'}
@@ -134,10 +135,13 @@ function card(o){
     '<div><span class=tg>Nombre</span><span>'+(c.name||'-')+'</span></div>'+
     '<div><span class=tg>WhatsApp</span><span>'+(c.phone||'-')+'</span></div>'+
     '<div><span class=tg>Dir.</span><span>'+(c.address||'-')+'</span></div>'+
+    (o.paymentMpId?'<div><span class=tg>MP ID</span><span style=font-size:.6rem;word-break:break-all>'+o.paymentMpId+'</span></div>':'')+
     '</div>'+
-    '<div class=sctl><h3>Estado</h3><select onchange="setStatus(' + "'" + o.id + "'" + ',this.value)">'+
+    '<div style="display:flex;gap:6px;margin-top:8px">'+
+    '<div class=sctl style="flex:1;margin-top:0"><h3>Estado</h3><select onchange="setStatus(' + "'" + o.id + "'" + ',this.value)">'+
     ORDERED.map(function(s){return'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+STATUS_LABELS[s]+'</option>'}).join('')+
     '</select></div>'+
+    '<div class=sctl style="flex:0;margin-top:0"><h3>Pago</h3><button onclick="togglePaid(\''+o.id+'\')" style="padding:6px 10px;font-size:.65rem;font-family:var(--font-headline);font-weight:700;border:var(--border-width) solid '+(o.paid?'#4caf50':'var(--color-ink-variant)')+';background:'+(o.paid?'#2e7d32':'transparent')+';color:'+(o.paid?'#c8e6c9':'var(--color-ink-variant)')+';cursor:pointer;width:100%">'+(o.paid?'Pagado':'Pendiente')+'</button></div>'+
     '</div></div></div>';
 }
 async function render(){
@@ -313,6 +317,16 @@ async function confirmOrder(env, orderId) {
   return json({ ok: true, orderId });
 }
 
+async function toggleOrderPaid(env, orderId) {
+  const raw = await env.ORDERS.get(orderId);
+  if (!raw) return json({ error: 'Pedido no encontrado' }, 404);
+  const order = JSON.parse(raw);
+  order.paid = !order.paid;
+  if (order.paid && order.status === 'created') order.status = 'pending';
+  await env.ORDERS.put(orderId, JSON.stringify(order));
+  return json({ ok: true, paid: order.paid });
+}
+
 async function updateOrderStatus(req, env, orderId) {
   let body;
   try { body = await req.json(); } catch (_) { return json({ error: 'JSON inválido' }, 400); }
@@ -386,6 +400,14 @@ export default {
         return updateOrderStatus(request, env, statusMatch[1]);
       }
 
+      // ── Toggle paid status (admin) ──
+      const paidMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)\/paid$/);
+      if (paidMatch && request.method === 'POST') {
+        if (!rl.allowed) return json({ error: 'Demasiadas solicitudes.' }, 429, rlHeaders);
+        if (!isAdmin(request, env)) return json({ error: 'No autorizado' }, 401);
+        return toggleOrderPaid(env, paidMatch[1]);
+      }
+
       // ── Confirm order (after successful payment) ──
       const confirmMatch = path.match(/^\/api\/order\/([A-Za-z0-9]+)\/confirm$/);
       if (confirmMatch && request.method === 'POST') {
@@ -403,7 +425,7 @@ export default {
         return createPreference(request, env);
       }
 
-      // ── Webhook ──
+      // ── Webhook (MP payment notification) ──
       if (path === '/api/webhook' && request.method === 'POST') {
         try {
           const whBody = await request.clone().json();
@@ -411,8 +433,27 @@ export default {
             const pRes = await fetch('https://api.mercadopago.com/v1/payments/' + whBody.data.id, {
               headers: { Authorization: 'Bearer ' + (env.MERCADO_PAGO_ACCESS_TOKEN || '') },
             });
-            const p = await pRes.json();
-            if (p.status === 'approved') console.log('Pago OK:', p.id);
+            if (pRes.ok) {
+              const p = await pRes.json();
+              if (p.status === 'approved' && p.external_reference) {
+                // Find order by preferenceId (stored in external_reference or preference_id)
+                const prefId = p.external_reference || whBody.data.id;
+                // Search for order by preferenceId
+                const list = await env.ORDERS.list();
+                for (const key of list.keys) {
+                  const raw = await env.ORDERS.get(key.name);
+                  if (!raw) continue;
+                  const o = JSON.parse(raw);
+                  if (o.preferenceId === p.preference_id || o.id === prefId) {
+                    o.paid = true;
+                    o.paymentMpId = String(whBody.data.id);
+                    if (o.status === 'created') o.status = 'pending';
+                    await env.ORDERS.put(o.id, JSON.stringify(o));
+                    break;
+                  }
+                }
+              }
+            }
           }
         } catch (_) {}
         return new Response(null, { status: 200 });

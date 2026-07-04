@@ -1919,7 +1919,7 @@
           (o.paid ? '<span class="admin-paid-badge">Pagado</span>' : '<span class="admin-unpaid-badge">' + (o.payment === 'mp' ? 'Esperando pago' : 'Pendiente') + '</span>') +
           '</div>' +
           '<div class="admin-status-bar">' + statusBtns + '</div>' +
-          (o.payment === 'wpp' ? '<div class="admin-order-actions"><button class="admin-delete-btn" data-id="' + o.id + '" data-action="delete">Eliminar pedido</button></div>' : '') +
+          (o.payment === 'wpp' ? '<div class="admin-order-actions"><button class="admin-paid-toggle-btn ' + (o.paid ? 'paid' : 'unpaid') + '" data-id="' + o.id + '" data-action="togglepaid">' + (o.paid ? 'Pagado' : 'Pendiente') + '</button><button class="admin-delete-btn" data-id="' + o.id + '" data-action="delete">Eliminar</button></div>' : '<div class="admin-order-actions"><button class="admin-paid-toggle-btn ' + (o.paid ? 'paid' : 'unpaid') + '" data-id="' + o.id + '" data-action="togglepaid">' + (o.paid ? 'Pagado' : 'Pendiente') + '</button></div>') +
           '</div>';
       }).join('');
 
@@ -1929,6 +1929,19 @@
           const orders = getOrders().filter(function(o) { return o.id !== this.dataset.id; }.bind(this));
           saveOrders(orders);
           renderAdminOrders(filter);
+        });
+      });
+
+      list.querySelectorAll('[data-action="togglepaid"]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = this.dataset.id;
+          var orders = getOrders();
+          var order = orders.find(function(o) { return o.id === id; });
+          if (order) {
+            order.paid = !order.paid;
+            saveOrders(orders);
+            renderAdminOrders(filter);
+          }
         });
       });
 
