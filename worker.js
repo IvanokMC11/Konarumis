@@ -125,6 +125,7 @@ body{font-family:var(--font-body);background:var(--color-surface);color:var(--co
 const SK="__ak",SD=${statusData},ORDERED=${statusesJson};
 var STATUS_LABELS={},FILTER='all';SD.forEach(function(a){STATUS_LABELS[a[0]]=a[1]});
 var loginAttempts=parseInt(sessionStorage.getItem(SK+'_attempts')||'0');
+var _PRODS=[],_PRODS_OPTS='';
 function k(){return sessionStorage.getItem(SK)||""}
 async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(kk)o.headers["X-Admin-Key"]=kk;var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);sessionStorage.removeItem(SK+'_attempts');render()}return r}
 async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);sessionStorage.removeItem(SK+'_attempts');document.getElementById("err").style.display="none";await render()}else{loginAttempts++;sessionStorage.setItem(SK+'_attempts',loginAttempts);document.getElementById("err").style.display="block";document.getElementById("rem").textContent=Math.max(0,5-loginAttempts)+" intento(s) restante(s)";if(loginAttempts>=5){document.getElementById("pwd").disabled=true;document.getElementById("loginbtn").disabled=true;document.getElementById("rem").textContent="Demasiados intentos. Cierra y vuelve a abrir la pagina."}}}catch(e){alert("Error: "+e.message)}}
@@ -132,42 +133,79 @@ async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POS
 async function togglePaid(id){var r=await api("/api/order/"+id+"/paid",{method:"POST"});if(r.ok)render()}
 function showCreateForm(){
   if(document.getElementById("cf"))return;
+  if(!_PRODS.length){var e=document.getElementById("cf-result");if(e)e.innerHTML='<p class="cf-err">Error: productos no disponibles</p>';return}
+  var cats={};
+  _PRODS.forEach(function(p){var t=p.tag||'Otros';if(!cats[t])cats[t]=[];cats[t].push(p)});
+  var ops=['<option value="">-- Seleccionar --</option>'];
+  Object.keys(cats).sort().forEach(function(cat){
+    ops.push('<optgroup label="'+cat+'">');
+    cats[cat].forEach(function(p){ops.push('<option value="'+p.id+'" data-price="'+p.price+'" data-av="'+p.av+'">'+p.name+' ('+p.size+') - S/. '+p.price+'</option>')});
+    ops.push('</optgroup>');
+  });
+  _PRODS_OPTS=ops.join('');
   var h='<div id="cf" style="background:var(--color-surface);border:var(--border-width) solid var(--color-ink);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-ink)">'+
     '<h3 style="font-family:var(--font-headline);font-size:.8rem;margin-bottom:10px">Nuevo Pedido (WhatsApp)</h3>'+
     '<input class="cf-inp" id="cf-name" placeholder="Nombre">'+
     '<input class="cf-inp" id="cf-phone" placeholder="WhatsApp">'+
     '<input class="cf-inp" id="cf-addr" placeholder="Direcci\u00F3n">'+
-    '<div id="cf-items"><div class="cf-ib"><input class="cf-inp n cf-ip-name" placeholder="Producto"><input class="cf-inp q cf-ip-qty" type=number placeholder="Cant" value=1><input class="cf-inp p cf-ip-price" type=number step=.01 placeholder="Precio S/."></div></div>'+
-    '<button class="cf-btn" onclick="addItemRow()" style="margin:0 0 10px">+ Agregar item</button>'+
+    '<div id="cf-items"></div>'+
+    '<button class="cf-btn" onclick="cfAddRow()" style="margin:0 0 10px">+ Agregar item</button>'+
     '<div style="display:flex;gap:6px">'+
     '<button class="cf-btn-p" onclick="submitCreateOrder()">Generar c\u00F3digo</button>'+
     '<button class="cf-btn" onclick="this.parentElement.parentElement.remove()">Cancelar</button></div>'+
     '<div id="cf-result"></div></div>';
   document.getElementById("app").insertAdjacentHTML("afterbegin",h);
+  cfAddRow();
   document.getElementById("cf-name").focus();
 }
-function addItemRow(){
+function cfAddRow(){
   var d=document.createElement("div");d.className="cf-ib";
-  d.innerHTML='<input class="cf-inp n cf-ip-name" placeholder="Producto"><input class="cf-inp q cf-ip-qty" type=number placeholder="Cant" value=1><input class="cf-inp p cf-ip-price" type=number step=.01 placeholder="Precio S/.">';
+  d.innerHTML='<select class="cf-inp n cf-ip-prod" onchange="cfOnProd(this)">'+_PRODS_OPTS+'</select>'+
+    '<input class="cf-inp q cf-ip-qty" type=number placeholder="Cant" value=1>'+
+    '<input class="cf-inp p cf-ip-price" type=number step=.01 placeholder="S/." readonly>'+
+    '<label style="display:flex;align-items:center;gap:2px;font-size:.55rem;color:var(--color-ink-variant);white-space:nowrap;cursor:pointer;font-family:var(--font-headline);font-weight:700"><input type=checkbox class="cf-ip-adv" onchange="cfToggleAdv(this)" checked> Adelanto</label>';
   document.getElementById("cf-items").appendChild(d);
 }
+function cfOnProd(el){
+  var opt=el.options[el.selectedIndex];
+  if(!opt||!opt.value){el.closest('.cf-ib').querySelector('.cf-ip-price').value='';return}
+  var full=parseFloat(opt.dataset.price)||0;
+  var row=el.closest('.cf-ib');
+  var pi=row.querySelector('.cf-ip-price');
+  pi.dataset.full=full;
+  var adv=row.querySelector('.cf-ip-adv');
+  pi.value=adv&&adv.checked?(full/2).toFixed(2):full.toFixed(2);
+}
+function cfToggleAdv(cb){
+  var row=cb.closest('.cf-ib');
+  var pi=row.querySelector('.cf-ip-price');
+  var full=parseFloat(pi.dataset.full);
+  if(!full)return;
+  pi.value=cb.checked?(full/2).toFixed(2):full.toFixed(2);
+}
 async function submitCreateOrder(){
-  var name=document.getElementById("cf-name").value.trim();
-  var phone=document.getElementById("cf-phone").value.trim();
-  var addr=document.getElementById("cf-addr").value.trim();
-  if(!name||!phone){document.getElementById("cf-result").innerHTML='<p class="cf-err">Nombre y WhatsApp son obligatorios</p>';return}
-  var items=[],err=false;
-  document.querySelectorAll("#cf-items .cf-ib").forEach(function(r){
-    var n=r.querySelector(".cf-ip-name"),q=r.querySelector(".cf-ip-qty"),p=r.querySelector(".cf-ip-price");
-    if(n&&n.value.trim())items.push({title:n.value.trim(),qty:parseInt(q.value)||1,unit_price:parseFloat(p.value)||0});
+  var name=document.getElementById('cf-name').value.trim();
+  var phone=document.getElementById('cf-phone').value.trim();
+  var addr=document.getElementById('cf-addr').value.trim();
+  if(!name||!phone){document.getElementById('cf-result').innerHTML='<p class="cf-err">Nombre y WhatsApp son obligatorios</p>';return}
+  var items=[];
+  document.querySelectorAll('#cf-items .cf-ib').forEach(function(r){
+    var sel=r.querySelector('.cf-ip-prod');
+    if(!sel||!sel.value)return;
+    var opt=sel.options[sel.selectedIndex];
+    var title=opt.textContent.split(' - ')[0].trim();
+    var qty=parseInt(r.querySelector('.cf-ip-qty').value)||1;
+    var price=parseFloat(r.querySelector('.cf-ip-price').value)||0;
+    var adv=r.querySelector('.cf-ip-adv')?.checked||false;
+    items.push({title:title+(adv?' (Adelanto 50%)':''),qty:qty,unit_price:price});
   });
-  if(!items.length){document.getElementById("cf-result").innerHTML='<p class="cf-err">Agrega al menos un producto</p>';return}
+  if(!items.length){document.getElementById('cf-result').innerHTML='<p class="cf-err">Agrega al menos un producto</p>';return}
   var total=items.reduce(function(s,i){return s+i.qty*i.unit_price},0);
-  document.getElementById("cf-result").innerHTML='<p style="color:var(--color-ink-variant);font-size:.7rem">Creando pedido...</p>';
-  var r=await api("/api/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,phone:phone,address:addr,items:items,total:total})});
-  if(!r.ok){document.getElementById("cf-result").innerHTML='<p class="cf-err">Error al crear pedido</p>';return}
+  document.getElementById('cf-result').innerHTML='<p style="color:var(--color-ink-variant);font-size:.7rem">Creando pedido...</p>';
+  var r=await api('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:phone,address:addr,items:items,total:total})});
+  if(!r.ok){document.getElementById('cf-result').innerHTML='<p class="cf-err">Error al crear pedido</p>';return}
   var o=await r.json();
-  document.getElementById("cf-result").innerHTML='<div class="cf-ok"><p class="s">Pedido creado</p><p class="c">#'+o.id+'</p><a href="/pedido?id='+o.id+'" target="_blank">Ver seguimiento</a></div>';
+  document.getElementById('cf-result').innerHTML='<div class="cf-ok"><p class="s">Pedido creado</p><p class="c">#'+o.id+'</p><a href="/pedido?id='+o.id+'" target="_blank">Ver seguimiento</a></div>';
   render();
 }
 function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
@@ -204,6 +242,9 @@ async function render(){
   var r=await api("/api/orders?all=1");
   if(!r.ok){document.getElementById("app").innerHTML='<div class=lb><p>Error al cargar pedidos</p><button onclick=render() style="margin-top:12px;padding:8px 20px;background:var(--color-teal);color:var(--color-paper);border:var(--border-width) solid var(--color-teal);font-family:var(--font-headline);font-weight:800;cursor:pointer">Reintentar</button></div>';return}
   var allOrders=await r.json();
+  // Fetch products for create form
+  var pr=await api("/api/products");
+  if(pr.ok)_PRODS=await pr.json();
   var orders=FILTER==='all'?allOrders:allOrders.filter(function(o){return (o.payment||'mp')===FILTER});
   var sm={};ORDERED.forEach(function(s){sm[s]=0});
   allOrders.forEach(function(o){sm[o.status]=(sm[o.status]||0)+1});

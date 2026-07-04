@@ -2098,27 +2098,82 @@
 
     document.getElementById('admin-create-btn').addEventListener('click', adminShowCreateForm);
 
+    var _adminProds = [];
+
     function adminShowCreateForm() {
       if (document.getElementById('admin-cf')) { document.getElementById('admin-cf').remove(); return; }
+      var _this = this;
+      if (!_adminProds.length) {
+        fetch('/api/products').then(function(r) { return r.json(); }).then(function(prods) {
+          _adminProds = prods;
+          adminShowCreateForm();
+        }).catch(function() {
+          document.getElementById('acf-result') && (document.getElementById('acf-result').innerHTML = '<p style="color:#f44336;font-size:0.7rem">Error al cargar productos</p>');
+        });
+        return;
+      }
+      var cats = {};
+      _adminProds.forEach(function(p) { var t = p.tag || 'Otros'; if (!cats[t]) cats[t] = []; cats[t].push(p); });
+      var ops = ['<option value="">-- Seleccionar --</option>'];
+      Object.keys(cats).sort().forEach(function(cat) {
+        ops.push('<optgroup label="' + cat + '">');
+        cats[cat].forEach(function(p) { ops.push('<option value="' + p.id + '" data-price="' + p.price + '" data-av="' + p.av + '">' + p.name + ' (' + p.size + ') - S/. ' + p.price + '</option>'); });
+        ops.push('</optgroup>');
+      });
+      var optsHtml = ops.join('');
       var h = '<div id="admin-cf" class="admin-create-form">' +
         '<h3>Nuevo Pedido (WhatsApp)</h3>' +
         '<input id="acf-name" placeholder="Nombre">' +
         '<input id="acf-phone" placeholder="WhatsApp">' +
         '<input id="acf-addr" placeholder="Direcci\u00F3n">' +
-        '<div id="acf-items"><div class="cf-ib"><input class="n" placeholder="Producto"><input class="q" type=number placeholder="Cant" value=1><input class="p" type=number step=.01 placeholder="Precio S/."></div></div>' +
+        '<div id="acf-items"></div>' +
         '<button class="btn btn--secondary" style="margin:0 0 10px;font-size:0.65rem;padding:4px 12px;" onclick="adminAddItemRow()">+ Agregar item</button>' +
         '<div style="display:flex;gap:6px">' +
         '<button class="btn btn--primary" style="flex:1;font-size:0.75rem;padding:8px;" onclick="adminSubmitCreate()">Generar c\u00F3digo</button>' +
-        '<button class="btn btn--secondary" style="font-size:0.7rem;padding:8px 14px;" onclick="this.closest(\'#admin-cf\').remove()">Cancelar</button></div>' +
+        '<button class="btn btn--secondary" style="font-size:0.7rem;padding:8px 14px;" onclick="this.parentElement.parentElement.remove()">Cancelar</button></div>' +
         '<div id="acf-result"></div></div>';
       document.getElementById('admin-order-list').insertAdjacentHTML('beforebegin', h);
+      adminAddItemRow(optsHtml);
       document.getElementById('acf-name').focus();
     }
 
-    function adminAddItemRow() {
+    function adminAddItemRow(opts) {
+      var o = opts || (function() {
+        var cats = {};
+        _adminProds.forEach(function(p) { var t = p.tag || 'Otros'; if (!cats[t]) cats[t] = []; cats[t].push(p); });
+        var ops = ['<option value="">-- Seleccionar --</option>'];
+        Object.keys(cats).sort().forEach(function(cat) {
+          ops.push('<optgroup label="' + cat + '">');
+          cats[cat].forEach(function(p) { ops.push('<option value="' + p.id + '" data-price="' + p.price + '" data-av="' + p.av + '">' + p.name + ' (' + p.size + ') - S/. ' + p.price + '</option>'); });
+          ops.push('</optgroup>');
+        });
+        return ops.join('');
+      })();
       var d = document.createElement('div'); d.className = 'cf-ib';
-      d.innerHTML = '<input class="n" placeholder="Producto"><input class="q" type=number placeholder="Cant" value=1><input class="p" type=number step=.01 placeholder="Precio S/.">';
+      d.innerHTML = '<select class="n" onchange="adminOnProd(this)" style="flex:2;padding:8px;border:var(--border-width) solid var(--color-ink);background:#2a2a2a;color:var(--color-ink);font-family:var(--font-body);font-size:.78rem">' + o + '</select>' +
+        '<input class="q" type=number placeholder="Cant" value=1 style="flex:0 0 50px;padding:8px;border:var(--border-width) solid var(--color-ink);background:#2a2a2a;color:var(--color-ink)">' +
+        '<input class="p" type=number step=.01 placeholder="S/." readonly style="flex:0 0 75px;padding:8px;border:var(--border-width) solid var(--color-ink);background:#2a2a2a;color:var(--color-ink)">' +
+        '<label style="display:flex;align-items:center;gap:2px;font-size:.55rem;color:var(--color-ink-variant);white-space:nowrap;cursor:pointer;font-family:var(--font-headline);font-weight:700"><input type=checkbox class="acf-ip-adv" onchange="adminToggleAdv(this)" checked> Adelanto</label>';
       document.getElementById('acf-items').appendChild(d);
+    }
+
+    function adminOnProd(el) {
+      var opt = el.options[el.selectedIndex];
+      if (!opt || !opt.value) { el.closest('.cf-ib').querySelector('.p').value = ''; return; }
+      var full = parseFloat(opt.dataset.price) || 0;
+      var row = el.closest('.cf-ib');
+      var pi = row.querySelector('.p');
+      pi.dataset.full = full;
+      var adv = row.querySelector('.acf-ip-adv');
+      pi.value = adv && adv.checked ? (full / 2).toFixed(2) : full.toFixed(2);
+    }
+
+    function adminToggleAdv(cb) {
+      var row = cb.closest('.cf-ib');
+      var pi = row.querySelector('.p');
+      var full = parseFloat(pi.dataset.full);
+      if (!full) return;
+      pi.value = cb.checked ? (full / 2).toFixed(2) : full.toFixed(2);
     }
 
     function adminSubmitCreate() {
@@ -2128,8 +2183,14 @@
       if (!name || !phone) { document.getElementById('acf-result').innerHTML = '<p style="color:#f44336;font-size:0.7rem">Nombre y WhatsApp son obligatorios</p>'; return; }
       var items = [];
       document.querySelectorAll('#acf-items .cf-ib').forEach(function(r) {
-        var inputs = r.querySelectorAll('input');
-        if (inputs[0] && inputs[0].value.trim()) items.push({ title: inputs[0].value.trim(), qty: parseInt(inputs[1].value) || 1, unit_price: parseFloat(inputs[2].value) || 0 });
+        var sel = r.querySelector('select');
+        if (!sel || !sel.value) return;
+        var opt = sel.options[sel.selectedIndex];
+        var title = opt.textContent.split(' - ')[0].trim();
+        var qty = parseInt(r.querySelector('.q').value) || 1;
+        var price = parseFloat(r.querySelector('.p').value) || 0;
+        var adv = r.querySelector('.acf-ip-adv')?.checked || false;
+        items.push({ title: title + (adv ? ' (Adelanto 50%)' : ''), qty: qty, unit_price: price });
       });
       if (!items.length) { document.getElementById('acf-result').innerHTML = '<p style="color:#f44336;font-size:0.7rem">Agrega al menos un producto</p>'; return; }
       var total = items.reduce(function(s, i) { return s + i.qty * i.unit_price; }, 0);
