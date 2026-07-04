@@ -141,7 +141,7 @@ function card(o){
     '<div class=sctl style="flex:1;margin-top:0"><h3>Estado</h3><select onchange="setStatus(' + "'" + o.id + "'" + ',this.value)">'+
     ORDERED.map(function(s){return'<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+STATUS_LABELS[s]+'</option>'}).join('')+
     '</select></div>'+
-    '<div class=sctl style="flex:0;margin-top:0"><h3>Pago</h3><button onclick="togglePaid(\''+o.id+'\')" style="padding:6px 10px;font-size:.65rem;font-family:var(--font-headline);font-weight:700;border:var(--border-width) solid '+(o.paid?'#4caf50':'var(--color-ink-variant)')+';background:'+(o.paid?'#2e7d32':'transparent')+';color:'+(o.paid?'#c8e6c9':'var(--color-ink-variant)')+';cursor:pointer;width:100%">'+(o.paid?'Pagado':'Pendiente')+'</button></div>'+
+    '<div class=sctl style="flex:0;margin-top:0"><h3>Pago</h3><button onclick="togglePaid(' + "'" + o.id + "'" + ')" style="padding:6px 10px;font-size:.65rem;font-family:var(--font-headline);font-weight:700;border:var(--border-width) solid '+(o.paid?'#4caf50':'var(--color-ink-variant)')+';background:'+(o.paid?'#2e7d32':'transparent')+';color:'+(o.paid?'#c8e6c9':'var(--color-ink-variant)')+';cursor:pointer;width:100%">'+(o.paid?'Pagado':'Pendiente')+'</button></div>'+
     '</div></div></div>';
 }
 async function render(){
