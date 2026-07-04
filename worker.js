@@ -70,12 +70,15 @@ body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:#f5f2ef;color:
 .emp .ei{font-size:2.5rem;opacity:.3;margin-bottom:16px}
 .emp p{color:#bbb;font-size:.9rem}
 .emp .sub{color:#ddd;font-size:.8rem;margin-top:8px}
+.fb{font-family:inherit;font-size:.7rem;font-weight:700;padding:6px 14px;border:2px solid #e0dbd7;border-radius:8px;background:#fff;color:#555;cursor:pointer;transition:all .15s}
+.fb.act{background:#76946b;border-color:#76946b;color:#fff}
+.fb:hover{background:#f0eeec}.fb.act:hover{background:#5d7a53}
 @media(max-width:480px){.wrap{padding:12px}.top{padding:12px 16px}.top h1{font-size:1rem}.och{padding:12px 16px}.cl{padding:12px 16px}}`;
   const statusData = JSON.stringify(Object.entries(STATUS_LABELS).map(([k,v]) => [k,v]));
   const statusesJson = JSON.stringify(STATUSES);
   const renderJs = `
 const SK="__ak",SD=${statusData},ORDERED=${statusesJson};
-var STATUS_LABELS={};SD.forEach(function(a){STATUS_LABELS[a[0]]=a[1]});
+var STATUS_LABELS={},FILTER='all';SD.forEach(function(a){STATUS_LABELS[a[0]]=a[1]});
 function k(){return sessionStorage.getItem(SK)||""}
 async function api(u,o){if(!o)o={};var kk=k();if(kk)o.headers=o.headers||{};if(kk)o.headers["X-Admin-Key"]=kk;var r;try{r=await fetch(u,o)}catch(e){return{ok:false}}if(r.status===401){sessionStorage.removeItem(SK);render()}return r}
 async function login(){var p=document.getElementById("pwd").value;try{var r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:p})});if(r.ok){sessionStorage.setItem(SK,p);await render()}else alert("Contrasena incorrecta")}catch(e){alert("Error: "+e.message)}}
@@ -83,8 +86,15 @@ async function setStatus(id,s){await api("/api/order/"+id+"/status",{method:"POS
 function fmt(d){var t=new Date(d);return t.toLocaleDateString("es-PE",{day:"2-digit",month:"short"})+" "+t.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"})}
 function card(o){
   var c=o.customer||{},it=o.items||[];
-  return '<div class=oc>'+
-    '<div class=och><div class=oi><div><div class=oid>#'+o.id+'</div><div class=od>'+fmt(o.createdAt)+'</div></div></div><span class="sb s'+o.status.charAt(0)+'">'+(STATUS_LABELS[o.status]||o.status)+'</span></div>'+
+  var payLabel=o.payment==='mp'?'Mercado Pago':'MP';
+  var payCls=o.payment==='mp'?'mp':'wpp';
+  var paidCls=o.paid?'paid':'unpaid';
+  var paidLabel=o.paid?'Pagado':'Esperando pago';
+  return '<div class=oc '+(o.payment?'data-payment="'+o.payment+'"':'')+'>'+
+    '<div class=och><div class=oi><div><div class=oid>#'+o.id+'</div><div class=od>'+fmt(o.createdAt)+'</div></div>'+
+    '<span style="font-size:.6rem;padding:2px 8px;border-radius:4px;background:'+(o.payment==='mp'?'#e3f2fd':'#e8f5e9')+';color:'+(o.payment==='mp'?'#1565c0':'#2e7d32')+'">'+payLabel+'</span>'+
+    '<span style="font-size:.6rem;padding:2px 8px;border-radius:4px;background:'+(o.paid?'#4caf50':'#ff9800')+';color:#fff">'+paidLabel+'</span>'+
+    '</div><span class="sb s'+o.status.charAt(0)+'">'+(STATUS_LABELS[o.status]||o.status)+'</span></div>'+
     '<div class=ocb><div class=cl><h3>Productos</h3>'+
     it.map(function(i){return'<div class=pr><span>'+i.title+' x'+i.qty+'</span><span class=prc>S/. '+(i.unit_price*i.qty).toFixed(2)+'</span></div>'}).join('')+
     '<div class=otr><span>Total</span><span>S/. '+o.total.toFixed(2)+'</span></div></div>'+
@@ -102,14 +112,24 @@ function card(o){
 async function render(){
   var kk=k();
   if(!kk){document.getElementById("app").innerHTML='<div class=lb><div class=ic>&#128274;</div><h2>Acceso restringido</h2><p>Ingresa la contrasena de administrador</p><input id=pwd type=password placeholder=Contrasena onkeydown="if(event.key===\\'Enter\\')login()" autofocus><button onclick=login()>Ingresar</button></div>';return}
-  var r=await api("/api/orders");
-  if(!r.ok)return;
-  var orders=await r.json();
-  var sm={};
-  ORDERED.forEach(function(s){sm[s]=0});
-  orders.forEach(function(o){sm[o.status]=(sm[o.status]||0)+1});
-  var h='<div class=st>'+ORDERED.map(function(s){return'<div class=sc><div class=n>'+(sm[s]||0)+'</div><div class=l>'+STATUS_LABELS[s]+'</div></div>'}).join('')+'</div>';
-  if(!orders.length){document.getElementById("app").innerHTML=h+'<div class=emp><div class=ei>&#128230;</div><p>No hay pedidos confirmados</p><p class=sub>Los pedidos aparecen aqui despues de un pago exitoso</p></div>';return}
+  document.getElementById("app").innerHTML='<div style="text-align:center;padding:40px;color:#bbb">Cargando...</div>';
+  var r=await api("/api/orders?all=1");
+  if(!r.ok){document.getElementById("app").innerHTML='<div class=lb><p>Error al cargar pedidos</p><button onclick=render()>Reintentar</button></div>';return}
+  var allOrders=await r.json();
+  var orders=FILTER==='all'?allOrders:allOrders.filter(function(o){return (o.payment||'mp')===FILTER});
+  var sm={};ORDERED.forEach(function(s){sm[s]=0});
+  allOrders.forEach(function(o){sm[o.status]=(sm[o.status]||0)+1});
+  var total=allOrders.length,paid=allOrders.filter(function(o){return o.paid}).length,pend=allOrders.filter(function(o){return !o.paid}).length,
+      mpCount=allOrders.filter(function(o){return o.payment==='mp'}).length,wppCount=allOrders.filter(function(o){return o.payment!=='mp'}).length,
+      rev=allOrders.filter(function(o){return o.paid}).reduce(function(s,o){return s+(o.total||0)},0);
+  var h='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'+
+    '<button class="fb'+(FILTER==='all'?' act':'')+'" onclick="FILTER=\\'all\\';render()">Todos</button>'+
+    '<button class="fb'+(FILTER==='mp'?' act':'')+'" onclick="FILTER=\\'mp\\';render()">MP</button>'+
+    '<button class="fb'+(FILTER==='wpp'?' act':'')+'" onclick="FILTER=\\'wpp\\';render()">WPP</button>'+
+    '<button class="fb" onclick="render()" style="margin-left:auto">&#x21BB; Sincronizar</button></div>';
+  h+='<div class=st><div class=sc><div class=n>'+total+'</div><div class=l>Total</div></div><div class=sc><div class=n>'+paid+'</div><div class=l>Pagados</div></div><div class=sc><div class=n>'+pend+'</div><div class=l>Pendientes</div></div><div class=sc><div class=n>S/. '+rev.toFixed(2)+'</div><div class=l>Ingresos</div></div><div class=sc><div class=n>'+mpCount+'</div><div class=l>MP</div></div><div class=sc><div class=n>'+wppCount+'</div><div class=l>WPP</div></div></div>';
+  h+='<div class=st>'+ORDERED.map(function(s){return'<div class=sc><div class=n>'+(sm[s]||0)+'</div><div class=l>'+STATUS_LABELS[s]+'</div></div>'}).join('')+'</div>';
+  if(!orders.length){document.getElementById("app").innerHTML=h+'<div class=emp><div class=ei>&#128230;</div><p>No hay pedidos'+(FILTER!=='all'?' con este filtro':'')+'</p></div>';return}
   h+=orders.map(card).join('');
   document.getElementById("app").innerHTML=h;
 }
