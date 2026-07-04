@@ -375,7 +375,21 @@ export default {
       return json({ error: 'Error interno: ' + e.message }, 500);
     }
 
-    // Serve static assets
-    return env.ASSETS.fetch(request);
+    // Serve static assets (no-cache for html/css/js)
+    const asset = await env.ASSETS.fetch(request);
+    const url = new URL(request.url);
+    const ext = url.pathname.split('.').pop().toLowerCase();
+    if (['html', 'css', 'js'].includes(ext) || url.pathname === '/' || url.pathname === '') {
+      return new Response(asset.body, {
+        status: asset.status,
+        headers: {
+          'Content-Type': asset.headers.get('Content-Type') || 'text/html',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      });
+    }
+    return asset;
   },
 };
